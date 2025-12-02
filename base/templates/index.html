@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pioneer Hospital – Putting Life First</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ------------------ COLOR PALETTE ------------------ */
+      :root {
+        --primary-color: #004d66; /* Dark Teal - Trust */
+        --accent-color: #c62828; /* Maroon Red - Emergency/CTA */
+        --light-bg: #f8fbfd; /* Very Light Blue-White */
+        --text-dark: #333;
+      }
+
+      /* ------------------ GLOBAL & BASE STYLES ------------------ */
+      body {
+        font-family: "Poppins", Arial, sans-serif;
+        background-color: var(--light-bg);
+        color: var(--text-dark);
+      }
+
+      /* NAVBAR */
+      .navbar-custom {
+        background-color: var(--primary-color) !important;
+        padding: 0.5rem 0;
+      }
+      .navbar-custom .nav-link {
+        color: #fff;
+        font-weight: 600;
+        padding: 20px 15px;
+        text-transform: uppercase;
+        font-size: 14px;
+        transition: background-color 0.3s;
+      }
+      .navbar-custom .nav-link:hover {
+        background-color: #003344;
+        color: #fff;
+      }
+      .navbar-brand img {
+        height: 60px;
+      }
+      .btn-cta {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        font-weight: 700;
+        padding: 8px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        margin-left: 15px;
+      }
+      .btn-cta:hover {
+        background-color: #a01a1a;
+        color: white;
+      }
+
+      /* HERO SECTION */
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+          url("https://img.freepik.com/free-photo/hospital-building-with-modern-architecture_23-2149667538.jpg")
+            center/cover no-repeat;
+        height: 420px;
+        border-bottom: 6px solid var(--accent-color);
+        position: relative;
+      }
+      .hero-title {
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
+        color: white;
+        font-size: 52px;
+        font-weight: 800;
+        text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.8);
+        line-height: 1.1;
+      }
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 36px;
+          left: 20px;
+          bottom: 30px;
+        }
+      }
+
+      /* EMERGENCY BAR */
+      .emergency-bar {
+        background: var(--accent-color);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      /* SECTION HEADINGS */
+      h2.section-title {
+        text-align: center;
+        margin: 60px 0 30px;
+        font-weight: 800;
+        color: var(--primary-color);
+        font-size: 32px;
+        position: relative;
+      }
+      h2.section-title::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 10px auto 0;
+        border-radius: 5px;
+      }
+
+      /* INFORMATION BOXES (GENERAL) */
+      .info-box {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-top: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid var(--primary-color);
+      }
+
+      /* SPECIALITY & WHY CHOOSE US CARDS */
+      .speciality-card,
+      .reason-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .reason-card i {
+        font-size: 36px;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+      }
+      .reason-card:hover {
+        transform: translateY(-5px);
+        background: var(--light-bg);
+        border-bottom: 3px solid var(--accent-color);
+      }
+      .speciality-card:hover {
+        background: #e6f5ff;
+      }
+      .speciality-card h5 {
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 16px;
+        margin: 0;
+      }
+
+      /* DOCTOR CARDS */
+      .doctor-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s;
+      }
+      .doctor-card:hover {
+        transform: scale(1.02);
+      }
+      .doctor-card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--primary-color);
+        margin-bottom: 15px;
+      }
+      .doctor-card h5 {
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      .doctor-card p {
+        font-size: 14px;
+        color: #555;
+      }
+
+      /* INSURANCE SECTION STYLES */
+      .insurance-section {
+        background-color: var(--primary-color);
+        padding: 50px 0;
+        color: white;
+      }
+      .insurance-section .section-title {
+        color: white;
+      }
+      .insurance-card-grid {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      }
+      .insurance-logo-item {
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+      .insurance-logo-item img {
+        width: 100%;
+        max-width: 150px;
+        height: 90px;
+        object-fit: contain;
+        transition: all 0.3s;
+      }
+       .insurance-logo-item img:hover{
+        transform: scale(1.1);
+       }
+      .insurance-cta {
+        background-color: var(--accent-color);
+        color: white;
+        border: 2px solid white;
+        font-weight: 700;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 18px;
+        display: inline-block;
+        margin-top: 20px;
+        transition: background-color 0.3s;
+      }
+      .insurance-cta:hover {
+        background-color: #a01a1a;
+        color: white;
+        text-decoration: none;
+      }
+
+      /* FOOTER */
+      footer {
+        background: #002b36;
+        color: #ccc;
+        padding: 40px 0 20px;
+        margin-top: 50px;
+      }
+      footer h5 {
+        color: white;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+      footer a {
+        color: #4fc3f7;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 5px;
+        transition: color 0.3s;
+      }
+      footer a:hover {
+        color: white;
+      }
+      .footer-details i {
+        margin-right: 10px;
+        color: var(--accent-color);
+      }
+      .social-icons i {
+        font-size: 24px;
+        margin-right: 15px;
+        color: #90caf9;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+      .social-icons i:hover {
+        color: white;
+      }
+      .copyright {
+        border-top: 1px solid #004d66;
+        padding-top: 20px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #777;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img
+            src="https://th.bing.com/th/id/OIP.oYTUAqgFX7zJpnAr7_mAuAAAAA?w=325&h=147"
+            alt="Pioneer Hospital Logo"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto align-items-center">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">THE HOSPITAL</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#2">FACILITIES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#1">SPECIALITIES</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'insurance_list' %}">INSURANCE</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
+            <li class="nav-item">
+              <a href="#appointment-form" class="btn btn-cta"
+                >BOOK APPOINTMENT</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-title">
+        PUTTING LIFE FIRST<br /><small style="font-size: 26px; font-weight: 600"
+          >Multispeciality Care in Hyderabad</small
+        >
+      </div>
+    </div>
+
+    <div class="emergency-bar">
+      <i class="fa-solid fa-ambulance"></i> EMERGENCY NO: **+91 9775 108 108**
+         |    OP Timings: **9 AM – 9 PM**
+    </div>
+
+    <div class="container">
+      <div class="info-box text-center">
+        <h2 class="section-title" style="margin-top: 0; margin-bottom: 20px">
+          WELCOME TO PIONEER HOSPITALS
+        </h2>
+        <p style="font-size: 17px; line-height: 1.7; color: #555">
+          Pioneer Hospitals is a **75-bed multispeciality facility** dedicated
+          to providing world-class treatment with top specialists and advanced
+          patient care. Built on the philosophy of **'PUTTING LIFE FIRST'**, we
+          ensure comprehensive, cost-effective, and compassionate healthcare for
+          the community.
+        </p>
+      </div>
+    </div>
+
+    <h2 id="2" class="section-title">WHY CHOOSE US?</h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-6">
+          <div class="reason-card">
+            <i class="fa-solid fa-hospital-user"></i>
+            <h5>COMPASSIONATE CARE</h5>
+            <p>
+              Caring staff for a compassionate approach and faster recovery.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="reason-card">
+            <i class="fa-solid fa-user-doctor"></i>
+            <h5>EXPERT DOCTORS</h5>
+            <p>
+              Team of top specialists with rich clinical and research
+              experience.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="reason-card">
+            <i class="fa-solid fa-stethoscope"></i>
+            <h5>ADVANCED TECHNOLOGY</h5>
+            <p>
+              State-of-the-art infrastructure and cutting-edge medical
+              equipment.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="reason-card">
+            <i class="fa-solid fa-money-bill-wave"></i>
+            <h5>AFFORDABLE CARE</h5>
+            <p>High-quality, world-class healthcare at affordable costs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2  id="1" class="section-title">MULTISPECIALITY EXCELLENCE</h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>NEUROSCIENCES</h5></div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>GASTROENTEROLOGY</h5></div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>GENERAL MEDICINE</h5></div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>ORTHOPAEDICS</h5></div>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>EMERGENCY & CRITICAL CARE</h5></div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>PEDIATRICS & NEONATOLOGY</h5></div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>UROLOGY</h5></div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="speciality-card"><h5>DERMATOLOGY</h5></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insurance-section">
+      <div class="container">
+        <h2 class="section-title">CASHLESS INSURANCE & TPA PARTNERS</h2>
+
+        <div class="row align-items-center">
+          <div class="col-lg-5 text-center text-lg-left mb-4 mb-lg-0">
+            <h3 style="font-weight: 700; font-size: 26px; color: white">
+              Hassle-Free Cashless Treatment
+            </h3>
+            <p style="font-size: 16px; line-height: 1.6; opacity: 0.9">
+              We are empanelled with over **30 leading TPAs and Insurance
+              Companies** to ensure you get immediate and stress-free care. Our
+              dedicated insurance desk handles all documentation.
+            </p>
+            <a href="{% url 'insurance_list' %}" class="insurance-cta">
+              <i class="fa-solid fa-file-invoice"></i> VIEW ALL 30+ PARTNERS &
+              CLAIM PROCESS
+            </a>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="insurance-card-grid">
+              <div class="row">
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://th.bing.com/th/id/OIP.5N6MLWrNb7kVj586ECVrugHaD9?w=319&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3A qA"
+                  />
+                </div>
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://th.bing.com/th/id/OIP.o8inQblSoG0RWVOd8YNPNAHaHa?w=167&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+                  />
+                </div>
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://healthstatic.insurancedekho.com/prod/news/Things_To_Know_About_Niva_Bupa_Health_Insurance.jpg"
+                  />
+                </div>
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://tse4.mm.bing.net/th/id/OIP.UdgsnWVWNJ0P4Wtq21_wOgHaEE?rs=1&pid=ImgDetMain&o=7&rm=3"
+                  />
+                </div>
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://th.bing.com/th/id/OIP.zV1J-tC9P0dLAx6BvUClNwAAAA?w=267&h=84&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+                  />
+                </div>
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://th.bing.com/th/id/OIP.q8K2cnu0qSl-mKGyPT-tNQHaEB?w=309&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+                  />
+                </div>
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://th.bing.com/th/id/OIP.xeeZCNIyoIHBSDX4p_Hh2QHaEK?w=285&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+                  />
+                </div>
+                <div class="col-3 insurance-logo-item">
+                  <img
+                    src="https://th.bing.com/th/id/OIP.S2X6X3s1-jjraiXQ8Zgq-gHaD-?w=299&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2 class="section-title">MEET OUR CONSULTANTS</h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-6">
+          <div class="doctor-card">
+            <img
+              src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-VAMSHIDHAR-REDDY-T.png?fit=242%2C286&ssl=1"
+            />
+            <h5>DR. VAMSHIDHAR REDDY</h5>
+            <p>Sr. Consultant Gastroenterologist</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="doctor-card">
+            <img
+              src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-SRINIVAS-REDDY-K.png?fit=242%2C286&ssl=1"
+            />
+            <h5>DR. SRINIVAS REDDY</h5>
+            <p>Sr. Consultant Physician & Diabetologist</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="doctor-card">
+            <img
+              src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-SWETHA-REDDY-T.png?fit=242%2C286&ssl=1"
+            />
+            <h5>DR. SWETHA REDDY</h5>
+            <p>Neurologist & Neuro-Physician</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="doctor-card">
+            <img
+              src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-SAMYUKTHA-REDDY-K.png?fit=242%2C286&ssl=1"
+            />
+            <h5>DR. SAMYUKTHA REDDY</h5>
+            <p>Consultant Pediatrician</p>
+          </div>
+        </div>
+      </div>
+    </div>
+ <form action="" id="book" method="post">
+  {% csrf_token %}
+  <div class="container" id="appointment-form">
+    <h2 class="section-title">BOOK YOUR APPOINTMENT</h2>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="info-box">
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input name="name" type="text" class="form-control"
+                placeholder="Your Full Name" required />
+            </div>
+
+            <div class="form-group col-md-6">
+              <input name="phone" type="text" class="form-control"
+                placeholder="Phone Number (Required)" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input name="email" type="email" class="form-control"
+                placeholder="Email Address (Optional)" />
+            </div>
+
+            <div class="form-group col-md-6">
+              <select name="specialist" class="form-control" required>
+                <option value="">Select Specialty</option>
+                <option>Neurology</option>
+                <option>Gastroenterology</option>
+                <option>Orthopedic</option>
+                <option>General Medicine</option>
+                <option>Emergency</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input name="date" type="date" class="form-control" required />
+            </div>
+
+            <div class="form-group col-md-6">
+              <input name="time" type="time" class="form-control" required />
+            </div>
+          </div>
+
+          <textarea name="reason" class="form-control mb-3" rows="3"
+            placeholder="Describe your condition (optional)"></textarea>
+
+          <button class="btn btn-block btn-cta" type="submit" style="font-size: 18px">
+            CONFIRM APPOINTMENT
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+            <h5>Pioneer Hospitals</h5>
+            <div class="footer-details">
+              <p>
+                <i class="fa-solid fa-location-dot"></i> SH19, Padmavathi Nagar,
+                Hastinapuram, Hyderabad<br />
+                <i class="fa-solid fa-phone"></i> T: **+91 9775 108 108**<br />
+                <i class="fa-solid fa-envelope"></i> E:
+                <a href="mailto:info@pioneerhospitals.in"
+                  >info@pioneerhospitals.in</a
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4 mb-md-0">
+            <h5>Quick Navigation</h5>
+            <a href="#">The Hospital</a>
+            <a href="#">Facilities & ICU</a>
+            <a href="#">Cashless Insurance</a>
+            <a href="#">Find a Doctor</a>
+            <a href="{% url 'login' %}">Find a Doctor</a>
+          </div>
+
+          <div class="col-md-4">
+            <h5>Connect With Us</h5>
+            <div class="social-icons">
+              <i class="fab fa-facebook"></i>
+              <i class="fab fa-instagram"></i>
+              <i class="fab fa-linkedin"></i>
+              <i class="fab fa-youtube"></i>
+            </div>
+            <div class="mt-3">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15234.390098555182!2d78.53034293110294!3d17.340030060012574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc6fef650111111%3A0xf6a72e817926c449!2sHastinapuram%2C%20Hyderabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1701511978250!5m2!1sen!2sin"
+                width="100%"
+                height="150"
+                style="border: 0; border-radius: 8px"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center copyright">
+          © 2024 Pioneer Hospitals – All Rights Reserved. Designed for Health &
+          Hope.
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

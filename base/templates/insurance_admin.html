@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Admin</title>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        img {
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+        .pdf-icon {
+            font-size: 18px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>All Insurance Appointments</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Insurance</th>
+            <th>Phone</th>
+            <th>Policy Start</th>
+            <th>Document</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in insurance_list %}
+        <tr>
+            <td>{{ item.full_name }}</td>
+            <td>{{ item.insurance_name }}</td>
+            <td>{{ item.phone }}</td>
+            <td>{{ item.policy_start_date }}</td>
+
+            <td>
+                {% if item.file %}
+                    
+                    <!-- If file is image -->
+                    {% if item.file.url|lower endswith ".jpg" or
+                          item.file.url|lower endswith ".jpeg" or
+                          item.file.url|lower endswith ".png" %}
+                        
+                        <img src="{{ item.file.url }}" alt="Uploaded Image">
+
+                    <!-- If file is PDF -->
+                    {% elif item.file.url|lower endswith ".pdf" %}
+                        <a href="{{ item.file.url }}" target="_blank" class="pdf-icon">📄 View PDF</a>
+
+                    {% else %}
+                        <a href="{{ item.file.url }}" download>Download File</a>
+                    {% endif %}
+
+                {% else %}
+                    No File Uploaded
+                {% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+</body>
+</html>
