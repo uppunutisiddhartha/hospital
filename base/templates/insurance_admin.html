@@ -5,26 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insurance Admin</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        /* (Your existing styles remain the same) */
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8; }
+        h2 { color: #004d66; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 15px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle; }
+        thead th { background-color: #004d66; color: white; font-weight: 600; }
+        tbody tr:hover { background-color: #f1f7fa; }
+        img { width: 80px; height: auto; border-radius: 4px; display: block; }
+        .pdf-icon { font-size: 16px; color: #c62828; font-weight: bold; text-decoration: none; }
+        
+        /* Style for content inside the modal body */
+        #documentModal .modal-body {
+            height: 80vh; /* Set height for viewing area */
+            overflow: auto;
+            text-align: center;
         }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        img {
-            width: 100px;
+        #documentModal .modal-body img {
+            max-width: 100%;
             height: auto;
-            border-radius: 4px;
-        }
-        .pdf-icon {
-            font-size: 18px;
-            color: red;
-            font-weight: bold;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
@@ -54,20 +58,21 @@
             <td>
                 {% if item.file %}
                     
-                    <!-- If file is image -->
-                    {% if item.file.url|lower endswith ".jpg" or
-                          item.file.url|lower endswith ".jpeg" or
-                          item.file.url|lower endswith ".png" %}
-                        
-                        <img src="{{ item.file.url }}" alt="Uploaded Image">
-
-                    <!-- If file is PDF -->
-                    {% elif item.file.url|lower endswith ".pdf" %}
-                        <a href="{{ item.file.url }}" target="_blank" class="pdf-icon">📄 View PDF</a>
-
-                    {% else %}
-                        <a href="{{ item.file.url }}" download>Download File</a>
-                    {% endif %}
+                    <a href="#" 
+                       class="view-document-link"
+                       data-toggle="modal"
+                       data-target="#documentModal"
+                       data-file-type="{{ item.file_type }}"
+                       data-file-url="{{ item.file.url }}">
+                       
+                        {% if item.file_type == "image" %}
+                            <img src="{{ item.file.url }}" alt="Uploaded Image" style="width: 80px;">
+                        {% elif item.file_type == "pdf" %}
+                            <span class="pdf-icon">📄 View PDF</span>
+                        {% else %}
+                            View Document
+                        {% endif %}
+                    </a>
 
                 {% else %}
                     No File Uploaded
@@ -75,10 +80,77 @@
             </td>
 
         </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align: center; color: #888;">No insurance appointments found.</td>
+        </tr>
         {% endfor %}
     </tbody>
-
 </table>
+
+<div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-labelledby="documentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="documentModalLabel">View Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Loading document...</p>
+            </div>
+            <div class="modal-footer">
+                <a id="downloadLink" href="#" class="btn btn-secondary" download>Download File</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Use jQuery to handle the modal event
+    $('#documentModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var fileType = button.data('file-type'); // Extract info from data-* attributes
+        var fileUrl = button.data('file-url');
+        
+        var modal = $(this);
+        var modalBody = modal.find('.modal-body');
+        var downloadLink = modal.find('#downloadLink');
+        
+        // Clear previous content
+        modalBody.empty();
+        
+        // Set the download link URL
+        downloadLink.attr('href', fileUrl);
+
+        if (fileType === 'image') {
+            // If it's an image, insert an <img> tag
+            var imageElement = $('<img>').attr('src', fileUrl).attr('alt', 'Document Image');
+            modalBody.append(imageElement);
+            modal.find('.modal-title').text('View Image');
+
+        } else if (fileType === 'pdf') {
+            // If it's a PDF, insert an <iframe>
+            var iframeElement = $('<iframe>').attr({
+                'src': fileUrl,
+                'width': '100%',
+                'height': '100%',
+                'frameborder': '0'
+            });
+            modalBody.append(iframeElement);
+            modal.find('.modal-title').text('View PDF');
+
+        } else {
+            // For 'other' files, just show a message and keep the download button functional
+            modalBody.append('<p class="text-center mt-5">File type cannot be displayed directly. Please use the "Download File" button.</p>');
+            modal.find('.modal-title').text('Unsupported Document');
+        }
+    });
+</script>
 
 </body>
 </html>

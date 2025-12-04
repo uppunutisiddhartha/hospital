@@ -47,9 +47,17 @@ def doctors(request):
 
 
 def MOD(request):
-    consultations = Consultation.objects.all().order_by('-date')
-    return render(request, 'MOD.html', {'consultations': consultations})
+    filter_date = request.GET.get('date')
 
+    if filter_date:
+        consultations = Consultation.objects.filter(date=filter_date).order_by('-date')
+    else:
+        consultations = Consultation.objects.all().order_by('-date')
+
+    return render(request, 'MOD.html', {
+        'consultations': consultations,
+        'filter_date': filter_date
+    })
 
 def insurance_admin(request):
     insurance_list = Appointment.objects.all()
@@ -75,7 +83,6 @@ def insurance_list(request):
 
     return render(request, 'insurance_list.html')
 
-
 def login_view(request):
     if request.method == 'POST':
 
@@ -84,27 +91,22 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
 
-        # ❌ User not found
         if user is None:
             messages.error(request, 'Invalid username or password')
             return render(request, 'login.html')
 
-        # ❌ User has no role → do NOT allow login
-        if not hasattr(user, 'role') or user.role == "" or user.role is None:
+        if not hasattr(user, 'role'):
             messages.error(request, 'You are not allowed to log in.')
             return render(request, 'login.html')
 
-        # 🔥 MOD login
         if user.role == 'MOD':
             login(request, user)
-            return render(request, 'MOD.html')
+            return redirect('MOD')
 
-        # 🔥 Insurance Admin login
         elif user.role == 'INS_ADMIN':
             login(request, user)
-            return render(request, 'insurance_admin.html')
+            return redirect('insurance_admin')
 
-        # ❌ Any unknown role
         else:
             messages.error(request, 'Unauthorized role.')
             return render(request, 'login.html')

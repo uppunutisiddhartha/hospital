@@ -3,102 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultations List</title>
+    <title>Consultations - Pioneer Hospitals</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
+            font-family: 'Poppins', sans-serif;
+            background: #f3f8fb;
             padding: 20px;
         }
-        h1 {
+
+        .title {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #004d66;
+            font-size: 32px;
         }
+
         .filter-box {
-            width: 300px;
-            margin: 0 auto 20px;
+            max-width: 420px;
+            margin: 0 auto 30px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
             display: flex;
             gap: 10px;
         }
-        table {
-            width: 100%;
+
+        .consult-card {
             background: white;
-            border-collapse: collapse;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-left: 6px solid #004d66;
         }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: center;
+
+        .consult-header {
+            font-weight: 700;
+            font-size: 20px;
+            color: #004d66;
         }
-        th {
-            background: #4CAF50;
-            color: white;
+
+        .consult-info {
+            margin: 12px 0 5px;
+            font-size: 15px;
+            color: #333;
         }
-        tr:hover {
-            background: #f1f1f1;
+
+        .label {
+            font-weight: 600;
+            color: #555;
         }
-        .btn {
-            background: #4CAF50;
-            border: none;
+
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-call {
+            background: #28a745;
+            color: #fff;
+            border-radius: 6px;
             padding: 8px 15px;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
+            font-size: 14px;
         }
-        .btn:hover {
-            background: #45a049;
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .btn-call:hover,
+        .btn-whatsapp:hover {
+            opacity: 0.85;
+            color: white;
         }
     </style>
 </head>
+
 <body>
 
-    <h1>Consultations</h1>
+    <h1 class="title">📋 Consultation Bookings</h1>
 
-    <!-- Filter Box -->
+    <!-- FILTER -->
     <form method="GET" class="filter-box">
-        <input 
-            type="date" 
-            name="date" 
-            value="{{ filter_date }}" 
-            class="form-control" 
-            required
-        >
-        <button class="btn" type="submit">Filter</button>
+        <input type="date" name="date" value="{{ filter_date }}" class="form-control">
+        <button class="btn btn-primary" type="submit">
+            <i class="fa-solid fa-filter"></i> Filter
+        </button>
     </form>
 
-    <!-- Consultation Table -->
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Specialist</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Reason</th>
-            </tr>
-        </thead>
+    <!-- CONSULTATION CARDS -->
+    <div class="container">
+        {% for c in consultations %}
+        <div class="consult-card">
+            
+            <div class="consult-header">PATIENT NAME:{{ c.name }}</div>
+            
+            <div class="consult-info">
+                <span class="label">Phone:</span> {{ c.phone }}
+            </div>
+            <div class="consult-info">
+                <span class="label">Email:</span> {{ c.email }}
+            </div>
+            <div class="consult-info">
+                <span class="label">Specialist:</span> {{ c.specialist }}
+            </div>
+            <div class="consult-info">
+                <span class="label">Date:</span> {{ c.date }}
+            </div>
+            <div class="consult-info">
+                <span class="label">Time:</span> {{ c.time }}
+            </div>
+            <div class="consult-info">
+                <span class="label">Reason:</span> {{ c.reason }}
+            </div>
 
-        <tbody>
-    {% for c in consultations %}
-    <tr>
-        <td>{{ c.name }}</td>
-        <td>{{ c.phone }}</td>
-        <td>{{ c.email }}</td>
-        <td>{{ c.specialist }}</td>
-        <td>{{ c.date }}</td>
-        <td>{{ c.time }}</td>
-        <td>{{ c.reason }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="7">No consultations found.</td>
-    </tr>
-    {% endfor %}
-</tbody>
+            <div class="actions">
+                <a href="tel:{{ c.phone }}" class="btn-call">
+                    <i class="fa fa-phone"></i> Call
+                </a>
+
+                <a href="https://wa.me/{{ c.phone }}?text=Hello%20{{ c.name }},%20regarding%20your%20consultation%20at%20Pioneer%20Hospitals"
+                   target="_blank"
+                   class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+
+        {% empty %}
+        <p class="text-center text-muted">
+            <i class="fa-solid fa-circle-exclamation"></i> No consultations found.
+        </p>
+        {% endfor %}
+    </div>
 
 </body>
 </html>
