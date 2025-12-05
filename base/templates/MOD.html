@@ -420,9 +420,10 @@
                             
                             <!-- Contact Buttons -->
                             <div class="contact-buttons">
-                                <a href="https://wa.me/{{ c.phone|cut:' '|cut:'+'|cut:'-'|cut:'('|cut:')' }}" target="_blank" class="btn-whatsapp">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp
-                                </a>
+                                <a href="https://wa.me/{{ c.phone|cut:' '|cut:'+'|cut:'-'|cut:'('|cut:')' }}?text=Dear%20{{ c.name }},%0A%0AWe%20are%20pleased%20to%20inform%20you%20that%20your%20consultation%20at%20Pioneer%20Hospitals%20is%20confirmed.%0A%0ADate:%20{{ c.date }}%0ATime:%20{{ c.time }}%0A%0AHospital:%20Pioneer%20Hospitals%0AAddress:%Hasthinapuram%20Health%Vanasthalipuram,%20Hyderabad,%20Telangana%0ALocation:%20https://maps.app.goo.gl/KKB6FyKiSEMxZhLF7?g_st=ac" target="_blank" class="btn-whatsapp">
+    <i class="fab fa-whatsapp"></i> WhatsApp
+</a>
+
                                 <a href="tel:{{ c.phone }}" class="btn-call">
                                     <i class="fas fa-phone-alt"></i> Call Patient
                                 </a>
