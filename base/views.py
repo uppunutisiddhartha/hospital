@@ -86,16 +86,16 @@ def doctors(request):
         "current_month": f"{year}-{month:02d}",
     })
 """
-from datetime import date, datetime
-from calendar import monthrange
-from django.shortcuts import render
-from .models import Consultation
 
 def MOD(request):
     today = date.today()
     selected_date_str = request.GET.get("date")  # from input or calendar button
     selected_date = None
 
+    total_consultations = Consultation.objects.count()
+    #month_consultations = Consultation.objects.filter(date__year=today.year, date__month=today.month).count()
+    
+    month_consultations = Consultation.objects.filter(date__year=today.year, date__month=today.month).count()
     # Parse the date safely
     if selected_date_str:
         try:
@@ -124,6 +124,8 @@ def MOD(request):
         "consultations": consultations,
         "selected_date": selected_date,
         "current_month": f"{year}-{month:02d}",
+        "total_consultations": total_consultations,
+        "month_consultations": month_consultations,
     })
 
 
