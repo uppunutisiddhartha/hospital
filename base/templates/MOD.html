@@ -3,150 +3,477 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultations - Pioneer Hospitals</title>
+    <title>Consultations - MOD</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        :root {
+            --primary-color: #006d77;
+            --primary-light: #83c5be;
+            --secondary-color: #edf6f9;
+            --accent-color: #ffddd2;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --success-color: #38b2ac;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f3f8fb;
+            background: linear-gradient(135deg, #f1f7fa 0%, #e6f0f5 100%);
             padding: 20px;
+            color: var(--text-dark);
+            min-height: 100vh;
         }
 
-        .title {
+        .container-main {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-section {
             text-align: center;
-            margin-bottom: 25px;
-            font-weight: 700;
-            color: #004d66;
-            font-size: 32px;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 109, 119, 0.08);
         }
 
-        .filter-box {
-            max-width: 420px;
-            margin: 0 auto 30px;
-            padding: 15px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        .page-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .page-title i {
+            font-size: 1.8rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* Date selection form */
+        .date-form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .btn-primary-custom {
+            background: var(--primary-color);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            background: #005a63;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 109, 119, 0.2);
+        }
+
+        /* Horizontal date strip */
+        .date-strip-container {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: 30px;
+        }
+
+        .date-strip-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .date-strip {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 15px 5px;
+            white-space: nowrap;
+        }
+
+        .date-strip::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .date-strip::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .date-strip::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .date-box {
+            min-width: 65px;
+            height: 65px;
+            background: white;
+            border-radius: 12px;
+            text-align: center;
+            padding-top: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            flex-shrink: 0;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .date-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 109, 119, 0.15);
+        }
+
+        .date-day {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .date-month {
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .date-weekday {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .active-date {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 700;
+        }
+
+        .selected-date {
+            border: 3px solid var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Consultation cards */
+        .consultations-section {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
         .consult-card {
             background: white;
+            padding: 22px;
             border-radius: 14px;
-            padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border-left: 6px solid #004d66;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .consult-header {
+        .consult-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 109, 119, 0.12);
+        }
+
+        .patient-name {
+            color: var(--primary-color);
             font-weight: 700;
-            font-size: 20px;
-            color: #004d66;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
         }
 
-        .consult-info {
-            margin: 12px 0 5px;
-            font-size: 15px;
-            color: #333;
+        .consult-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: var(--text-dark);
         }
 
-        .label {
+        .consult-detail i {
+            width: 22px;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        .consult-time {
+            background: var(--accent-color);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
             font-weight: 600;
-            color: #555;
+            color: #e76f51;
+            margin-top: 5px;
         }
 
-        .actions {
-            margin-top: 15px;
+        .contact-buttons {
             display: flex;
             gap: 10px;
+            margin-top: 20px;
         }
 
-        .btn-call {
-            background: #28a745;
-            color: #fff;
-            border-radius: 6px;
-            padding: 8px 15px;
-            font-size: 14px;
-        }
         .btn-whatsapp {
             background: #25D366;
             color: white;
-            border-radius: 6px;
-            padding: 8px 15px;
-            font-size: 14px;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            flex: 1;
         }
 
-        .btn-call:hover,
         .btn-whatsapp:hover {
-            opacity: 0.85;
+            background: #1da851;
             color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-call {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-call:hover {
+            background: #005a63;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 109, 119, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .contact-buttons {
+                flex-direction: column;
+            }
+            
+            .date-box {
+                min-width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="container-main">
+        <!-- Header -->
+        <div class="header-section">
+            <h1 class="page-title"><i class="fas fa-calendar-alt"></i> Consultation Calendar</h1>
+            <p class="page-subtitle">View and manage patient appointments for the week</p>
+        </div>
 
-    <h1 class="title">📋 Consultation Bookings</h1>
+        <!-- DATE INPUT FORM -->
+        <div class="date-form-container">
+            <h4 class="form-label">Select Specific Date</h4>
+            <form method="GET" class="mb-0">
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <input name="date" type="date" class="form-control form-control-lg" value="{{ selected_date }}" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button class="btn btn-primary-custom w-100 btn-lg">
+                            <i class="fas fa-calendar-day"></i> View Appointments
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    <!-- FILTER -->
-    <form method="GET" class="filter-box">
-        <input type="date" name="date" value="{{ filter_date }}" class="form-control">
-        <button class="btn btn-primary" type="submit">
-            <i class="fa-solid fa-filter"></i> Filter
-        </button>
-    </form>
-
-    <!-- CONSULTATION CARDS -->
-    <div class="container">
-        {% for c in consultations %}
-        <div class="consult-card">
-            
-            <div class="consult-header">PATIENT NAME:{{ c.name }}</div>
-            
-            <div class="consult-info">
-                <span class="label">Phone:</span> {{ c.phone }}
-            </div>
-            <div class="consult-info">
-                <span class="label">Email:</span> {{ c.email }}
-            </div>
-            <div class="consult-info">
-                <span class="label">Specialist:</span> {{ c.specialist }}
-            </div>
-            <div class="consult-info">
-                <span class="label">Date:</span> {{ c.date }}
-            </div>
-            <div class="consult-info">
-                <span class="label">Time:</span> {{ c.time }}
-            </div>
-            <div class="consult-info">
-                <span class="label">Reason:</span> {{ c.reason }}
-            </div>
-
-            <div class="actions">
-                <a href="tel:{{ c.phone }}" class="btn-call">
-                    <i class="fa fa-phone"></i> Call
-                </a>
-
-                <a href="https://wa.me/{{ c.phone }}?text=Hello%20{{ c.name }},%20regarding%20your%20consultation%20at%20Pioneer%20Hospitals"
-                   target="_blank"
-                   class="btn-whatsapp">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
+        <!-- HORIZONTAL DATE STRIP -->
+        <div class="date-strip-container">
+            <h4 class="date-strip-title">Quick Date Navigation</h4>
+            <div class="date-strip">
+                {% for d in days_list %}
+                <form method="GET" style="display:inline-block; margin: 0;">
+                    <input type="hidden" name="date" value="{{ d|date:'Y-m-d' }}">
+                    <button type="submit" class="date-box
+                        {% if d in active_dates %}active-date{% endif %}
+                        {% if selected_date == d %}selected-date{% endif %}
+                    ">
+                        <div class="date-day">{{ d|date:"d" }}</div>
+                        <div class="date-month">{{ d|date:"M" }}</div>
+                        <div class="date-weekday">{{ d|date:"D" }}</div>
+                    </button>
+                </form>
+                {% endfor %}
             </div>
         </div>
 
-        {% empty %}
-        <p class="text-center text-muted">
-            <i class="fa-solid fa-circle-exclamation"></i> No consultations found.
-        </p>
-        {% endfor %}
+        <!-- CONSULTATIONS FOR SELECTED DATE -->
+        <div class="consultations-section">
+            {% if selected_date %}
+                <h4 class="section-title"><i class="fas fa-users"></i> Consultations for: {{ selected_date }}</h4>
+                
+                {% if consultations %}
+                    {% for c in consultations %}
+                        <div class="consult-card">
+                            <h3 class="patient-name">{{ c.name }}</h3>
+                            
+                            <div class="consult-detail">
+                                <i class="fas fa-user-md"></i>
+                                <span><strong>Specialist:</strong> {{ c.specialist }}</span>
+                            </div>
+                            
+                            <div class="consult-detail">
+                                <i class="fas fa-clock"></i>
+                                <span><strong>Time:</strong> <span class="consult-time">{{ c.time }}</span></span>
+                            </div>
+                            
+                            <div class="consult-detail">
+                                <i class="fas fa-phone-alt"></i>
+                                <span><strong>Phone:</strong> {{ c.phone }}</span>
+                            </div>
+                            
+                            <div class="consult-detail">
+                                <i class="fas fa-envelope"></i>
+                                <span><strong>Email:</strong> {{ c.email }}</span>
+                            </div>
+                            
+                            <div class="consult-detail">
+                                <i class="fas fa-sticky-note"></i>
+                                <span><strong>Reason:</strong> {{ c.reason }}</span>
+                            </div>
+                            
+                            <!-- Contact Buttons -->
+                            <div class="contact-buttons">
+                                <a href="https://wa.me/{{ c.phone|cut:' '|cut:'+'|cut:'-'|cut:'('|cut:')' }}" target="_blank" class="btn-whatsapp">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="tel:{{ c.phone }}" class="btn-call">
+                                    <i class="fas fa-phone-alt"></i> Call Patient
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="far fa-calendar-times"></i>
+                        <h4>No Consultations Scheduled</h4>
+                        <p>There are no appointments booked for this date.</p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="far fa-calendar-check"></i>
+                    <h4>Select a Date</h4>
+                    <p>Choose a date from the calendar above to view consultations.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="footer-note">
+            <p><i class="fas fa-shield-alt"></i> All patient information is confidential and protected</p>
+        </div>
     </div>
 
+    <!-- Bootstrap JS (optional, for any future functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Auto-scroll date strip to show today's date
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateStrip = document.querySelector('.date-strip');
+            const activeDate = document.querySelector('.selected-date');
+            
+            if (activeDate && dateStrip) {
+                // Scroll to make the selected date visible
+                activeDate.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+            
+            // Add today's date highlight if not already selected
+            const today = new Date().toISOString().split('T')[0];
+            const todayElement = document.querySelector(`input[value="${today}"]`);
+            if (todayElement && !document.querySelector('.selected-date')) {
+                todayElement.closest('.date-box').classList.add('selected-date');
+            }
+        });
+    </script>
 </body>
 </html>

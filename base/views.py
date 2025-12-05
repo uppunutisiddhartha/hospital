@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from datetime import datetime
+from datetime import datetime,date
+from calendar import monthrange
 
 # Create your views here.
 def index(request):
@@ -44,20 +45,89 @@ def pre_consultation(request):
 def doctors(request):
     doctors = doctor.objects.all()
     return render(request, 'doctors.html', {'doctors': doctors})
+"""def MOD(request):
+    # 1. Selected date or today
+    selected_date = request.GET.get("date")
+    today = date.today()
 
+    # If user clicked a date
+    if selected_date:
+        selected_date = datetime.strptime(selected_date, "%Y-%m-%d").date()
+        year = selected_date.year
+        month = selected_date.month
+    else:
+        # Default: current month
+        year = today.year
+        month = today.month
+
+    # 2. Get total days in month
+    total_days = monthrange(year, month)[1]
+
+    # 3. Build list of all dates of the month
+    days_list = [date(year, month, d) for d in range(1, total_days + 1)]
+
+    # 4. All consultations in this month
+    month_consults = Consultation.objects.filter(date__year=year, date__month=month)
+
+    # Dates that have consultations
+    active_dates = {c.date for c in month_consults}
+
+    # 5. If user clicked specific date
+    if selected_date:
+        consultations = Consultation.objects.filter(date=selected_date)
+    else:
+        consultations = []
+
+    return render(request, "MOD.html", {
+        "days_list": days_list,
+        "active_dates": active_dates,
+        "consultations": consultations,
+        "selected_date": selected_date,
+        "current_month": f"{year}-{month:02d}",
+    })
+"""
+from datetime import date, datetime
+from calendar import monthrange
+from django.shortcuts import render
+from .models import Consultation
 
 def MOD(request):
-    filter_date = request.GET.get('date')
+    today = date.today()
+    selected_date_str = request.GET.get("date")  # from input or calendar button
+    selected_date = None
 
-    if filter_date:
-        consultations = Consultation.objects.filter(date=filter_date).order_by('-date')
-    else:
-        consultations = Consultation.objects.all().order_by('-date')
+    # Parse the date safely
+    if selected_date_str:
+        try:
+            selected_date = datetime.strptime(selected_date_str, "%Y-%m-%d").date()
+        except ValueError:
+            selected_date = None
 
-    return render(request, 'MOD.html', {
-        'consultations': consultations,
-        'filter_date': filter_date
+    # Determine month/year for the calendar
+    year = selected_date.year if selected_date else today.year
+    month = selected_date.month if selected_date else today.month
+
+    # Build list of all dates in the month
+    total_days = monthrange(year, month)[1]
+    days_list = [date(year, month, d) for d in range(1, total_days + 1)]
+
+    # Get all consultations in this month
+    month_consults = Consultation.objects.filter(date__year=year, date__month=month)
+    active_dates = {c.date for c in month_consults}
+
+    # Get consultations for selected date
+    consultations = Consultation.objects.filter(date=selected_date) if selected_date else []
+
+    return render(request, "MOD.html", {
+        "days_list": days_list,
+        "active_dates": active_dates,
+        "consultations": consultations,
+        "selected_date": selected_date,
+        "current_month": f"{year}-{month:02d}",
     })
+
+
+
 
 def insurance_admin(request):
     insurance_list = Appointment.objects.all()
