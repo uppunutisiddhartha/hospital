@@ -3,153 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insurance Admin</title>
+    <title>Insurance Admin Dashboard - Final Layout</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+
     <style>
-        /* (Your existing styles remain the same) */
-        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f8f8f8; }
-        h2 { color: #004d66; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; }
-        th, td { padding: 15px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle; }
-        thead th { background-color: #004d66; color: white; font-weight: 600; }
-        tbody tr:hover { background-color: #f1f7fa; }
-        img { width: 80px; height: auto; border-radius: 4px; display: block; }
-        .pdf-icon { font-size: 16px; color: #c62828; font-weight: bold; text-decoration: none; }
-        
-        /* Style for content inside the modal body */
-        #documentModal .modal-body {
-            height: 80vh; /* Set height for viewing area */
-            overflow: auto;
-            text-align: center;
+        /* New Sleek Color Palette */
+        :root {
+            --primary-color: #0077b6; /* Deep Ocean Blue */
+            --accent-color: #48cae4; /* Light Blue Accent */
+            --header-bg: #e6f1ff; /* Very Light Blue Header BG */
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --font-family: 'Inter', sans-serif;
         }
-        #documentModal .modal-body img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
+
+        /* Base Styles */
+        body { 
+            font-family: var(--font-family); 
+            background-color: #f4f7f9; 
+            padding-top: 0;
+            padding-bottom: 70px; /* Space for fixed footer */
+        }
+        .container { max-width: 1400px; }
+
+        /* --- 1. PERFECT HEADER --- */
+        .app-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+        .app-header h2 { 
+            font-weight: 700; 
+            margin: 0; 
+            font-size: 1.5rem; 
+        }
+        .app-header .admin-name { 
+            font-weight: 500; 
+            font-size: 0.95rem; 
+            opacity: 0.8;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        #searchInput { 
+            flex-grow: 1;
+            max-width: 450px; 
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+        }
+
+        /* --- 2. CARD MODIFICATIONS --- */
+        .insurance-card {
+            border: 1px solid #e9ecef; 
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 25px;
+            background: #ffffff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .insurance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 119, 182, 0.15);
+        }
+        
+        /* Card Header */
+        .card-header-custom {
+            background-color: #f8fafd;
+            border-bottom: 3px solid var(--accent-color);
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .card-title-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #343a40;
+        }
+
+        /* Card Body Text */
+        .card-body p {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        .card-body p strong {
+            color: #000;
+            font-weight: 600;
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        /* Document Preview - Clickable link inside card */
+        .document-preview {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px dashed #ced4da;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: background 0.2s;
+        }
+        .document-preview:hover {
+            background-color: #f0f8ff;
+        }
+        .document-preview img {
+            width: 40px; 
+            height: 40px; 
+            object-fit: cover; 
+            border-radius: 4px;
+            margin-right: 12px;
+            border: 1px solid #eee;
+        }
+        .document-preview i {
+             font-size: 1.4rem;
+             margin-right: 12px;
+        }
+        
+        /* Action Group */
+        .action-group {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            background-color: #fcfcfc;
+            border-radius: 0 0 10px 10px;
+        }
+        .action-btn-icon {
+            font-size: 0.85rem;
+            padding: 7px 10px;
+        }
+        /* Color adjustments for action buttons */
+        .btn-success { background-color: #28a745 !important; border-color: #28a745 !important; }
+        .btn-info { background-color: #17a2b8 !important; border-color: #17a2b8 !important; }
+        .btn-primary { background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; }
+        .btn-warning { background-color: #ffc107 !important; border-color: #ffc107 !important; color: #333 !important; }
+
+        /* Notes Box - Hidden until triggered */
+        .notes-box {
+            background: #fff8e1; 
+            padding: 15px;
+            border-top: 3px solid #ffd700; 
+            border-radius: 0; 
+            display: none; /* Crucial: Hides content on page load */
+        }
+        .notes-box h6 {
+            color: #d39e00;
+        }
+
+        /* Status badges */
+        .status-badge { 
+            padding: 4px 10px; 
+            font-size: 10px; 
+            font-weight: 700; 
+            border-radius: 12px;
+        }
+        .in-progress { background: #ffc107; color: #333; }
+        .completed { background: #28a745; color: #fff; }
+        .closed { background: #dc3545; color: #fff; }
+
+        /* --- 3. SIMPLE FOOTER --- */
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #343a40; 
+            color: #dee2e6;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1030;
+        }
+        .app-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-<h2>All Insurance Appointments</h2>
+<div class="app-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h2><i class="fas fa-calendar-check mr-2"></i> Cashless Treatment Appointment Manager</h2>
+        <div class="admin-name">Logged in as: **{{ insurance_admin }}**</div>
+    </div>
+</div>
+<div class="container">
+    <div class="filter-bar">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search client name, phone, or policy type...">
+        
+        
 
-<table>
-    <thead>
-        <tr>
-            <th>Full Name</th>
-            <th>Insurance</th>
-            <th>Phone</th>
-            <th>Policy Start</th>
-            <th>Document</th>
-        </tr>
-    </thead>
+        <button class="btn btn-light" id="resetSearch"><i class="fas fa-redo"></i> Reset</button>
+    </div>
 
-    <tbody>
+    <div id="insuranceCards" class="row">
         {% for item in insurance_list %}
-        <tr>
-            <td>{{ item.full_name }}</td>
-            <td>{{ item.insurance_name }}</td>
-            <td>{{ item.phone }}</td>
-            <td>{{ item.policy_start_date }}</td>
+        <div class="col-xl-4 col-md-6 col-sm-12 card-item" data-name="{{ item.full_name | lower }}" data-insurance="{{ item.insurance_name | lower }}" data-phone="{{ item.phone | lower }}" data-status="{{ item.status }}">
+            <div class="card insurance-card">
+                <div class="card-header-custom">
+                    <span class="card-title-name">{{ item.full_name }}</span>
+                    {% if item.status == "in_progress" %}
+                        <span class="status-badge in-progress">Processing</span>
+                    {% elif item.status == "completed" %}
+                        <span class="status-badge completed">Approved</span>
+                    {% elif item.status == "closed" %}
+                        <span class="status-badge closed">Rejected</span>
+                    {% else %}
+                        <span class="status-badge bg-secondary text-white">New</span>
+                    {% endif %}
+                </div>
 
-            <td>
-                {% if item.file %}
+                <div class="card-body">
+                    <p><strong><i class="fas fa-file-contract"></i> Policy:</strong> {{ item.insurance_name }}</p>
+                    <p><strong><i class="far fa-clock"></i> Start Date:</strong> {{ item.policy_start_date }}</p>
+                    <p><strong><i class="fas fa-phone-alt"></i> Contact:</strong> {{ item.phone }}</p>
                     
-                    <a href="#" 
-                       class="view-document-link"
-                       data-toggle="modal"
-                       data-target="#documentModal"
-                       data-file-type="{{ item.file_type }}"
-                       data-file-url="{{ item.file.url }}">
-                       
-                        {% if item.file_type == "image" %}
-                            <img src="{{ item.file.url }}" alt="Uploaded Image" style="width: 80px;">
-                        {% elif item.file_type == "pdf" %}
-                            <span class="pdf-icon">📄 View PDF</span>
-                        {% else %}
-                            View Document
-                        {% endif %}
+                    {% if item.file %}
+                    <a href="#" class="view-document-link text-decoration-none" data-toggle="modal" data-target="#documentModal" data-file-type="{{ item.file_type }}" data-file-url="{{ item.file.url }}">
+                        <div class="document-preview">
+                            {% if item.file_type == "image" %}
+                                <img src="{{ item.file.url }}" alt="Policy Image"> 
+                                <span><i class="far fa-file-image"></i> View Photo Proof</span>
+                            {% elif item.file_type == "pdf" %}
+                                <i class="far fa-file-pdf"></i> 
+                                <span>View Policy PDF</span>
+                            {% else %}
+                                <i class="fas fa-file-alt"></i> 
+                                <span>View Document File</span>
+                            {% endif %}
+                        </div>
                     </a>
+                    {% else %}
+                        <div class="document-preview text-muted" style="cursor: default;">
+                            <i class="fas fa-times-circle"></i> No File Attached
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div id="notes-{{ item.id }}" class="notes-box">
+                    <h6><i class="fas fa-history"></i> Claim Activity Log</h6>
+                    {% for note in item.notes.all %}
+                        <p><b>{{ note.created_at | date:"M d, H:i" }}:</b> {{ note.notes }}</p>
+                    {% empty %}
+                        <p class="text-muted">No admin notes have been added yet.</p>
+                    {% endfor %}
+                </div>
 
-                {% else %}
-                    No File Uploaded
-                {% endif %}
-            </td>
-
-        </tr>
+                <div class="action-group d-flex justify-content-between align-items-center">
+                    <a href="tel:{{ item.phone }}" class="btn btn-success action-btn-icon mr-1"><i class="fas fa-phone-volume"></i> Call</a>
+                    <a href="https://wa.me/{{ item.phone }}" target="_blank" class="btn btn-info action-btn-icon mr-1"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    <button class="btn btn-primary action-btn-icon mr-1 add-response-btn" data-id="{{ item.id }}" data-toggle="modal" data-target="#responseModal">
+                        <i class="fas fa-pen"></i> Add Note
+                    </button>
+                    <button class="btn btn-secondary action-btn-icon view-notes-btn" data-target="#notes-{{ item.id }}">
+                        <i class="fas fa-eye"></i> Notes
+                    </button>
+                </div>
+            </div>
+        </div>
         {% empty %}
-        <tr>
-            <td colspan="5" style="text-align: center; color: #888;">No insurance appointments found.</td>
-        </tr>
+        <div class="col-12">
+            <div class="alert alert-info text-center" role="alert">
+                <i class="fas fa-search-minus"></i> No insurance claims found matching the criteria.
+            </div>
+        </div>
         {% endfor %}
-    </tbody>
-</table>
+    </div>
+</div>
 
-<div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-labelledby="documentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+<div class="modal fade" id="documentModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="documentModalLabel">View Document</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-header bg-secondary text-white">
+                <h5 class="modal-title">View Document</h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-body">
-                <p>Loading document...</p>
-            </div>
+            <div class="modal-body"></div>
             <div class="modal-footer">
-                <a id="downloadLink" href="#" class="btn btn-secondary" download>Download File</a>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <a id="downloadLink" href="#" class="btn btn-dark" download>Download File</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<div class="modal fade" id="responseModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'save_insurance_note' %}">
+                {% csrf_token %}
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-comment-dots"></i> Add Note/Update</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="item_id" id="noteItemId">
+                    <textarea name="admin_note" class="form-control" rows="5" placeholder="Document reviewed, next steps are..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary">Save Note</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer class="app-footer">
+    <div class="container">
+        &copy; 2025 Insurance Claims Admin. Designed for **{{ admin_name }}**. <a href="#">Privacy Policy</a>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Use jQuery to handle the modal event
-    $('#documentModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var fileType = button.data('file-type'); // Extract info from data-* attributes
-        var fileUrl = button.data('file-url');
-        
-        var modal = $(this);
-        var modalBody = modal.find('.modal-body');
-        var downloadLink = modal.find('#downloadLink');
-        
-        // Clear previous content
-        modalBody.empty();
-        
-        // Set the download link URL
-        downloadLink.attr('href', fileUrl);
+// --- CORE FUNCTIONALITY ---
 
-        if (fileType === 'image') {
-            // If it's an image, insert an <img> tag
-            var imageElement = $('<img>').attr('src', fileUrl).attr('alt', 'Document Image');
-            modalBody.append(imageElement);
-            modal.find('.modal-title').text('View Image');
+/* DOCUMENT MODAL - Loads content on click */
+$('#documentModal').on('show.bs.modal', function (event) {
+    let button = $(event.relatedTarget);
+    let fileType = button.data('file-type');
+    let fileUrl = button.data('file-url');
+    let modalBody = $(this).find('.modal-body');
+    let downloadLink = $(this).find('#downloadLink');
+    modalBody.empty().css('height', '80vh'); 
+    downloadLink.attr('href', fileUrl);
 
-        } else if (fileType === 'pdf') {
-            // If it's a PDF, insert an <iframe>
-            var iframeElement = $('<iframe>').attr({
-                'src': fileUrl,
-                'width': '100%',
-                'height': '100%',
-                'frameborder': '0'
-            });
-            modalBody.append(iframeElement);
-            modal.find('.modal-title').text('View PDF');
+    if (fileType === 'image') {
+        modalBody.append(`<img src="${fileUrl}" class="img-fluid" style="max-height: 100%; object-fit: contain;">`);
+    } else if (fileType === 'pdf') {
+        modalBody.append(`<iframe src="${fileUrl}" width="100%" height="100%" style="border: none;"></iframe>`);
+    }
+});
+$('#documentModal').on('hidden.bs.modal', function () {
+    $(this).find('.modal-body').css('height', ''); 
+});
 
+/* LOAD NOTE ID */
+$('#responseModal').on('show.bs.modal', function (event) {
+    let itemId = $(event.relatedTarget).data('id');
+    $('#noteItemId').val(itemId);
+});
+
+/* VIEW NOTES TOGGLE - Reveals hidden notes-box on click */
+$('.view-notes-btn').click(function () {
+    let target = $(this).data('target');
+    let noteBox = $(target);
+    noteBox.slideToggle(300);
+
+    let icon = $(this).find('i');
+    icon.toggleClass('fa-eye fa-eye-slash');
+    $(this).toggleClass('btn-secondary btn-warning'); 
+});
+
+
+// --- SEARCH AND FILTER LOGIC ---
+
+function filterCards(status) {
+    $('.card-item').each(function() {
+        let cardStatus = $(this).data('status');
+        let isVisibleBySearch = $(this).css('display') !== 'none'; // Respect current search filter
+
+        if (status === 'all') {
+            if (isVisibleBySearch) {
+                $(this).show();
+            }
         } else {
-            // For 'other' files, just show a message and keep the download button functional
-            modalBody.append('<p class="text-center mt-5">File type cannot be displayed directly. Please use the "Download File" button.</p>');
-            modal.find('.modal-title').text('Unsupported Document');
+            if (cardStatus === status) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
         }
     });
+}
+
+function searchCards(value) {
+    $('.card-item').each(function() {
+        let fullName = $(this).data('name');
+        let insuranceName = $(this).data('insurance');
+        let phone = $(this).data('phone');
+        
+        let isMatch = fullName.indexOf(value) > -1 || 
+                      insuranceName.indexOf(value) > -1 || 
+                      phone.indexOf(value) > -1;
+        
+        let currentFilter = $('#statusFilter').data('status') || 'all';
+
+        // Only show if it matches search AND matches the current status filter
+        if (isMatch && (currentFilter === 'all' || $(this).data('status') === currentFilter)) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+}
+
+/* 1. SEARCH FUNCTION */
+$('#searchInput').on('keyup', function() {
+    let value = $(this).val().toLowerCase();
+    searchCards(value);
+});
+
+/* 2. STATUS FILTER */
+$('.filter-status-btn').click(function(e) {
+    e.preventDefault();
+    let status = $(this).data('status');
+    $('#statusFilter').data('status', status); // Store current status filter
+
+    // Update button text
+    let buttonText = $(this).text();
+    $('#statusFilter').html('<i class="fas fa-filter"></i> ' + buttonText);
+    
+    // Re-run search/filter logic based on input and new status
+    let searchValue = $('#searchInput').val().toLowerCase();
+    searchCards(searchValue); 
+});
+
+/* 3. RESET BUTTON */
+$('#resetSearch').click(function() {
+    $('#searchInput').val(''); 
+    $('#statusFilter').html('<i class="fas fa-filter"></i> Filter Status').data('status', 'all'); 
+    searchCards(''); // Show all cards
+});
+
 </script>
 
 </body>

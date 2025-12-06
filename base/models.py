@@ -79,3 +79,13 @@ class Consultation(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.specialist} at {self.time}"
+
+
+class InsuranceNotes(models.Model):
+    insurance = models.ForeignKey(Appointment,on_delete=models.CASCADE,related_name="notes")
+    admin_name = models.CharField(max_length=100)
+    notes = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.admin_name} - {self.created_at.strftime('%d %b %Y %I:%M %p')}"

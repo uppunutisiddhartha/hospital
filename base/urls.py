@@ -10,4 +10,6 @@ urlpatterns = [
     path('MOD/', views.MOD, name='MOD'),
     path('insurance_admin/', views.insurance_admin, name='insurance_admin'),
     path('insurance_list/', views.insurance_list, name='insurance_list'),
+     path('save-insurance-note/', views.save_insurance_note, name='save_insurance_note'),
+     path('change_status/<int:item_id>/<str:new_status>/', views.change_status, name='change_status'),
 ]

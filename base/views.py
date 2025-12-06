@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from datetime import datetime,date
 from calendar import monthrange
+from django.shortcuts import redirect, get_object_or_404
 
 # Create your views here.
 def index(request):
@@ -185,3 +186,34 @@ def login_view(request):
 
     return render(request, 'login.html')
     
+
+
+def save_insurance_note(request):
+    if request.method == "POST":
+        insurance_id = request.POST.get("item_id")
+        note_text = request.POST.get("admin_note")
+
+        insurance = Appointment.objects.get(id=insurance_id)
+
+        InsuranceNotes.objects.create(
+            insurance=insurance,
+            admin_name=request.user.username,
+            notes=note_text
+        )
+
+        return redirect('insurance_admin')
+
+
+
+def change_status(request, item_id, new_status):
+    item = get_object_or_404(Insurance, id=item_id)
+
+    if new_status not in ["in_progress", "completed", "closed"]:
+        messages.error(request, "Invalid status.")
+        return redirect("insurance_admin")
+
+    item.status = new_status
+    item.save()
+
+    messages.success(request, f"Status changed to {new_status.replace('_',' ').title()}!")
+    return redirect("insurance_admin")
