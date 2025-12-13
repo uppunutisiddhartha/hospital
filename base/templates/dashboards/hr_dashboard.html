@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HR Dashboard - User Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .badge-active { background-color: #28a745; }
+        .badge-inactive { background-color: #6c757d; }
+        .badge-suspended { background-color: #dc3545; }
+        .badge-hold { background-color: #ffc107; color: #212529; }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .role-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .role-mod { background-color: #e3f2fd; color: #1976d2; }
+        .role-hr { background-color: #f3e5f5; color: #7b1fa2; }
+        .role-ins_admin { background-color: #e8f5e9; color: #388e3c; }
+        .stats-card {
+            border-left: 4px solid;
+            transition: transform 0.3s;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        .login-history {
+            font-size: 12px;
+            color: #666;
+        }
+        .working-hours {
+            background-color: #e8f4fc;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .last-login {
+            background-color: #f0f0f0;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+        .filter-btn {
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 14px;
+        }
+        .table th {
+            position: sticky;
+            top: 0;
+            background: #343a40;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1"><i class="fas fa-users-cog mr-2"></i>HR Dashboard</h2>
+                        <p class="text-muted mb-0">Comprehensive User Management System</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="btn-group mr-3">
+                            <button type="button" class="btn btn-outline-primary filter-btn active" data-status="all">All Users</button>
+                            <button type="button" class="btn btn-outline-primary filter-btn" data-status="active">Active</button>
+                            <button type="button" class="btn btn-outline-primary filter-btn" data-status="inactive">Inactive</button>
+                            <button type="button" class="btn btn-outline-primary filter-btn" data-status="hold">On Hold</button>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown">
+                                <i class="fas fa-download mr-2"></i>Export
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#"><i class="fas fa-file-excel mr-2"></i>Export as Excel</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-file-pdf mr-2"></i>Export as PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stats-card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Users</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_users }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stats-card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Active Users</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ active_users }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user-check fa-2x text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stats-card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Users on Hold</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ hold_users }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user-clock fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stats-card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Suspended Users</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ suspended_users }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user-slash fa-2x text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Main User Table -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-table mr-2"></i>User Management
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table class="table table-bordered table-hover" id="userTable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Login Activity</th>
+                                <th>Working Hours</th>
+                                <th>Contact Info</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr class="user-row" data-status="{{ user.status }}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar mr-3">
+                                            {{ user.username|slice:":1"|upper }}
+                                        </div>
+                                        <div>
+                                            <strong>{{ user.username }}</strong><br>
+                                            <small class="text-muted">{{ user.full_name }}</small><br>
+                                            <small class="text-muted">Joined: {{ user.date_joined|date:"M d, Y" }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if user.role == 'MOD' %}
+                                        <span class="role-badge role-mod">MODERATOR</span>
+                                    {% elif user.role == 'hr' %}
+                                        <span class="role-badge role-hr">HR</span>
+                                    {% elif user.role == 'INS_ADMIN' %}
+                                        <span class="role-badge role-ins_admin">INSURANCE ADMIN</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="status-indicator 
+                                            {% if user.status == 'active' %}bg-success
+                                            {% elif user.status == 'hold' %}bg-warning
+                                            {% elif user.status == 'inactive' %}bg-secondary
+                                            {% else %}bg-danger{% endif %}">
+                                        </span>
+                                        <span class="badge 
+                                            {% if user.status == 'active' %}badge-active
+                                            {% elif user.status == 'hold' %}badge-hold
+                                            {% elif user.status == 'inactive' %}badge-inactive
+                                            {% else %}badge-suspended{% endif %}">
+                                            {{ user.status|title }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="last-login">
+                                        <strong>Last Login:</strong><br>
+                                        {% if user.last_login %}
+                                            {{ user.last_login|date:"M d, Y H:i" }}
+                                        {% else %}
+                                            Never logged in
+                                        {% endif %}
+                                        <br>
+                                        <small class="login-history">
+                                            {% if user.login_count %}
+                                                {{ user.login_count }} logins this week
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if user.average_hours %}
+                                        <div class="working-hours text-center">
+                                            <i class="fas fa-clock mr-1"></i>
+                                            {{ user.average_hours }} hrs/day
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">No data</span>
+                                    {% endif %}
+                                    <div class="mt-2">
+                                        <small class="text-muted">
+                                            {% if user.last_logout %}
+                                                Last logout: {{ user.last_logout|date:"H:i" }}
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <small>
+                                        <i class="fas fa-envelope mr-1"></i> {{ user.email }}<br>
+                                        {% if user.phone_number %}
+                                            <i class="fas fa-phone mr-1"></i> {{ user.phone_number }}
+                                        {% endif %}
+                                    </small>
+                                </td>
+                                <td>
+                                    <form method="POST" action="{% url 'update_user_status' user.id %}" class="mb-3">
+                                        {% csrf_token %}
+                                        <div class="input-group input-group-sm">
+                                            <select name="status" class="form-control form-control-sm" required>
+                                                <option value="" disabled selected>Change Status</option>
+                                                <option value="active" {% if user.status == 'active' %}selected{% endif %}>Active</option>
+                                                <option value="hold" {% if user.status == 'hold' %}selected{% endif %}>On Hold</option>
+                                                <option value="inactive" {% if user.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                                                <option value="suspended" {% if user.status == 'suspended' %}selected{% endif %}>Suspended</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary btn-sm" type="submit">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="btn-group btn-group-sm w-100" role="group">
+                                        <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#userModal{{ user.id }}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <a href="mailto:{{ user.email }}" class="btn btn-outline-success">
+                                            <i class="fas fa-envelope"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- User Details Modal -->
+                            <div class="modal fade" id="userModal{{ user.id }}" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">User Details: {{ user.username }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                <span>&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h6>Personal Information</h6>
+                                                    <p><strong>Full Name:</strong> {{ user.full_name }}</p>
+                                                    <p><strong>Username:</strong> {{ user.username }}</p>
+                                                    <p><strong>Email:</strong> {{ user.email }}</p>
+                                                    <p><strong>Phone:</strong> {{ user.phone_number|default:"Not provided" }}</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h6>Account Information</h6>
+                                                    <p><strong>Role:</strong> {{ user.get_role_display }}</p>
+                                                    <p><strong>Status:</strong> 
+                                                        <span class="badge {% if user.status == 'active' %}badge-success{% endif %}">
+                                                            {{ user.get_status_display }}
+                                                        </span>
+                                                    </p>
+                                                    <p><strong>Date Joined:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
+                                                    <p><strong>Last Login:</strong> {{ user.last_login|date:"F d, Y H:i"|default:"Never" }}</p>
+                                                </div>
+                                            </div>
+                                            {% if user.login_history.all %}
+                                            <hr>
+                                            <h6>Recent Login History</h6>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date & Time</th>
+                                                            <th>IP Address</th>
+                                                            <th>Session Duration</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for login in user.login_history.all|slice:":5" %}
+                                                        <tr>
+                                                            <td>{{ login.login_time|date:"M d, Y H:i" }}</td>
+                                                            <td>{{ login.ip_address|default:"N/A" }}</td>
+                                                            <td>
+                                                                {% if login.logout_time %}
+                                                                    {{ login.session_duration }}
+                                                                {% else %}
+                                                                    Still active
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <a href="mailto:{{ user.email }}" class="btn btn-primary">
+                                                <i class="fas fa-envelope mr-2"></i>Send Email
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Showing {{ users|length }} of {{ total_users }} users</small>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Filter functionality
+            $('.filter-btn').click(function() {
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                var status = $(this).data('status');
+                
+                if (status === 'all') {
+                    $('.user-row').show();
+                } else {
+                    $('.user-row').hide();
+                    $('.user-row[data-status="' + status + '"]').show();
+                }
+            });
+
+            // Status update animation
+            $('form').on('submit', function(e) {
+                var button = $(this).find('button[type="submit"]');
+                button.html('<i class="fas fa-spinner fa-spin"></i>');
+                button.prop('disabled', true);
+            });
+
+            // Search functionality
+            $('#searchInput').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('.user-row').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+            // Tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</body>
+</html>

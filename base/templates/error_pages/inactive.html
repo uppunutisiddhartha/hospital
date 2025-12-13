@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Inactive | Hospital Staff Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .content-wrapper {
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 32px;
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            color: #d32f2f;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .status-bar {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .status-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            background: #ffebee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #d32f2f;
+        }
+        
+        .status-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .status-details {
+            padding-left: 55px;
+        }
+        
+        .employee-info {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .info-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0056b3;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-title i {
+            margin-right: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .info-item {
+            margin-bottom: 10px;
+        }
+        
+        .info-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .employee-id {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #0056b3;
+        }
+        
+        .contact-section {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #27ae60;
+            flex-shrink: 0;
+        }
+        
+        .contact-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .contact-details p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+        }
+        
+        .btn-primary {
+            background: #0056b3;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #004494;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,86,179,0.2);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .quick-links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+        
+        .quick-links a {
+            color: #0056b3;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 15px;
+        }
+        
+        .quick-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .footer p {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-details {
+                padding-left: 0;
+            }
+            
+            .status-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .status-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="content-wrapper">
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+        </div>
+        <h1>Account Inactive</h1>
+        <p class="subtitle">Staff Portal Access Temporarily Suspended</p>
+    </div>
+    
+    <!-- Status Section -->
+    <div class="status-bar">
+        <div class="status-header">
+            <div class="status-icon">
+                <i class="fas fa-ban"></i>
+            </div>
+            <div class="status-title">Access Denied</div>
+        </div>
+        <div class="status-details">
+            <p>Your staff account does not have active access to hospital systems, patient records, or administrative functions. This could be due to:</p>
+            <ul style="padding-left: 20px; margin-top: 10px;">
+                <li>Account expiration due to inactivity</li>
+                <li>Security review in progress</li>
+                <li>Pending access permission updates</li>
+                <li>Required training not completed</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Employee Information -->
+    <div class="employee-info">
+        <div class="info-title">
+            <i class="fas fa-user-tie"></i> Employee Information
+        </div>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Employee ID</div>
+                <div class="info-value">
+                    <span class="employee-id">EMP-{{ emp_id|default:"A123456" }}</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Role</div>
+                <div class="info-value">{{ role|default:"System Administrator" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Department</div>
+                <div class="info-value">{{ department|default:"Information Technology" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Status</div>
+                <div class="info-value" style="color: #d32f2f; font-weight: 600;">INACTIVE</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Information -->
+    <div class="contact-section">
+        <div class="info-title">
+            <i class="fas fa-headset"></i> Contact Support
+        </div>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="contact-details">
+                    <h4>IT Help Desk</h4>
+                    <p>Extension: 4357 (HELP)<br>24/7 Hospital Support</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="contact-details">
+                    <h4>Email Support</h4>
+                    <p>it-support@hospital.org<br>Response within 2 hours</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="contact-details">
+                    <h4>HR Department</h4>
+                    <p>hr-admin@hospital.org<br>Mon-Fri 8:00-17:00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn btn-primary" onclick="window.location.href='tel:4357'">
+            <i class="fas fa-phone-alt"></i> Call IT Support
+        </button>
+        <button class="btn btn-secondary" onclick="window.location.href='mailto:it-support@hospital.org'">
+            <i class="fas fa-envelope"></i> Email Support
+        </button>
+        <a href="{% url 'login' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Login
+        </a>
+    </div>
+    
+    <!-- Quick Links -->
+    <div class="quick-links">
+        <a href="http://intranet.hospital.org/support">
+            <i class="fas fa-external-link-alt"></i> IT Support Portal
+        </a>
+        <a href="http://intranet.hospital.org/policies">
+            <i class="fas fa-file-alt"></i> Access Policies
+        </a>
+        <a href="http://intranet.hospital.org/training">
+            <i class="fas fa-graduation-cap"></i> Required Training
+        </a>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <p><i class="fas fa-shield-alt"></i> Secure Hospital Staff Portal • All access attempts are logged and monitored</p>
+        <p>System ID: {{ timestamp|default:"2024-03-15 14:30:00 UTC" }}</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update timestamp
+        const now = new Date();
+        const timestamp = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+        
+        // Update any timestamp placeholders
+        document.querySelectorAll('.footer p:last-child').forEach(el => {
+            if (el.textContent.includes('System ID:')) {
+                el.textContent = `System ID: ${timestamp}`;
+            }
+        });
+        
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Update employee info from URL parameters
+        const empId = urlParams.get('emp_id');
+        const role = urlParams.get('role');
+        const dept = urlParams.get('department');
+        
+        if (empId) {
+            const empIdElement = document.querySelector('.employee-id');
+            if (empIdElement) {
+                empIdElement.textContent = `EMP-${empId}`;
+            }
+        }
+        
+        if (role) {
+            const roleElements = document.querySelectorAll('.info-value');
+            roleElements.forEach(el => {
+                if (el.textContent === '{{ role|default:"System Administrator" }}') {
+                    el.textContent = role;
+                }
+            });
+        }
+        
+        if (dept) {
+            const deptElements = document.querySelectorAll('.info-value');
+            deptElements.forEach(el => {
+                if (el.textContent === '{{ department|default:"Information Technology" }}') {
+                    el.textContent = dept;
+                }
+            });
+        }
+        
+        // Make buttons more interactive
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(1px)';
+            });
+            
+            button.addEventListener('mouseup', function() {
+                this.style.transform = 'translateY(-1px)';
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

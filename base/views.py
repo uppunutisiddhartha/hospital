@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from datetime import datetime,date
 from calendar import monthrange
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
 
 # Create your views here.
@@ -46,48 +47,9 @@ def pre_consultation(request):
 def doctors(request):
     doctors = doctor.objects.all()
     return render(request, 'doctors.html', {'doctors': doctors})
-"""def MOD(request):
-    # 1. Selected date or today
-    selected_date = request.GET.get("date")
-    today = date.today()
 
-    # If user clicked a date
-    if selected_date:
-        selected_date = datetime.strptime(selected_date, "%Y-%m-%d").date()
-        year = selected_date.year
-        month = selected_date.month
-    else:
-        # Default: current month
-        year = today.year
-        month = today.month
 
-    # 2. Get total days in month
-    total_days = monthrange(year, month)[1]
-
-    # 3. Build list of all dates of the month
-    days_list = [date(year, month, d) for d in range(1, total_days + 1)]
-
-    # 4. All consultations in this month
-    month_consults = Consultation.objects.filter(date__year=year, date__month=month)
-
-    # Dates that have consultations
-    active_dates = {c.date for c in month_consults}
-
-    # 5. If user clicked specific date
-    if selected_date:
-        consultations = Consultation.objects.filter(date=selected_date)
-    else:
-        consultations = []
-
-    return render(request, "MOD.html", {
-        "days_list": days_list,
-        "active_dates": active_dates,
-        "consultations": consultations,
-        "selected_date": selected_date,
-        "current_month": f"{year}-{month:02d}",
-    })
-"""
-
+@login_required
 def MOD(request):
     today = date.today()
     selected_date_str = request.GET.get("date")  # from input or calendar button
@@ -119,7 +81,7 @@ def MOD(request):
     # Get consultations for selected date
     consultations = Consultation.objects.filter(date=selected_date) if selected_date else []
 
-    return render(request, "MOD.html", {
+    return render(request, "dashboards/MOD.html", {
         "days_list": days_list,
         "active_dates": active_dates,
         "consultations": consultations,
@@ -131,7 +93,7 @@ def MOD(request):
 
 
 
-
+@login_required
 def insurance_admin(request):
     insurance_list = Appointment.objects.all()
     return render(request, 'insurance_admin.html', {'insurance_list': insurance_list})
@@ -156,38 +118,56 @@ def insurance_list(request):
 
     return render(request, 'insurance_list.html')
 
+
+
 def login_view(request):
     if request.method == 'POST':
-
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         user = authenticate(request, username=username, password=password)
 
         if user is None:
-            messages.error(request, 'Invalid username or password')
-            return render(request, 'login.html')
+            return redirect('login')
 
-        if not hasattr(user, 'role'):
-            messages.error(request, 'You are not allowed to log in.')
-            return render(request, 'login.html')
+        # STATUS CHECK
+        if user.status == 'inactive':
+            return render(request, 'error_pages/inactive.html')
 
+        if user.status == 'suspended':
+            return render(request, 'error_pages/suspended.html')
+
+        if user.status == 'hold':
+            return render(request, 'error_pages/hold.html')
+
+        # LOGIN USER
+        login(request, user)
+
+        # ROLE REDIRECT
         if user.role == 'MOD':
-            login(request, user)
             return redirect('MOD')
 
         elif user.role == 'INS_ADMIN':
-            login(request, user)
             return redirect('insurance_admin')
 
-        else:
-            messages.error(request, 'Unauthorized role.')
-            return render(request, 'login.html')
+        elif user.role == 'hr':
+            return redirect('hr_dashboard')
 
-    return render(request, 'login.html')
-    
+        return redirect('login')
+
+    return render(request, 'login.html')   
 
 
+@login_required
+def hr_dashboard(request):
+    if request.user.role != 'hr':
+        return redirect('login')
+    user=CustomUser.objects.all()
+    return render(request, 'dashboards/hr_dashboard.html',{'users':user})
+
+
+
+@login_required
 def save_insurance_note(request):
     if request.method == "POST":
         insurance_id = request.POST.get("item_id")
@@ -205,15 +185,20 @@ def save_insurance_note(request):
 
 
 
-def change_status(request, item_id, new_status):
-    item = get_object_or_404(Insurance, id=item_id)
+@login_required
+def update_user_status(request, user_id):
+    if request.user.role != 'hr':
+        return redirect('login')
 
-    if new_status not in ["in_progress", "completed", "closed"]:
-        messages.error(request, "Invalid status.")
-        return redirect("insurance_admin")
+    user = get_object_or_404(CustomUser, id=user_id)
+    status = request.POST.get('status')
 
-    item.status = new_status
-    item.save()
+    if status not in ['active', 'hold', 'inactive', 'suspended']:
+        messages.error(request, "Invalid status")
+        return redirect('hr_dashboard')
 
-    messages.success(request, f"Status changed to {new_status.replace('_',' ').title()}!")
-    return redirect("insurance_admin")
+    user.status = status
+    user.save()
+
+    messages.success(request, f"{user.username} status updated to {status}")
+    return redirect('hr_dashboard')
