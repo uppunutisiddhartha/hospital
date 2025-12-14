@@ -55,14 +55,14 @@ class Appointment(models.Model):
         else:
             return 'other'
  
-class doctor(models.Model):
-    name = models.CharField(max_length=100)
-    specialization = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
+# class doctor(models.Model):
+#     name = models.CharField(max_length=100)
+#     specialization = models.CharField(max_length=100)
+#     email = models.EmailField()
+#     phone = models.CharField(max_length=15)
 
-    def __str__(self):
-        return f"Dr. {self.name} - {self.specialization}"
+#     def __str__(self):
+#         return f"Dr. {self.name} - {self.specialization}"
     
 
 class Consultation(models.Model):
@@ -86,3 +86,41 @@ class InsuranceNotes(models.Model):
 
     def __str__(self):
         return f"{self.admin_name} - {self.created_at.strftime('%d %b %Y %I:%M %p')}"
+    
+
+
+class jobnotification(models.Model):
+    status_choices = (
+        ('open', 'Open'),
+        ('closed', 'Closed'),
+    )
+    experiance_choices = (
+        ('Fresher', 'Fresher'),
+        ('1-3 years', '1-3 years'),
+        ('3-5 years', '3-5 years'),
+        ('5+ years', '5+ years'),
+    )
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    vaccancy_count = models.IntegerField()
+    status = models.CharField(max_length=10, choices=status_choices, default='open')
+    created_at = models.DateTimeField(auto_now_add=True)
+    deadline = models.DateField()
+    salary = models.CharField(max_length=100)
+    is_published = models.BooleanField(default=False)
+    experiance=models.CharField(max_length=20, choices=experiance_choices, default='Fresher')
+
+    def __str__(self):
+        return self.title
+    
+
+class jobapplication(models.Model):
+    job = models.ForeignKey(jobnotification, on_delete=models.CASCADE, related_name="applications")
+    applicant_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    resume = models.FileField(upload_to='resumes/')
+    applied_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.applicant_name} - {self.job.title}"

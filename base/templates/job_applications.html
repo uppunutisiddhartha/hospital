@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HR Dashboard | Job Applications - Pioneer Hospitals</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+    <!-- PDF.js for PDF viewing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0056b3;
+            --primary-dark: #004085;
+            --primary-light: #e7f1ff;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fb 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .navbar-hr {
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .page-title {
+            color: var(--dark);
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Stats Cards */
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card.total { border-top-color: var(--primary); }
+        .stats-card.new { border-top-color: var(--info); }
+        .stats-card.reviewed { border-top-color: var(--warning); }
+        .stats-card.shortlisted { border-top-color: var(--success); }
+        .stats-card.rejected { border-top-color: var(--danger); }
+
+        .stats-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stats-label {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stats-icon {
+            font-size: 2rem;
+            opacity: 0.2;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        /* Job Card */
+        .job-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .job-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .job-department {
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .application-count {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .applications-container {
+            display: none;
+            margin-top: 25px;
+            border-top: 1px solid var(--light);
+            padding-top: 25px;
+        }
+
+        /* Application Row */
+        .application-row {
+            transition: all 0.3s ease;
+        }
+
+        .application-row:hover {
+            background-color: var(--light);
+        }
+
+        /* Applicant Info */
+        .applicant-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .applicant-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .applicant-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .status-new { background: #d1ecf1; color: #0c5460; }
+        .status-reviewed { background: #fff3cd; color: #856404; }
+        .status-shortlisted { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        .btn-view { background: var(--primary-light); color: var(--primary); }
+        .btn-view:hover { background: var(--primary); color: white; }
+
+        .btn-shortlist { background: #d4edda; color: #155724; }
+        .btn-shortlist:hover { background: #28a745; color: white; }
+
+        .btn-reject { background: #f8d7da; color: #721c24; }
+        .btn-reject:hover { background: #dc3545; color: white; }
+
+        .btn-delete { background: #f8f9fa; color: var(--secondary); border: 1px solid #dee2e6; }
+        .btn-delete:hover { background: var(--secondary); color: white; }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-tab {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: var(--light);
+            color: var(--secondary);
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .filter-tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            background: white;
+            border-radius: 15px;
+            padding: 60px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 2px dashed #dee2e6;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .empty-text {
+            color: var(--secondary);
+            max-width: 500px;
+            margin: 0 auto 25px;
+        }
+
+        /* Application Detail Modal */
+        #applicationModal .modal-content {
+            border-radius: 15px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .modal-header-custom {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px 30px;
+            border-bottom: none;
+        }
+
+        .modal-tabs {
+            border-bottom: 1px solid #dee2e6;
+            padding: 0 30px;
+            background: white;
+        }
+
+        .modal-tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .modal-tab-content {
+            padding: 30px;
+        }
+
+        /* Applicant Details */
+        .applicant-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .applicant-avatar-lg {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .applicant-details h4 {
+            margin: 0 0 5px;
+            color: var(--dark);
+        }
+
+        .applicant-details p {
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--dark);
+            word-break: break-word;
+        }
+
+        /* Resume Viewer */
+        .resume-viewer-container {
+            height: 600px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f8f9fa;
+            position: relative;
+        }
+
+        .resume-controls {
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resume-frame {
+            width: 100%;
+            height: calc(100% - 70px);
+            border: none;
+        }
+
+        .resume-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .resume-placeholder i {
+            font-size: 4rem;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        /* Cover Letter */
+        .cover-letter {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid var(--info);
+            margin-top: 30px;
+        }
+
+        .cover-letter h6 {
+            color: var(--info);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Alert Messages */
+        .alert-custom {
+            border-radius: 10px;
+            border: none;
+            padding: 15px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .applicant-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .btn-action {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+            
+            .filter-tabs {
+                justify-content: center;
+            }
+            
+            .applicant-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .resume-viewer-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-hr navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-hospital mr-2"></i>Pioneer Hospitals | HR Applications
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'hr_dashboard' %}" class="btn btn-outline-light btn-sm mr-2">
+                    <i class="fas fa-tachometer-alt mr-1"></i>Dashboard
+                </a>
+                <a href="{% url 'job_notification' %}" class="btn btn-outline-light btn-sm mr-2">
+                    <i class="fas fa-briefcase mr-1"></i>Jobs
+                </a>
+                <a href="/admin/" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-cog mr-1"></i>Admin
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="page-title">
+                    <i class="fas fa-file-alt mr-2"></i>Job Applications Management
+                </h2>
+                <p class="text-muted mb-0">Review, filter, and manage applications for all job positions</p>
+            </div>
+            <div>
+                <button class="btn btn-primary" onclick="exportApplications()">
+                    <i class="fas fa-download mr-2"></i>Export CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Django Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert-custom alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %} mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %} mr-3"></i>
+                        <div>{{ message }}</div>
+                        <button type="button" class="close ml-auto" onclick="this.parentElement.parentElement.style.display='none'">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card total">
+                    <div class="stats-number">{{ total_applications }}</div>
+                    <div class="stats-label">Total Applications</div>
+                    <i class="fas fa-file-alt stats-icon"></i>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card new">
+                    <div class="stats-number">{{ new_applications }}</div>
+                    <div class="stats-label">New Applications</div>
+                    <i class="fas fa-star stats-icon"></i>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card shortlisted">
+                    <div class="stats-number">{{ shortlisted_applications }}</div>
+                    <div class="stats-label">Shortlisted</div>
+                    <i class="fas fa-check-circle stats-icon"></i>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card rejected">
+                    <div class="stats-number">{{ rejected_applications }}</div>
+                    <div class="stats-label">Rejected</div>
+                    <i class="fas fa-times-circle stats-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-section">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All Applications</button>
+                        <button class="filter-tab" data-filter="new">New</button>
+                        <button class="filter-tab" data-filter="reviewed">Reviewed</button>
+                        <button class="filter-tab" data-filter="shortlisted">Shortlisted</button>
+                        <button class="filter-tab" data-filter="rejected">Rejected</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="applicantSearch" placeholder="Search applicants...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Applications List -->
+        <div id="applicationsList">
+            {% if jobs %}
+                {% for job in jobs %}
+                    <div class="job-card" data-job-id="{{ job.id }}">
+                        <div class="job-header" onclick="toggleApplications('{{ job.id }}')">
+                            <div>
+                                <h3 class="job-title">{{ job.title }}</h3>
+                                <div class="job-department">{{ job.department|default:"General" }}</div>
+                            </div>
+                            <div class="application-count">
+                                <i class="fas fa-users"></i>
+                                {{ job.applications.count }} Application{% if job.applications.count != 1 %}s{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="applications-container" id="apps-{{ job.id }}">
+                            {% if job.applications.all %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover application-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Applicant</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Status</th>
+                                                <th>Applied On</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for app in job.applications.all %}
+                                                <tr class="application-row" data-app-id="{{ app.id }}" data-status="{{ app.status|default:'new' }}">
+                                                    <td>
+                                                        <div class="applicant-info">
+                                                            <div class="applicant-avatar">
+                                                                {{ app.applicant_name|first|upper }}
+                                                            </div>
+                                                            <div>
+                                                                <div class="applicant-name">{{ app.applicant_name }}</div>
+                                                                <small class="text-muted">{{ app.email }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ app.email }}</td>
+                                                    <td>{{ app.phone|default:"-" }}</td>
+                                                    <td>
+                                                        <span class="status-badge status-{{ app.status|default:'new' }}">
+                                                            {{ app.status|default:"NEW"|title }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ app.applied_at|date:"M d, Y" }}</td>
+                                                    <td>
+                                                        <div class="action-buttons">
+                                                            <button class="btn-action btn-view" onclick="viewApplication('{{ app.id }}', '{{ app.applicant_name|escapejs }}', '{{ app.resume.url|escapejs }}')">
+                                                                <i class="fas fa-eye"></i> View
+                                                            </button>
+                                                            {% if app.status != 'shortlisted' %}
+                                                            <button class="btn-action btn-shortlist" onclick="updateStatus('{{ app.id }}', 'shortlisted', '{{ app.applicant_name|escapejs }}')">
+                                                                <i class="fas fa-check"></i> Shortlist
+                                                            </button>
+                                                            {% endif %}
+                                                            {% if app.status != 'rejected' %}
+                                                            <button class="btn-action btn-reject" onclick="updateStatus('{{ app.id }}', 'rejected', '{{ app.applicant_name|escapejs }}')">
+                                                                <i class="fas fa-times"></i> Reject
+                                                            </button>
+                                                            {% endif %}
+                                                            <button class="btn-action btn-delete" onclick="deleteApplication('{{ app.id }}', '{{ app.applicant_name|escapejs }}')">
+                                                                <i class="fas fa-trash"></i> Delete
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                                    <h4 class="empty-title">No Applications Yet</h4>
+                                    <p class="empty-text">No candidates have applied for this position yet.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="empty-title">No Job Applications</h3>
+                    <p class="empty-text">
+                        There are no job applications to display. Applications will appear here when candidates apply to your job postings.
+                    </p>
+                    <a href="{% url 'job_notification' %}" class="btn btn-primary">
+                        <i class="fas fa-briefcase mr-2"></i> View Job Postings
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header-custom">
+                    <h5 class="modal-title" id="modalTitle">Application Details</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <!-- Modal Tabs -->
+                <div class="modal-tabs">
+                    <button class="modal-tab active" data-tab="details" onclick="switchTab('details')">
+                        <i class="fas fa-user mr-2"></i>Details
+                    </button>
+                    <button class="modal-tab" data-tab="resume" onclick="switchTab('resume')">
+                        <i class="fas fa-file-alt mr-2"></i>Resume
+                    </button>
+                </div>
+                
+                <!-- Tab Contents -->
+                <div class="modal-tab-content">
+                    <!-- Details Tab -->
+                    <div id="detailsTab" class="tab-content active">
+                        <div class="applicant-header">
+                            <div class="applicant-avatar-lg" id="applicantInitials"></div>
+                            <div class="applicant-details">
+                                <h4 id="applicantFullName"></h4>
+                                <p id="applicantEmail"></p>
+                                <div class="mt-2" id="applicantStatus"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-label">Contact Information</div>
+                                <div class="info-value">
+                                    <div><i class="fas fa-phone mr-2"></i><span id="applicantPhone"></span></div>
+                                    <div class="mt-2"><i class="fas fa-envelope mr-2"></i><span id="applicantEmailDetail"></span></div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card">
+                                <div class="info-label">Job Applied For</div>
+                                <div class="info-value">
+                                    <div><strong id="jobTitle"></strong></div>
+                                    <div class="mt-2"><i class="fas fa-building mr-2"></i><span id="jobDepartment"></span></div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-card">
+                                <div class="info-label">Application Details</div>
+                                <div class="info-value">
+                                    <div><i class="fas fa-calendar mr-2"></i>Applied: <span id="appliedDate"></span></div>
+                                    <div class="mt-2"><i class="fas fa-clock mr-2"></i>Status: <span id="applicationStatus"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cover Letter -->
+                        <div class="cover-letter" id="coverLetterSection">
+                            <h6><i class="fas fa-envelope-open-text mr-2"></i>Cover Letter</h6>
+                            <div id="coverLetterContent"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Resume Tab -->
+                    <div id="resumeTab" class="tab-content">
+                        <div class="resume-viewer-container">
+                            <div class="resume-controls">
+                                <div>
+                                    <span id="resumeFileName"></span>
+                                    <small class="text-muted ml-3" id="resumeFileSize"></small>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary mr-2" onclick="downloadResume()">
+                                        <i class="fas fa-download mr-1"></i>Download
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="printResume()">
+                                        <i class="fas fa-print mr-1"></i>Print
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="resumeViewer">
+                                <div class="resume-placeholder">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <h5 class="mt-3">Resume Preview</h5>
+                                    <p class="text-muted">Click the button below to download the resume</p>
+                                    <button class="btn btn-primary mt-3" onclick="downloadResume()">
+                                        <i class="fas fa-download mr-2"></i>Download Resume
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    
+    <script>
+        // Store current application data
+        let currentApplication = null;
+        let currentResumeUrl = null;
+        
+        $(document).ready(function() {
+            // Initialize DataTables
+            $('.application-table').DataTable({
+                pageLength: 10,
+                searching: false,
+                lengthChange: false,
+                info: false,
+                order: [[4, 'desc']], // Sort by applied date descending
+                language: {
+                    emptyTable: "No applications found"
+                }
+            });
+            
+            // Filter tabs
+            $('.filter-tab').click(function() {
+                const filter = $(this).data('filter');
+                
+                // Update active tab
+                $('.filter-tab').removeClass('active');
+                $(this).addClass('active');
+                
+                // Show/hide applications based on status
+                if (filter === 'all') {
+                    $('.application-row').show();
+                } else {
+                    $('.application-row').each(function() {
+                        if ($(this).data('status') === filter) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                }
+                
+                updateApplicationCounts();
+            });
+            
+            // Applicant search
+            $('#applicantSearch').on('keyup', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                
+                $('.application-row').each(function() {
+                    const applicantName = $(this).find('.applicant-name').text().toLowerCase();
+                    const email = $(this).find('td:nth-child(2)').text().toLowerCase();
+                    
+                    if (applicantName.includes(searchTerm) || email.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                
+                updateApplicationCounts();
+            });
+            
+            // Auto-hide alerts
+            setTimeout(function() {
+                $('.alert-custom').fadeOut(500, function() {
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+        
+        // Toggle applications visibility
+        function toggleApplications(jobId) {
+            const container = $('#apps-' + jobId);
+            container.slideToggle(300);
+        }
+        
+        // View application details
+        function viewApplication(appId, applicantName, resumeUrl) {
+            // Store resume URL
+            currentResumeUrl = resumeUrl;
+            
+            // Show loading state
+            $('#applicationModal').modal('show');
+            $('#modalTitle').text('Loading...');
+            
+            // Load application details via AJAX
+            $.ajax({
+                url: `/hr/application/${appId}/detail/`,
+                method: 'GET',
+                success: function(data) {
+                    currentApplication = data;
+                    populateApplicationDetails(data);
+                },
+                error: function() {
+                    alert('Error loading application details. Please try again.');
+                    $('#applicationModal').modal('hide');
+                }
+            });
+        }
+        
+        // Populate application details in modal
+        function populateApplicationDetails(data) {
+            // Update modal title
+            $('#modalTitle').text('Application - ' + data.applicant_name);
+            
+            // Applicant header
+            $('#applicantInitials').text(data.applicant_name.substring(0, 2).toUpperCase());
+            $('#applicantFullName').text(data.applicant_name);
+            $('#applicantEmail').text(data.email);
+            
+            // Status badge
+            $('#applicantStatus').html(`
+                <span class="status-badge status-${data.status}">
+                    ${data.status.toUpperCase()}
+                </span>
+            `);
+            
+            // Contact information
+            $('#applicantPhone').text(data.phone || 'Not provided');
+            $('#applicantEmailDetail').text(data.email);
+            
+            // Job information
+            $('#jobTitle').text(data.job_title);
+            $('#jobDepartment').text(data.job_department);
+            
+            // Application details
+            $('#appliedDate').text(data.applied_at);
+            $('#applicationStatus').html(`
+                <span class="status-badge status-${data.status}">
+                    ${data.status.toUpperCase()}
+                </span>
+            `);
+            
+            // Cover letter
+            if (data.cover_letter && data.cover_letter.trim()) {
+                $('#coverLetterContent').text(data.cover_letter);
+                $('#coverLetterSection').show();
+            } else {
+                $('#coverLetterContent').text('No cover letter provided.');
+                $('#coverLetterSection').show();
+            }
+            
+            // Resume info
+            const resumeName = currentResumeUrl.split('/').pop();
+            $('#resumeFileName').text(resumeName);
+            
+            // Switch to details tab
+            switchTab('details');
+            
+            // Load resume preview
+            loadResumePreview();
+        }
+        
+        // Switch between modal tabs
+        function switchTab(tabName) {
+            // Update tab buttons
+            $('.modal-tab').removeClass('active');
+            $(`.modal-tab[data-tab="${tabName}"]`).addClass('active');
+            
+            // Update tab content
+            $('.tab-content').removeClass('active');
+            $(`#${tabName}Tab`).addClass('active');
+            
+            // If switching to resume tab, ensure preview is loaded
+            if (tabName === 'resume') {
+                loadResumePreview();
+            }
+        }
+        
+        // Load resume preview
+        function loadResumePreview() {
+            if (!currentResumeUrl) return;
+            
+            const viewer = $('#resumeViewer');
+            const fileExtension = currentResumeUrl.split('.').pop().toLowerCase();
+            
+            // Clear previous content
+            viewer.empty();
+            
+            if (['pdf'].includes(fileExtension)) {
+                // For PDF files - use iframe for better compatibility
+                viewer.html(`
+                    <iframe class="resume-frame" src="${currentResumeUrl}#view=FitH&toolbar=0&navpanes=0"></iframe>
+                `);
+            } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                // For image files
+                viewer.html(`
+                    <div style="text-align: center; padding: 20px;">
+                        <img src="${currentResumeUrl}" style="max-width: 100%; max-height: 100%;" alt="Resume">
+                    </div>
+                `);
+            } else {
+                // For unsupported formats
+                viewer.html(`
+                    <div class="resume-placeholder">
+                        <i class="fas fa-file-alt"></i>
+                        <h5 class="mt-3">${fileExtension.toUpperCase()} File</h5>
+                        <p class="text-muted">This file format cannot be previewed</p>
+                        <button class="btn btn-primary mt-3" onclick="downloadResume()">
+                            <i class="fas fa-download mr-2"></i>Download File
+                        </button>
+                    </div>
+                `);
+            }
+        }
+        
+        // Download resume
+        function downloadResume() {
+            if (currentResumeUrl) {
+                window.open(currentResumeUrl, '_blank');
+            }
+        }
+        
+        // Print resume
+        function printResume() {
+            if (currentResumeUrl) {
+                const printWindow = window.open(currentResumeUrl);
+                printWindow.onload = function() {
+                    printWindow.print();
+                };
+            }
+        }
+        
+        // Update application status
+        function updateStatus(appId, status, applicantName) {
+            if (confirm(`Are you sure you want to mark ${applicantName}'s application as ${status.toUpperCase()}?`)) {
+                $.ajax({
+                    url: `/hr/application/${appId}/update-status/`,
+                    method: 'POST',
+                    data: {
+                        status: status,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        // Update UI
+                        const row = $(`[data-app-id="${appId}"]`);
+                        row.find('.status-badge')
+                           .removeClass('status-new status-reviewed status-shortlisted status-rejected')
+                           .addClass('status-' + status)
+                           .text(status.toUpperCase());
+                        row.data('status', status);
+                        
+                        // Update current application if it's open
+                        if (currentApplication && currentApplication.id == appId) {
+                            currentApplication.status = status;
+                            $('#applicationStatus').html(`
+                                <span class="status-badge status-${status}">
+                                    ${status.toUpperCase()}
+                                </span>
+                            `);
+                        }
+                        
+                        // Show success message
+                        showMessage(`Application status updated to ${status}`, 'success');
+                    },
+                    error: function() {
+                        alert('Error updating status. Please try again.');
+                    }
+                });
+            }
+        }
+        
+        // Delete application
+        function deleteApplication(appId, applicantName) {
+            if (confirm(`Are you sure you want to delete ${applicantName}'s application?\n\nThis action cannot be undone.`)) {
+                $.ajax({
+                    url: `/hr/application/${appId}/delete/`,
+                    method: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        // Remove application row
+                        $(`[data-app-id="${appId}"]`).remove();
+                        
+                        // Close modal if it's open
+                        if (currentApplication && currentApplication.id == appId) {
+                            $('#applicationModal').modal('hide');
+                            currentApplication = null;
+                            currentResumeUrl = null;
+                        }
+                        
+                        // Update counts
+                        updateApplicationCounts();
+                        
+                        // Show success message
+                        showMessage('Application deleted successfully', 'success');
+                    },
+                    error: function() {
+                        alert('Error deleting application. Please try again.');
+                    }
+                });
+            }
+        }
+        
+        // Export applications to CSV
+        function exportApplications() {
+            window.location.href = '/hr/export-applications/';
+        }
+        
+        // Show message function
+        function showMessage(message, type) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            
+            const $alert = $(`
+                <div class="alert-custom ${alertClass}">
+                    <div class="d-flex align-items-center">
+                        <i class="fas ${icon} mr-3"></i>
+                        <div>${message}</div>
+                        <button type="button" class="close ml-auto" onclick="this.parentElement.parentElement.style.display='none'">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                </div>
+            `);
+            
+            $('.container').prepend($alert);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(function() {
+                $alert.fadeOut(500, function() {
+                    $(this).remove();
+                });
+            }, 5000);
+        }
+        
+        // Update application counts (for filtering)
+        function updateApplicationCounts() {
+            const counts = {
+                all: $('.application-row:visible').length,
+                new: $('.application-row[data-status="new"]:visible').length,
+                reviewed: $('.application-row[data-status="reviewed"]:visible').length,
+                shortlisted: $('.application-row[data-status="shortlisted"]:visible').length,
+                rejected: $('.application-row[data-status="rejected"]:visible').length
+            };
+            
+            // Update filter tab counts
+            $('.filter-tab').each(function() {
+                const filter = $(this).data('filter');
+                const baseText = $(this).text().replace(/\(\d+\)/, '').trim();
+                $(this).text(baseText + (counts[filter] ? ` (${counts[filter]})` : ''));
+            });
+        }
+        
+        // Initialize counts
+        updateApplicationCounts();
+        
+        // Modal close handler
+        $('#applicationModal').on('hidden.bs.modal', function() {
+            currentApplication = null;
+            currentResumeUrl = null;
+        });
+    </script>
+</body>
+</html>

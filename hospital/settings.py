@@ -79,7 +79,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hospital_db',
+        'USER': 'hospital_user',      # or postgres if you didn’t create user
+        'PASSWORD': '2002',    # or postgres password
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

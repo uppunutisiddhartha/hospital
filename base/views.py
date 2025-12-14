@@ -162,10 +162,79 @@ def login_view(request):
 def hr_dashboard(request):
     if request.user.role != 'hr':
         return redirect('login')
+    return render(request, 'dashboards/hr_dashboard.html')
+
+@login_required
+def employemanagement(request):
+    if request.user.role != 'hr':
+        return redirect('login')
     user=CustomUser.objects.all()
-    return render(request, 'dashboards/hr_dashboard.html',{'users':user})
+    return render(request, 'employee_management.html',{'users':user})
+
+def create_job(request):
+    if request.method == "POST":
+        jobnotification.objects.create(
+            title=request.POST.get("title"),
+            description=request.POST.get("description"),
+            vaccancy_count=int(request.POST.get("vaccancy_count")),
+            deadline=request.POST.get("deadline"),
+            salary=request.POST.get("salary"),
+            experiance=request.POST.get("experiance"),
+        )
+        return redirect("career")
+
+    return render(request, "create_job.html")
+
+def career(request):
+   if request.method=="POST":
+       jobapplication.objects.create(
+          applicant_name=request.POST.get("applicant_name"),
+           email=request.POST.get("email"),
+           phone=request.POST.get("phone"),
+           resume=request.FILES.get("resume"),
+           job_id=int(request.POST.get("job_id")),
+       )
+       return redirect("career")
+   jobnofications=jobnotification.objects.filter(is_published=True,status='open')
+   context={
+       'jobnotifications':jobnofications
+       }
+   return render(request, 'career.html',context)
+
+'''
+def job_applications(request):
+    applications = jobapplication.objects.all()
+    return render(request, 'job_applications.html', {'applications': applications})
+'''
+def hr_all_applications(request):
+    jobs = jobnotification.objects.prefetch_related('applications')
+
+    return render(request, 'job_applications.html', {
+        'jobs': jobs
+    })
+
+def job_notification(request):
+    job= jobnotification.objects.all()
+    return render(request, 'job_notification.html', {'job': job})
+
+def publish_job(request, id):
+    job = get_object_or_404(jobnotification, id=id)
+    job.is_published = True
+    job.save()
+    return redirect('job_notification')
 
 
+def unpublish_job(request, id):
+    job = get_object_or_404(jobnotification, id=id)
+    job.is_published = False
+    job.save()
+    return redirect('job_notification')
+
+
+def delete_job(request, id):
+    job = get_object_or_404(jobnotification, id=id)
+    job.delete()
+    return redirect('job_notification')
 
 @login_required
 def save_insurance_note(request):
@@ -195,10 +264,10 @@ def update_user_status(request, user_id):
 
     if status not in ['active', 'hold', 'inactive', 'suspended']:
         messages.error(request, "Invalid status")
-        return redirect('hr_dashboard')
+        return redirect('employee-management')
 
     user.status = status
     user.save()
 
     messages.success(request, f"{user.username} status updated to {status}")
-    return redirect('hr_dashboard')
+    return redirect('employee_management')

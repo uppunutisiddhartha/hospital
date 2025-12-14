@@ -24,6 +24,8 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Appointment)
-admin.site.register(doctor)
+#admin.site.register(doctor)
 admin.site.register(Consultation)
 admin.site.register(InsuranceNotes)
+admin.site.register(jobnotification)
+admin.site.register(jobapplication)
