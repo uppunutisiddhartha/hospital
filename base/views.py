@@ -44,10 +44,28 @@ def pre_consultation(request):
     return render(request, 'pre_consultation.html' , {'appointments': appointments})
 
 
-def doctors(request):
-    doctors = doctor.objects.all()
-    return render(request, 'doctors.html', {'doctors': doctors})
 
+def register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        role = request.POST.get('role')
+        email=request.POST.get('email')
+        phone_number=request.POST.get('number')
+        role = request.POST.get('role') or 'MOD'
+
+        CustomUser.objects.create_user(
+            username=username,
+            password=password,
+            role=role,
+            email=email,
+            phone_number=phone_number,
+            status='inactive'  
+        )
+
+        return redirect('login')
+
+    return render(request, 'register.html')
 
 @login_required
 def MOD(request):
