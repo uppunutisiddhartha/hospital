@@ -21,6 +21,11 @@ urlpatterns = [
    path('jobs/publish/<int:id>/', views.publish_job, name='publish_job'),
    path('jobs/unpublish/<int:id>/', views.unpublish_job, name='unpublish_job'),
    path('jobs/delete/<int:id>/', views.delete_job, name='delete_job'),
-  path('hr/applications/', views.hr_all_applications, name='hr_all_applications'),
-   
+   path('hr/applications/', views.hr_all_applications, name='hr_all_applications'),
+   path('general-manager-dashboard/', views.general_manager_dashboard, name='general_manager_dashboard'),
+  path('gm/post/status/<int:post_id>/', views.gm_update_post_status, name='gm_update_post_status'),
+  path('gm/post/delete/<int:id>/', views.delete_post, name='delete_post'),
+  path('healthy-savings/', views.healthy_savings, name='healthy_savings'),
 ]
+   
+

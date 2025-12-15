@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Latest Promotions & Offers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --gradient-primary: linear-gradient(135deg, #3498db, #2980b9);
+            --gradient-accent: linear-gradient(135deg, #e74c3c, #c0392b);
+            --gradient-success: linear-gradient(135deg, #27ae60, #219653);
+            --gradient-dark: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.4));
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .page-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* Enhanced Image Container */
+        .post-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .post-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-dark);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .post-card:hover .post-image-container::before {
+            opacity: 0.3;
+        }
+
+        .post-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+            filter: brightness(0.95);
+        }
+
+        .post-card:hover .post-image-container img {
+            transform: scale(1.1) rotate(1deg);
+            filter: brightness(1.1);
+        }
+
+        /* Enhanced Image Overlay */
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.7));
+            z-index: 2;
+            border-radius: 15px 15px 0 0;
+        }
+
+        /* Featured Badge */
+        .featured-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            transform: rotate(3deg);
+            letter-spacing: 1px;
+        }
+
+        .featured-badge i {
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Image Badge */
+        .image-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--secondary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+        }
+
+        /* Image Title Overlay */
+        .image-title {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 3;
+            color: white;
+        }
+
+        .image-title h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.3;
+        }
+
+        /* Enhanced Post Card */
+        .post-card {
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            background: white;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            height: 100%;
+            position: relative;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-primary);
+            z-index: 5;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .post-card.featured {
+            border: 3px solid transparent;
+            background: linear-gradient(white, white), var(--gradient-primary);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.2);
+        }
+
+        .post-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .post-card-body {
+            padding: 1.75rem;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Content Styling */
+        .post-content-preview {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        /* Enhanced Meta Info */
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .post-date i {
+            color: var(--primary-color);
+        }
+
+        /* Live Indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes pulse {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); 
+                transform: scale(1);
+            }
+            70% { 
+                box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); 
+                transform: scale(1.05);
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(39, 174, 96, 0);
+                transform: scale(1);
+            }
+        }
+
+        /* Read More Button */
+        .read-more-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .read-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .read-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .read-more-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Coming Soon Badge */
+        .coming-soon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Category Tags */
+        .category-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tag {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            transition: all 0.3s;
+        }
+
+        .category-tag:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Floating Action Button */
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(45deg);
+            box-shadow: 0 12px 30px rgba(52, 152, 219, 0.6);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Hero Section Enhancement */
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.85)), 
+                        url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 5rem 0;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(231, 76, 60, 0.3) 0%, transparent 50%);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .post-image-container {
+                height: 220px;
+            }
+            
+            .image-title h4 {
+                font-size: 1.2rem;
+            }
+            
+            .floating-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--gradient-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+        }
+
+        .slider .fa-sun {
+            left: 7px;
+            color: #f39c12;
+        }
+
+        .slider .fa-moon {
+            right: 7px;
+            color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Dark Mode Toggle -->
+<div class="dark-mode-toggle">
+    <label class="theme-switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+        </span>
+    </label>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-gem mr-2" style="color: var(--primary-color);"></i>
+            <span style="font-weight: 800; color: var(--secondary-color); font-size: 1.5rem;">PromoHub</span>
+        </a>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content text-center">
+            <h2 class="mb-3" style="font-family: 'Montserrat', sans-serif; font-size: 3rem; font-weight: 800;">Exclusive Promotions</h2>
+            <p class="lead mb-4" style="font-size: 1.3rem; opacity: 0.9;">Discover amazing deals and limited-time offers crafted just for you</p>
+            <a href="#promotions" class="btn btn-light btn-lg mt-2" style="border-radius: 25px; padding: 12px 35px; font-weight: 700;">
+                <i class="fas fa-fire mr-2"></i>View Hot Deals
+            </a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Featured Promotions</h1>
+        <p style="font-size: 1.1rem; color: #666; max-width: 700px;">Explore our handpicked collection of exclusive offers and promotional content</p>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="row" id="promotions">
+        {% for post in posts %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="post-card {% if forloop.first %}featured{% endif %}">
+                <!-- Enhanced Image Section -->
+                <div class="post-image-container">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="{{ post.title }}">
+                    {% endif %}
+                    
+                    <div class="image-overlay"></div>
+                    
+                    <!-- Image Badge -->
+                    <div class="image-badge">
+                        <i class="fas fa-tag"></i>
+                        Offer #{{ forloop.counter }}
+                    </div>
+                    
+                    <!-- Featured Badge -->
+                    {% if forloop.first %}
+                    <div class="featured-badge">
+                        <i class="fas fa-star mr-1"></i> FEATURED
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Title on Image -->
+                    <div class="image-title">
+                        <h4>{{ post.title|truncatechars:50 }}</h4>
+                    </div>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="post-card-body">
+                    <div class="post-content-preview">
+                        {{ post.content|truncatechars:150 }}
+                    </div>
+                    
+                    <!-- Category Tags -->
+                    <div class="category-tags">
+                        <span class="category-tag">
+                            <i class="fas fa-tag mr-1"></i> Promotion
+                        </span>
+                        <span class="category-tag">
+                            <i class="fas fa-calendar mr-1"></i> Limited Time
+                        </span>
+                    </div>
+                    
+                    <div class="post-meta">
+                        <div class="post-date">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ post.created_at|date:"M d, Y" }}
+                        </div>
+                        
+                        {% if post.status == 'publish' %}
+                            <div class="live-indicator">
+                                <i class="fas fa-circle"></i> LIVE NOW
+                            </div>
+                        {% else %}
+                            <div class="coming-soon-badge">
+                                <i class="fas fa-clock"></i> COMING SOON
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if post.status == 'publish' %}
+                        <a href="#" class="read-more-btn">
+                            <span>View Offer</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div style="font-size: 5rem; color: #ddd; margin-bottom: 2rem;">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3 class="mb-3" style="color: var(--secondary-color); font-weight: 700;">No Promotions Available</h3>
+                <p class="mb-4" style="color: #666; font-size: 1.1rem;">We're preparing amazing offers for you. Check back soon!</p>
+                <button class="btn btn-primary btn-lg" onclick="location.reload()" style="border-radius: 25px; padding: 12px 30px; font-weight: 700;">
+                    <i class="fas fa-sync-alt mr-2"></i>Refresh Page
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Floating Button -->
+<div class="floating-btn" onclick="scrollToTop()">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<!-- Footer -->
+<footer style="background: var(--secondary-color); color: white; padding: 3rem 0; margin-top: 4rem; border-radius: 20px 20px 0 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 style="font-weight: 700; margin-bottom: 1rem;">
+                    <i class="fas fa-gem mr-2" style="color: var(--primary-color);"></i>PromoHub
+                </h5>
+                <p style="opacity: 0.8;">Your destination for exclusive promotions and special offers.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 style="font-weight: 700; margin-bottom: 1rem;">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" style="color: white; opacity: 0.8; text-decoration: none; transition: opacity 0.3s;">Home</a></li>
+                    <li><a href="#promotions" style="color: white; opacity: 0.8; text-decoration: none; transition: opacity 0.3s;">Promotions</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 style="font-weight: 700; margin-bottom: 1rem;">Stay Updated</h5>
+                <p style="opacity: 0.8; margin-bottom: 1rem;">Subscribe to never miss a promotion</p>
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Your email" style="border-radius: 25px 0 0 25px; border: none;">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" style="border-radius: 0 25px 25px 0;">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="background: rgba(255,255,255,0.1);">
+        <div class="text-center pt-3">
+            <p style="opacity: 0.8; margin: 0;">&copy; 2024 PromoHub. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    themeToggle.addEventListener('change', function() {
+        if (this.checked) {
+            body.classList.add('dark-mode');
+            document.documentElement.style.setProperty('--secondary-color', '#ecf0f1');
+            document.documentElement.style.setProperty('background', '#1a1a2e');
+        } else {
+            body.classList.remove('dark-mode');
+            document.documentElement.style.setProperty('--secondary-color', '#2c3e50');
+            document.documentElement.style.setProperty('background', 'linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%)');
+        }
+    });
+    
+    // Scroll to Top
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Parallax Effect on Hero
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero-section');
+        if (hero) {
+            hero.style.transform = `translateY(${scrolled * 0.05}px)`;
+        }
+    });
+    
+    // Animate cards on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all post cards
+    document.querySelectorAll('.post-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+    
+    // Initialize tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+</body>
+</html>

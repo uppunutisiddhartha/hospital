@@ -35,8 +35,11 @@ def index(request):
             specialist=specialist,
             reason=reason
         )
-
-    return render(request, 'index.html')
+    post=Post.objects.filter(status='publish').order_by('-created_at')
+    context={
+        'posts':post
+    }
+    return render(request, 'index.html',context)
 
 
 def pre_consultation(request):
@@ -167,6 +170,9 @@ def login_view(request):
 
         elif user.role == 'INS_ADMIN':
             return redirect('insurance_admin')
+        
+        elif user.role == 'general_manager':
+            return redirect('general_manager_dashboard')
 
         elif user.role == 'hr':
             return redirect('hr_dashboard')
@@ -289,3 +295,66 @@ def update_user_status(request, user_id):
 
     messages.success(request, f"{user.username} status updated to {status}")
     return redirect('employee_management')
+
+@login_required
+def general_manager_dashboard(request):
+    if request.user.role != 'general_manager':
+        return redirect('login')
+    
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        image = request.FILES.get('image')
+
+        Post.objects.create(
+            title=title,    
+            content=content,
+            image=image,
+            status='hold'
+        )
+
+    posts = Post.objects.all().order_by('-created_at')
+
+    return render(request, 'dashboards/general_manager.html', {
+        'posts': posts,
+        'published_count': Post.objects.filter(status='publish').count(),
+        'pending_count': Post.objects.filter(status='hold').count(),
+    })
+       
+    return render(request, 'dashboards/general_manager.html',{'posts':posts})
+
+
+@login_required
+def gm_update_post_status(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == 'publish':
+            # 🔒 Force ALL other posts to HOLD
+            Post.objects.exclude(id=post.id).update(status='hold')
+
+            # ✅ Publish ONLY this post
+            post.status = 'publish'
+            post.save()
+
+        elif action == 'hold':
+            post.status = 'hold'
+            post.save()
+
+    return redirect('general_manager_dashboard')
+
+
+def delete_post(request,id):
+    post = get_object_or_404(Post, id=id)
+    post.delete()
+    return redirect('general_manager_dashboard')
+
+
+def healthy_savings(request):
+    post=Post.objects.filter(status='publish').order_by('-created_at')
+    context={
+        'posts':post
+    }
+    return render(request, 'healthy_savings.html', context)

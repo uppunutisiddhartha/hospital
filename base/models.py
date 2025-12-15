@@ -7,6 +7,7 @@ class CustomUser(AbstractUser):
         ('MOD', 'mod'),
         ('hr', 'HR'),
         ('INS_ADMIN', 'Insurance_Administrator'),
+        ('general_manager', 'General_Manager'),
     )
     status_choices = (
         ('active', 'Active'),
@@ -124,3 +125,20 @@ class jobapplication(models.Model):
 
     def __str__(self):
         return f"{self.applicant_name} - {self.job.title}"
+    
+
+
+class Post(models.Model):
+
+    action=[
+        ('hold','Hold'),
+        ('publish','Publish'),
+    ]
+    status=models.CharField(max_length=10,choices=action,default='hold')
+    title = models.CharField(max_length=200)
+    image= models.ImageField(upload_to='post_images/')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
