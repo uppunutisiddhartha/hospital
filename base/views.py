@@ -114,7 +114,7 @@ def MOD(request):
 @login_required
 def insurance_admin(request):
     insurance_list = Appointment.objects.all()
-    return render(request, 'insurance_admin.html', {'insurance_list': insurance_list})
+    return render(request, 'dashboards/insurance_admin.html', {'insurance_list': insurance_list})
 
 def insurance_list(request):
     if request.method == 'POST':
