@@ -3,27 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create Account</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .register-card {
+            background: #fff;
+            padding: 30px;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .register-card h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .info-box {
+            background-color: #e8f4ff;
+            border-left: 5px solid #2196F3;
+            padding: 12px;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #43a047;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 15px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Register Page</h1>
+
+<div class="register-card">
+    <h1>Create Account</h1>
+
+    <!-- HR Approval Message -->
+    <div class="info-box">
+        🔔 <strong>Important:</strong><br>
+        Your account request will be reviewed by the HR team.<br>
+        Account activation may take up to <strong>2 hours</strong>.<br>
+        If urgent, please contact the HR department to activate your working account.
+    </div>
+
     <form method="POST">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="full_name">full_name</label>
 
-        <input type="text" id="full_name" name="full_name" required><br><br>
-        <label for="email">Email:</label>
-        
-        <input type="email" id="email" name="email" required><br><br>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username"
+               placeholder="Create a username" required>
 
-        <label for="number">phone_number:</label>
-        <input type="number" id="email" name="phone_number" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <button type="submit">Register</button>
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" name="full_name"
+               placeholder="As per Aadhaar card" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email"
+               placeholder="Enter your working email" required>
+
+        <label for="phone_number">Mobile Number</label>
+        <input type="tel" id="phone_number" name="phone_number"
+               placeholder="Enter mobile number" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"
+               placeholder="Create password" required>
+
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password"
+               placeholder="Confirm password" required>
+
+        <button type="submit">Submit Request</button>
+    </form>
+
+    <div class="footer-text">
+        Already have an active account? Contact HR for access.
+    </div>
+</div>
+
+<script>
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm_password");
+
+    confirmPassword.addEventListener("input", function () {
+        if (password.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity("Passwords do not match");
+        } else {
+            confirmPassword.setCustomValidity("");
+        }
+    });
+</script>
+
 </body>
 </html>

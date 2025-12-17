@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import *
+from django.db.models import Count
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from datetime import datetime,date
@@ -51,6 +52,7 @@ def pre_consultation(request):
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        full_name = request.POST.get('full_name')
         password = request.POST.get('password')
         role = request.POST.get('role')
         email=request.POST.get('email')
@@ -62,6 +64,7 @@ def register(request):
             password=password,
             role=role,
             email=email,
+            full_name=full_name,
             phone_number=phone_number,
             status='inactive'  
         )
@@ -149,6 +152,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is None:
+            messages.error(request, "Invalid username or password")
             return redirect('login')
 
         # STATUS CHECK
@@ -186,7 +190,28 @@ def login_view(request):
 def hr_dashboard(request):
     if request.user.role != 'hr':
         return redirect('login')
-    return render(request, 'dashboards/hr_dashboard.html')
+    active_jobs = jobnotification.objects.filter(is_published=True, status='open').count()
+    inactive_jobs = jobnotification.objects.filter(is_published=False).count()
+    total_applicants = jobapplication.objects.count()
+
+    job_notification=jobnotification.objects.filter(is_published=True,status='open')
+
+    #applied_jobs = jobapplication.objects.values_list('job_id', flat=True).count()
+    #applied_jobs = jobapplication.objects.values('job_id').annotate(applicant_count=Count(''))
+    job_notifications = jobnotification.objects.filter(
+        is_published=True,
+        status='open'
+    ).annotate(
+        applied_jobs=Count('applications')
+    ) 
+    context = {
+        'active_jobs': active_jobs,
+        'inactive_jobs': inactive_jobs,
+        'total_applicants': total_applicants,
+        'job_notifications': job_notifications,
+        
+    }
+    return render(request, 'dashboards/hr_dashboard.html', context)
 
 @login_required
 def employemanagement(request):
@@ -199,13 +224,15 @@ def create_job(request):
     if request.method == "POST":
         jobnotification.objects.create(
             title=request.POST.get("title"),
+            location=request.POST.get("location"),
+            job_type=request.POST.get("job_type"),
             description=request.POST.get("description"),
             vaccancy_count=int(request.POST.get("vaccancy_count")),
             deadline=request.POST.get("deadline"),
             salary=request.POST.get("salary"),
             experiance=request.POST.get("experiance"),
         )
-        return redirect("career")
+        return redirect("job_notification")
 
     return render(request, "create_job.html")
 
@@ -294,6 +321,23 @@ def update_user_status(request, user_id):
     user.save()
 
     messages.success(request, f"{user.username} status updated to {status}")
+    return redirect('employee_management')
+
+def update_user_role(request, user_id):
+    if request.user.role != 'hr':
+        return redirect('login')
+
+    user = get_object_or_404(CustomUser, id=user_id)
+    role = request.POST.get('role')
+
+    if role not in ['MOD', 'hr', 'INS_ADMIN', 'general_manager']:
+        messages.error(request, "Invalid role")
+        return redirect('employee_management')
+
+    user.role = role
+    user.save()
+
+    messages.success(request, f"{user.username} role updated to {role}")
     return redirect('employee_management')
 
 @login_required

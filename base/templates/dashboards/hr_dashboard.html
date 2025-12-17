@@ -175,28 +175,24 @@
                 
                 <!-- Stats Row -->
                 <div class="row mb-4">
-                    <div class="col-md-3 mb-3">
-                        <div class="stat-card" style="border-left-color: #3b82f6;">
-                            <h3>156</h3>
-                            <p>Total Employees</p>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-3 mb-3">
                         <div class="stat-card" style="border-left-color: #10b981;">
-                            <h3>8</h3>
+                            <h3>{{ active_jobs }}</h3>
                             <p>Active Jobs</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-3">
+                        <div class="stat-card" style="border-left-color: #ef4444;">
+                            <h3>{{ inactive_jobs   }}</h3>
+                            <p>Inactive Jobs</p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="stat-card" style="border-left-color: #f59e0b;">
-                            <h3>84</h3>
+                            <h3>{{ total_applicants }}</h3>
                             <p>Total Applicants</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="stat-card" style="border-left-color: #ef4444;">
-                            <h3>7</h3>
-                            <p>Pending Tasks</p>
                         </div>
                     </div>
                 </div>
@@ -273,40 +269,44 @@
                         <a href="#" class="text-primary">View All Jobs</a>
                     </div>
                     <div class="card-body-custom">
-                        <div class="job-card">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="mb-1">Senior Frontend Developer</h6>
-                                    <small class="text-muted">Engineering • Remote • Full-time</small>
-                                </div>
-                                <span class="badge badge-success">OPEN</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small><i class="fas fa-users mr-1"></i>24 applicants</small>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-primary mr-2">View</button>
-                                    <button class="btn btn-sm btn-outline-success">Edit</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="job-card">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="mb-1">Marketing Manager</h6>
-                                    <small class="text-muted">Marketing • New York • Full-time</small>
-                                </div>
-                                <span class="badge badge-success">OPEN</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small><i class="fas fa-users mr-1"></i>15 applicants</small>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-primary mr-2">View</button>
-                                    <button class="btn btn-sm btn-outline-success">Edit</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    {% for job in job_notifications %}
+    <div class="job-card mb-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+                <h6 class="mb-1">{{ job.title }}</h6>
+                <small class="text-muted">
+                    {{ job.department }} • {{ job.location }} • {{ job.job_type }}
+                </small>
+            </div>
+
+            {% if job.status == 'open' %}
+                <span class="badge badge-success">OPEN</span>
+            {% else %}
+                <span class="badge badge-secondary">CLOSED</span>
+            {% endif %}
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+            <small>
+                <i class="fas fa-users mr-1"></i>
+                {{ job.applied_jobs }} applicants
+            </small>
+
+            <div>
+                <a href="" class="btn btn-sm btn-outline-primary mr-2">
+                    View
+                </a>
+                <a href="" class="btn btn-sm btn-outline-success">
+                    Edit
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <p class="text-muted text-center">No active job notifications</p>
+    {% endfor %}
+</div>
+
                 </div>
             </div>
         </div>

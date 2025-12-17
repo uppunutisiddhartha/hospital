@@ -27,7 +27,7 @@ class CustomUser(AbstractUser):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='MOD')
 
     def __str__(self):
-        return f"{self.username} - {self.role}"
+        return f"{self.username} - {self.role} - {self.status} - {self.full_name}"
 
 # In your app's models.py file
 class Appointment(models.Model):
@@ -101,8 +101,15 @@ class jobnotification(models.Model):
         ('3-5 years', '3-5 years'),
         ('5+ years', '5+ years'),
     )
+    job_type=(
+        ('full-time','Full-Time'),
+        ('part-time','Part-Time'),
+    )
+
     title = models.CharField(max_length=200)
     description = models.TextField()
+    job_type = models.CharField(max_length=20, choices=job_type, default='full-time')
+    location = models.CharField(max_length=100)
     vaccancy_count = models.IntegerField()
     status = models.CharField(max_length=10, choices=status_choices, default='open')
     created_at = models.DateTimeField(auto_now_add=True)

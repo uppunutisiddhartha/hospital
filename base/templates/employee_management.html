@@ -95,7 +95,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h2 class="mb-1"><i class="fas fa-users-cog mr-2"></i>HR Dashboard</h2>
+                        <h2 class="mb-1"><i class="fas fa-users-cog mr-2"></i>HR Dashboard</h2> 
                         <p class="text-muted mb-0">Comprehensive User Management System</p>
                     </div>
                     <div class="d-flex align-items-center">
@@ -219,6 +219,7 @@
                                 <th>Login Activity</th>
                                 <th>Working Hours</th>
                                 <th>Contact Info</th>
+                                <th>Role Update</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -239,7 +240,7 @@
                                 </td>
                                 <td>
                                     {% if user.role == 'MOD' %}
-                                        <span class="role-badge role-mod">MODERATOR</span>
+                                        <span class="role-badge role-mod">MOD</span>
                                     {% elif user.role == 'hr' %}
                                         <span class="role-badge role-hr">HR</span>
                                     {% elif user.role == 'INS_ADMIN' %}
@@ -299,10 +300,28 @@
                                 <td>
                                     <small>
                                         <i class="fas fa-envelope mr-1"></i> {{ user.email }}<br>
-                                        {% if user.phone_number %}
+                                        
                                             <i class="fas fa-phone mr-1"></i> {{ user.phone_number }}
-                                        {% endif %}
+                                       <p><strong>Full Name:</strong> {{ user.full_name }}</p>
                                     </small>
+                                </td>
+                                <td>
+                                    <form method="POST" action="{% url 'update_user_role' user.id %}" class="mb-3">
+                                        {% csrf_token %}
+                                        <div class="input-group input-group-sm">
+                                            <select name="role" class="form-control form-control-sm" required>
+                                                <option value="" disabled selected>Change Role</option>
+                                                <option value="MOD" {% if user.role == 'MOD' %}selected{% endif %}>MOD</option>
+                                                <option value="hr" {% if user.role == 'hr' %}selected{% endif %}>HR</option>
+                                                <option value="INS_ADMIN" {% if user.role == 'INS_ADMIN' %}selected{% endif %}>INSURANCE ADMIN</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary btn-sm" type="submit">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </td>
                                 <td>
                                     <form method="POST" action="{% url 'update_user_status' user.id %}" class="mb-3">

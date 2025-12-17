@@ -760,25 +760,26 @@
                                     <h3 class="job-title">{{ job.title }}</h3>
                                     <div class="job-department">{{ job.department|default:"General Medicine" }}</div>
                                 </div>
-                                <span class="job-badge">{{ job.type|default:"Full-time" }}</span>
+                                <!-- <span class="job-badge">{{ job.job_type }}</span> -->
                             </div>
                             
                             <div class="job-details">
                                 <div class="detail-item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    {{ job.location|default:"Hyderabad" }}
+                                    {{ job.location }}
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-money-bill-wave"></i>
                                     {{ job.salary|default:"As per industry standards" }}
                                 </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-user-md"></i>
-                                    {{ job.vacancy_count }} Position{% if job.vacancy_count > 1 %}s{% endif %}
-                                </div>
+                                
                                 <div class="detail-item">
                                     <i class="fas fa-briefcase"></i>
                                     {{ job.experiance|default:"2+ Years Experience" }}
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    {{ job.job_type }}
                                 </div>
                             </div>
                             
