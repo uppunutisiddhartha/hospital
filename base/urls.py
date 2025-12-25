@@ -23,10 +23,11 @@ urlpatterns = [
    path('jobs/delete/<int:id>/', views.delete_job, name='delete_job'),
    path('hr/applications/', views.hr_all_applications, name='hr_all_applications'),
    path('general-manager-dashboard/', views.general_manager_dashboard, name='general_manager_dashboard'),
-  path('gm/post/status/<int:post_id>/', views.gm_update_post_status, name='gm_update_post_status'),
-  path('gm/post/delete/<int:id>/', views.delete_post, name='delete_post'),
-  path('healthy-savings/', views.healthy_savings, name='healthy_savings'),
-  path('update_user_role/<int:user_id>/', views.update_user_role, name='update_user_role'),
+   path('gm/post/status/<int:post_id>/', views.gm_update_post_status, name='gm_update_post_status'),
+   path('gm/post/delete/<int:id>/', views.delete_post, name='delete_post'),
+   path('healthy-savings/', views.healthy_savings, name='healthy_savings'),
+   path('update_user_role/<int:user_id>/', views.update_user_role, name='update_user_role'),
+   path('logout/', views.logout_view, name='logout'),
 ]
    
 

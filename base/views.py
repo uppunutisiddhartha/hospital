@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *
 from django.db.models import Count
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from datetime import datetime,date
 from calendar import monthrange
@@ -58,6 +58,7 @@ def register(request):
         email=request.POST.get('email')
         phone_number=request.POST.get('number')
         role = request.POST.get('role') or 'MOD'
+        date_joined=date.today()
 
         CustomUser.objects.create_user(
             username=username,
@@ -66,7 +67,9 @@ def register(request):
             email=email,
             full_name=full_name,
             phone_number=phone_number,
-            status='inactive'  
+            date_joined=date_joined,
+            status='inactive'
+
         )
 
         return redirect('login')
@@ -402,3 +405,10 @@ def healthy_savings(request):
         'posts':post
     }
     return render(request, 'healthy_savings.html', context)
+
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('index')

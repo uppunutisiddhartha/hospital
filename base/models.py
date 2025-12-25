@@ -23,7 +23,7 @@ class CustomUser(AbstractUser):
     status = models.CharField(max_length=20, choices=status_choices, default='inactive')
     
     # role field
-
+    #date_joined = models.DateTimeField(auto_now_add=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='MOD')
 
     def __str__(self):
