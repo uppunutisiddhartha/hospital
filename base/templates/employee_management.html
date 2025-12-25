@@ -245,6 +245,10 @@
                                         <span class="role-badge role-hr">HR</span>
                                     {% elif user.role == 'INS_ADMIN' %}
                                         <span class="role-badge role-ins_admin">INSURANCE ADMIN</span>
+                                    {% elif user.role == 'general_manager' %}
+                                        <span class="role-badge badge-dark">GENERAL MANAGER</span>
+                                    {% else %}
+                                        <span class="role-badge badge-secondary">USER</span>
                                     {% endif %}
                                 </td>
                                 <td>
@@ -311,6 +315,7 @@
                                         <div class="input-group input-group-sm">
                                             <select name="role" class="form-control form-control-sm" required>
                                                 <option value="" disabled selected>Change Role</option>
+                                                <option value="general_manager" {% if user.role == 'general_manager' %}selected{% endif %}>GENERAL MANAGER</option>
                                                 <option value="MOD" {% if user.role == 'MOD' %}selected{% endif %}>MOD</option>
                                                 <option value="hr" {% if user.role == 'hr' %}selected{% endif %}>HR</option>
                                                 <option value="INS_ADMIN" {% if user.role == 'INS_ADMIN' %}selected{% endif %}>INSURANCE ADMIN</option>

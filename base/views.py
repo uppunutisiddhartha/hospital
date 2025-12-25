@@ -7,8 +7,10 @@ from datetime import datetime,date
 from calendar import monthrange
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
+from django.utils.timezone import now
 
 # Create your views here.
+
 def index(request):
     if request.method == 'POST':
         
@@ -107,6 +109,26 @@ def MOD(request):
 
     # Get consultations for selected date
     consultations = Consultation.objects.filter(date=selected_date) if selected_date else []
+    
+   # Monthly consultations QuerySet
+    month_consults = Consultation.objects.filter(date__year=year, date__month=month)
+    pending_responses_count_month = month_consults.filter(status='pending').count()
+    responded_responses_count_month = month_consults.filter(status='responded').count()
+
+# Daily consultations QuerySet
+    consultations = Consultation.objects.filter(date=selected_date) if selected_date else Consultation.objects.none()
+    pending_responses_count = consultations.filter(status='pending').count()
+    responded_responses_count = consultations.filter(status='responded').count()
+
+    responded_consultations = Consultation.objects.filter(
+        date=selected_date,
+        status='responded'
+    ) if selected_date else []
+
+    pending_consultations = Consultation.objects.filter(
+        date=selected_date,
+        status='pending'
+    ) if selected_date else []
 
     return render(request, "dashboards/MOD.html", {
         "days_list": days_list,
@@ -116,9 +138,29 @@ def MOD(request):
         "current_month": f"{year}-{month:02d}",
         "total_consultations": total_consultations,
         "month_consultations": month_consultations,
+        "responded_consultations": responded_consultations,
+        "pending_consultations": pending_consultations,
+        "pending_responses_count": pending_responses_count,
+        "responded_responses_count": responded_responses_count,
+        "pending_responses_count_month": pending_responses_count_month,
+        "responded_responses_count_month": responded_responses_count_month,
+        
     })
 
+@login_required
+def respond_consultation(request, consultation_id):
+    consultation = get_object_or_404(
+        Consultation,
+        id=consultation_id,
+        status='pending'
+    )
 
+    consultation.status = 'responded'
+    consultation.responded_by = request.user
+    consultation.responded_at = now()
+    consultation.save()
+
+    return redirect(request.META.get("HTTP_REFERER", "MOD"))
 
 @login_required
 def insurance_admin(request):
@@ -322,6 +364,7 @@ def update_user_status(request, user_id):
 
     user.status = status
     user.save()
+
 
     messages.success(request, f"{user.username} status updated to {status}")
     return redirect('employee_management')

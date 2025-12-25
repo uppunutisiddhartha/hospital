@@ -28,6 +28,8 @@ urlpatterns = [
    path('healthy-savings/', views.healthy_savings, name='healthy_savings'),
    path('update_user_role/<int:user_id>/', views.update_user_role, name='update_user_role'),
    path('logout/', views.logout_view, name='logout'),
+   #path('main_admin/', views.main_admin, name='main_admin'),
+   path('mod/respond/<int:consultation_id>/', views.respond_consultation, name='respond_consultation'),
 ]
    
 

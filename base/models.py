@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.conf import settings
 # Create your models here.
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
@@ -67,6 +67,11 @@ class Appointment(models.Model):
     
 
 class Consultation(models.Model):
+
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('responded', 'Responded'),
+    )
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField()
@@ -74,8 +79,12 @@ class Consultation(models.Model):
     time = models.TimeField()
     specialist = models.CharField(max_length=100)
     reason = models.TextField()
+    responded_by=models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,on_delete=models.SET_NULL,limit_choices_to={'role': 'MOD'})
+    responded_at = models.DateTimeField(null=True, blank=True)
 
+    status = models.CharField(max_length=10,choices=STATUS_CHOICES,default='pending')
     def __str__(self):
+
         return f"{self.name} - {self.specialist} at {self.time}"
 
 
