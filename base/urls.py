@@ -30,6 +30,7 @@ urlpatterns = [
    path('logout/', views.logout_view, name='logout'),
    #path('main_admin/', views.main_admin, name='main_admin'),
    path('mod/respond/<int:consultation_id>/', views.respond_consultation, name='respond_consultation'),
+   path('newsletter/subscribe/', views.newsletter_subscribe, name='subscribe_newsletter'),
 ]
    
 

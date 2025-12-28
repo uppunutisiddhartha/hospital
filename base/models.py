@@ -35,6 +35,7 @@ class Appointment(models.Model):
     insurance_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     policy_start_date = models.DateField()
+    email = models.EmailField()
     file = models.FileField(upload_to='documents/', null=True, blank=True)
 
     def __str__(self):
@@ -158,3 +159,14 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+
+
+
+class newsletter_subscribers(models.Model):
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

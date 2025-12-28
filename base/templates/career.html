@@ -870,6 +870,13 @@
                     </div>
                 </div>
             </div>
+          <form method="post" action="{% url 'subscribe_newsletter' %}">
+    {% csrf_token %}
+    <input type="email" name="email" required>
+    <button type="submit">Subscribe</button>
+</form>
+
+
             <div class="copyright">
                 <p>&copy; 2024 Pioneer Hospitals. All Rights Reserved.</p>
             </div>

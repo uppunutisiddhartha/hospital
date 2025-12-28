@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Pioneer Hospital Newsletter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a6bb3 0%, #2d9cdb 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" opacity="0.1"><path d="M0,0 L100,0 L100,100 Z" fill="white"/></svg>');
+            background-size: cover;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hospital-logo {
+            max-width: 180px;
+            margin: 0 auto 20px;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.95;
+            font-weight: 300;
+            margin: 0;
+        }
+        
+        .confirmation-icon {
+            background-color: rgba(255, 255, 255, 0.15);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            font-size: 36px;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .content {
+            padding: 40px 35px;
+        }
+        
+        .greeting {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        
+        .greeting strong {
+            color: #1a6bb3;
+        }
+        
+        .thank-you-message {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .benefits-section {
+            background-color: #f0f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 4px solid #2d9cdb;
+        }
+        
+        .benefits-title {
+            color: #1a6bb3;
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .benefits-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .benefits-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px dashed #d1e7ff;
+        }
+        
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 16px;
+            background-color: rgba(39, 174, 96, 0.1);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .what-to-expect {
+            margin: 35px 0;
+        }
+        
+        .expect-title {
+            color: #2c3e50;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .expect-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .expect-item {
+            flex: 1;
+            min-width: 200px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            transition: transform 0.3s;
+        }
+        
+        .expect-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .expect-icon {
+            font-size: 28px;
+            color: #2d9cdb;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .expect-item h4 {
+            margin: 0 0 8px;
+            color: #2c3e50;
+        }
+        
+        .expect-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .frequency-box {
+            background-color: #fff8e1;
+            border: 2px solid #ffd54f;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .frequency-icon {
+            font-size: 32px;
+            color: #e65100;
+            flex-shrink: 0;
+        }
+        
+        .frequency-text {
+            flex-grow: 1;
+        }
+        
+        .frequency-text strong {
+            color: #e65100;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 35px 0 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, #2d9cdb, #1a6bb3);
+            color: white;
+            padding: 16px 40px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(45, 156, 219, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(45, 156, 219, 0.3);
+        }
+        
+        .signature {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .signature p {
+            margin: 5px 0;
+        }
+        
+        .hospital-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a6bb3;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: white;
+        }
+        
+        .unsubscribe {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #95a5a6;
+        }
+        
+        .unsubscribe a {
+            color: #bdc3c7;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .welcome-title {
+                font-size: 26px;
+            }
+            
+            .expect-list {
+                flex-direction: column;
+            }
+            
+            .frequency-box {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://pioneerhospitals.in/wp-content/uploads/2021/07/Pioneer-Hospitals-logo.png" alt="Pioneer Hospital" class="hospital-logo">
+                <div class="confirmation-icon">✉️</div>
+                <h1 class="welcome-title">Welcome Aboard!</h1>
+                <p class="subtitle">You're Now Subscribed to Pioneer Hospital Newsletter</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">
+                Hello <strong>{{ full_name }}</strong>,
+            </div>
+            
+            <div class="thank-you-message">
+                <p>Thank you for subscribing to the Pioneer Hospital newsletter! We're thrilled to welcome you to our community of health-conscious individuals who value quality healthcare information.</p>
+                <p>Your subscription has been successfully confirmed, and you're now part of our network receiving the latest healthcare insights, wellness tips, and hospital updates.</p>
+            </div>
+            
+            <div class="benefits-section">
+                <h3 class="benefits-title">📬 What You'll Receive</h3>
+                <ul class="benefits-list">
+                    <li>Latest medical breakthroughs and health research</li>
+                    <li>Preventive healthcare tips and wellness advice</li>
+                    <li>Updates on new hospital services and specialists</li>
+                    <li>Health awareness campaigns and community events</li>
+                    <li>Exclusive offers on health checkup packages</li>
+                    <li>Seasonal health guides and preventive measures</li>
+                </ul>
+            </div>
+            
+            <div class="what-to-expect">
+                <h3 class="expect-title">📅 What to Expect</h3>
+                <div class="expect-list">
+                    <div class="expect-item">
+                        <span class="expect-icon">🎯</span>
+                        <h4>Expert Content</h4>
+                        <p>Curated by our medical professionals and healthcare experts</p>
+                    </div>
+                    <div class="expect-item">
+                        <span class="expect-icon">🔒</span>
+                        <h4>Privacy Protected</h4>
+                        <p>Your information is secure and will never be shared</p>
+                    </div>
+                    <div class="expect-item">
+                        <span class="expect-icon">⭐</span>
+                        <h4>Value Focused</h4>
+                        <p>Content designed to improve your health and wellbeing</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="frequency-box">
+                <div class="frequency-icon">📆</div>
+                <div class="frequency-text">
+                    <p><strong>Delivery Frequency:</strong> You'll receive our newsletter <strong>once every two weeks</strong> (on alternate Fridays). We respect your inbox and promise not to overwhelm you with excessive emails.</p>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <p>While you wait for your first newsletter, explore our health resources:</p>
+                <a href="https://pioneerhospitals.in/health-resources" class="cta-button">Explore Health Resources</a>
+            </div>
+            
+            <div class="signature">
+                <p>Thank you for trusting Pioneer Hospital with your health information needs.</p>
+                <p>Stay healthy and informed,</p>
+                <p class="hospital-name">The Pioneer Hospital Team</p>
+                <p>Excellence in Healthcare Since 1995</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Pioneer Hospital</strong><br>
+            123 Health Care Avenue, Medical District</p>
+            
+            <div class="footer-links">
+                <a href="https://pioneerhospitals.in" class="footer-link">Our Website</a>
+                <a href="https://pioneerhospitals.in/services" class="footer-link">Our Services</a>
+                <a href="https://pioneerhospitals.in/doctors" class="footer-link">Our Doctors</a>
+                <a href="https://pioneerhospitals.in/contact" class="footer-link">Contact Us</a>
+            </div>
+            
+            <div class="unsubscribe">
+                <p>You're receiving this email because you subscribed to Pioneer Hospital newsletter.<br>
+                <a href="{{ unsubscribe_link }}">Unsubscribe</a> | <a href="{{ preferences_link }}">Update Preferences</a></p>
+                <p style="margin-top: 15px; font-size: 12px;">© {{ current_year }} Pioneer Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

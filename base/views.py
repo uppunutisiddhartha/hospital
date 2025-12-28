@@ -1,3 +1,5 @@
+import email
+from email.message import EmailMessage
 from django.shortcuts import render,redirect
 from .models import *
 from django.db.models import Count
@@ -8,12 +10,18 @@ from calendar import monthrange
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.timezone import now
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.core.mail import EmailMessage
+from .utils import send_post_newsletter
+
 
 # Create your views here.
 
 def index(request):
     if request.method == 'POST':
-        
+
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         email = request.POST.get('email')
@@ -23,12 +31,10 @@ def index(request):
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
 
-        # Convert date string to date object
         date = datetime.strptime(date_str, "%Y-%m-%d").date()
-
-        # Convert "09:00" → time object
         time = datetime.strptime(time_str, "%H:%M").time()
 
+        # Save consultation
         Consultation.objects.create(
             name=name,
             phone=phone,
@@ -38,11 +44,34 @@ def index(request):
             specialist=specialist,
             reason=reason
         )
-    post=Post.objects.filter(status='publish').order_by('-created_at')
-    context={
-        'posts':post
-    }
-    return render(request, 'index.html',context)
+
+        # Save message (optional)
+
+        # 📧 SEND EMAIL TO USER
+        subject = "Consultation Confirmation"
+        message = f"""
+Hello {name},
+
+Your consultation has been successfully booked.
+
+📅 Date: {date}
+⏰ Time: {time}
+👨‍⚕️ Specialist: {specialist}
+📝 Reason: {reason}
+
+Thank you for choosing us.
+"""
+        send_mail(
+            subject,
+            message,
+            None,             
+            [email],          
+            fail_silently=False
+        )
+
+    post = Post.objects.filter(status='publish').order_by('-created_at')
+    context = {'posts': post}
+    return render(request, 'index.html', context)
 
 
 def pre_consultation(request):
@@ -73,6 +102,16 @@ def register(request):
             status='inactive'
 
         )
+        html_content = render_to_string('email_templates/welcome_email.html', {'full_name': full_name,
+        })
+        email = EmailMessage(
+            subject="Welcome to Pioneer Hospital",
+            body=html_content,
+            from_email=settings.EMAIL_HOST_USER,  
+            to=[email],
+        )
+        email.content_subtype = "html"
+        email.send(fail_silently=False)
 
         return redirect('login')
 
@@ -173,15 +212,30 @@ def insurance_list(request):
         insurance_name = request.POST.get('insurance_name')
         phone = request.POST.get('phone')
         policy_start_date = request.POST.get('policy_start_date')
+        email = request.POST.get('email')
         file = request.FILES.get('file')  # IMPORTANT
 
         Appointment.objects.create(
             full_name=full_name,
             insurance_name=insurance_name,
             phone=phone,
+            email=email,
             policy_start_date=policy_start_date,
             file=file
         )
+
+        messages.success(request, "Insurance appointment created successfully.")
+    
+        html_content = render_to_string('email_templates/insurance_consultaion_conform.html', {'full_name': full_name,
+        })
+        email = EmailMessage(
+            subject="Insurance Consultation Confirmation",
+            body=html_content,
+            from_email=settings.EMAIL_HOST_USER,  
+            to=[email],       
+        )
+        email.content_subtype = "html"  
+        email.send(fail_silently=False)
 
         return redirect('insurance_list')
 
@@ -364,6 +418,17 @@ def update_user_status(request, user_id):
 
     user.status = status
     user.save()
+    # Send email notification to user about status change
+    html_content = render_to_string('email_templates/status_update.html', {'user': user, 'status': status})
+    
+    email = EmailMessage(
+        subject="Status Update Notification",
+        body=html_content,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[user.email],
+    )
+    email.content_subtype = "html"  
+    email.send(fail_silently=False)
 
 
     messages.success(request, f"{user.username} status updated to {status}")
@@ -390,18 +455,21 @@ def update_user_role(request, user_id):
 def general_manager_dashboard(request):
     if request.user.role != 'general_manager':
         return redirect('login')
-    
+
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
         image = request.FILES.get('image')
 
         Post.objects.create(
-            title=title,    
+            title=title,
             content=content,
             image=image,
             status='hold'
         )
+
+        
+        return redirect('general_manager_dashboard')
 
     posts = Post.objects.all().order_by('-created_at')
 
@@ -410,9 +478,6 @@ def general_manager_dashboard(request):
         'published_count': Post.objects.filter(status='publish').count(),
         'pending_count': Post.objects.filter(status='hold').count(),
     })
-       
-    return render(request, 'dashboards/general_manager.html',{'posts':posts})
-
 
 @login_required
 def gm_update_post_status(request, post_id):
@@ -421,19 +486,18 @@ def gm_update_post_status(request, post_id):
     if request.method == "POST":
         action = request.POST.get("action")
 
-        if action == 'publish':
-            # 🔒 Force ALL other posts to HOLD
-            Post.objects.exclude(id=post.id).update(status='hold')
-
-            # ✅ Publish ONLY this post
-            post.status = 'publish'
+        if action == "publish":
+            post.status = "publish"
             post.save()
 
-        elif action == 'hold':
-            post.status = 'hold'
+            send_post_newsletter(post)
+
+
+        elif action == "hold":
+            post.status = "hold"
             post.save()
 
-    return redirect('general_manager_dashboard')
+    return redirect("general_manager_dashboard")
 
 
 def delete_post(request,id):
@@ -454,4 +518,39 @@ def healthy_savings(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('index')
+    return redirect('login')
+
+
+# the news letter subscribe view in the index page, careee
+def newsletter_subscribe(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+
+        if not email:
+            messages.error(request, "Please enter a valid email.")
+            return redirect("career")
+
+        if newsletter_subscribers.objects.filter(email=email).exists():
+            messages.info(request, "You are already subscribed.")
+            return redirect("career")
+
+        newsletter_subscribers.objects.create(email=email)
+
+        html_content = render_to_string(
+            'email_templates/newsletter_subscription.html',
+            {'email': email}
+        )
+
+        mail = EmailMessage(
+            subject="Thanks for Subscribing to Our Newsletter",
+            body=html_content,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[email],
+        )
+        mail.content_subtype = "html"
+        mail.send()
+
+        messages.success(request, "Successfully subscribed to the newsletter.")
+        return redirect("career")
+
+    return redirect("career")

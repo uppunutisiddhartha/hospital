@@ -144,3 +144,24 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # CUSTOM USER MODEL
 # -------------------------------
 AUTH_USER_MODEL = 'base.CustomUser'
+
+
+
+# Default primary key field type
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'uppunutisiddhartha@gmail.com'
+EMAIL_HOST_PASSWORD = 'rzwl vyhr ywfe mpgp'  # Gmail App Password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

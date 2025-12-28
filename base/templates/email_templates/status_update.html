@@ -1,38 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Account Status Update</title>
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f5f7fa; padding: 20px;">
 
-    <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 6px;">
+<body style="margin:0; padding:0; background-color:#f5f7fa; font-family: Arial, Helvetica, sans-serif;">
 
-        <h2 style="color: #2c3e50;">Account Status Updated</h2>
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:20px;">
+    <tr>
+        <td align="center">
 
-        <p>Hello <strong>{{ user.username }}</strong>,</p>
+            <table width="600" cellpadding="0" cellspacing="0"
+                   style="background:#ffffff; border-radius:6px; padding:24px;">
 
-        <p>
-            This is to inform you that your account status has been updated successfully.
-        </p>
+                <!-- Header -->
+                <tr>
+                    <td style="text-align:center; padding-bottom:20px;">
+                        <h2 style="margin:0; color:#2c3e50;">
+                            Account Status Update
+                        </h2>
+                    </td>
+                </tr>
 
-        <p style="font-size: 16px;">
-            <strong>Current Status:</strong>
-            <span style="color: #27ae60;">
-                {{ new_status|capfirst }}
-            </span>
-        </p>
+                <!-- Body -->
+                <tr>
+                    <td style="color:#333; font-size:15px; line-height:1.6;">
 
-        <p>
-            If you have any questions or need assistance, feel free to contact our support team.
-        </p>
+                        <p>
+                            Hello <strong>{{ user.name }}</strong>,
+                        </p>
 
-        <p style="margin-top: 30px;">
-            Thank you,<br>
-            <strong>Support Team</strong>
-        </p>
+                        <!-- User Details -->
+                        <table width="100%" cellpadding="8" cellspacing="0"
+                               style="background:#f8f9fb; border-radius:5px; margin:15px 0; font-size:14px;">
+                            <tr>
+                                <td width="40%"><strong>User ID</strong></td>
+                                <td>{{ user.id }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Registered Email</strong></td>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Name</strong></td>
+                                <td>{{ user.name }}</td>
+                            </tr>
+                        </table>
 
-    </div>
+                        <!-- Status Message -->
+                        {% if status == "active" %}
+                            <p>Your account is now active. You have full access.</p>
+                            <span style="background:#27ae60; color:#fff; padding:6px 14px;
+                                border-radius:20px; font-size:13px;">
+                                ACTIVE
+                            </span>
+
+                        {% elif status == "hold" %}
+                            <p>Your account has been placed on hold.</p>
+                            <span style="background:#f39c12; color:#fff; padding:6px 14px;
+                                border-radius:20px; font-size:13px;">
+                                HOLD
+                            </span>
+
+                        {% elif status == "suspended" %}
+                            <p>Your account has been suspended.</p>
+                            <span style="background:#e74c3c; color:#fff; padding:6px 14px;
+                                border-radius:20px; font-size:13px;">
+                                SUSPENDED
+                            </span>
+
+                        {% elif status == "inactive" %}
+                            <p>Your account is currently inactive.</p>
+                            <span style="background:#7f8c8d; color:#fff; padding:6px 14px;
+                                border-radius:20px; font-size:13px;">
+                                INACTIVE
+                            </span>
+                        {% endif %}
+
+                        <p style="margin-top:25px;">
+                            If any of the above details are incorrect, please contact HR immediately.
+                        </p>
+
+                        <p style="margin-top:30px;">
+                            Regards,<br>
+                            <strong>HR Support Team</strong>
+                        </p>
+
+                        <!-- Footer -->
+                        <hr style="margin:30px 0; border:none; border-top:1px solid #eee;">
+
+                        <p style="font-size:13px; color:#777;">
+                            📧 Email: hr@yourcompany.com<br>
+                            ☎ Phone: +91 98765 43210<br>
+                            🕘 Mon–Fri, 9:00 AM – 6:00 PM
+                        </p>
+
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>
