@@ -1,5 +1,6 @@
 import email
 from email.message import EmailMessage
+from urllib import response
 from django.shortcuts import render,redirect
 from .models import *
 from django.db.models import Count
@@ -15,6 +16,9 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.mail import EmailMessage
 from .utils import send_post_newsletter
+from django.views.decorators.cache import never_cache, cache_control
+
+
 
 
 # Create your views here.
@@ -48,6 +52,7 @@ def index(request):
         # Save message (optional)
 
         # 📧 SEND EMAIL TO USER
+        '''
         subject = "Consultation Confirmation"
         message = f"""
 Hello {name},
@@ -68,7 +73,7 @@ Thank you for choosing us.
             [email],          
             fail_silently=False
         )
-
+'''
     post = Post.objects.filter(status='publish').order_by('-created_at')
     context = {'posts': post}
     return render(request, 'index.html', context)
@@ -102,6 +107,7 @@ def register(request):
             status='inactive'
 
         )
+        """
         html_content = render_to_string('email_templates/welcome_email.html', {'full_name': full_name,
         })
         email = EmailMessage(
@@ -112,7 +118,7 @@ def register(request):
         )
         email.content_subtype = "html"
         email.send(fail_silently=False)
-
+        """
         return redirect('login')
 
     return render(request, 'register.html')
@@ -225,7 +231,7 @@ def insurance_list(request):
         )
 
         messages.success(request, "Insurance appointment created successfully.")
-    
+        '''
         html_content = render_to_string('email_templates/insurance_consultaion_conform.html', {'full_name': full_name,
         })
         email = EmailMessage(
@@ -236,15 +242,21 @@ def insurance_list(request):
         )
         email.content_subtype = "html"  
         email.send(fail_silently=False)
-
+        '''
         return redirect('insurance_list')
 
     return render(request, 'insurance_list.html')
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@never_cache
 def login_view(request):
     if request.method == 'POST':
+        #client_ip = get_client_ip(request)
+
+        # if not any(client_ip.startswith(ip) for ip in settings.HOSPITAL_ALLOWED_IPS):
+        #     messages.error(request, "Login allowed only from hospital premises.")
+        #     return redirect('login')
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -279,10 +291,26 @@ def login_view(request):
 
         elif user.role == 'hr':
             return redirect('hr_dashboard')
+        
+        #print(user.role, "logged in")
 
         return redirect('login')
 
     return render(request, 'login.html')   
+
+
+@login_required
+def logout_view(request):
+        logout(request)
+        response = redirect('login')
+        response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        return response
+        # logout(request)
+        # return redirect('login')
+
+
 
 
 @login_required
@@ -344,7 +372,22 @@ def career(request):
            resume=request.FILES.get("resume"),
            job_id=int(request.POST.get("job_id")),
        )
+       '''
+       messages.success(request, "Your application has been submitted successfully.")
+       html_content = render_to_string('email_templates/application_received.html', {'applicant_name': request.POST.get("applicant_name"),
+       })
+       email = EmailMessage(
+              subject="Application Received",
+              body=html_content,
+              from_email=None,
+              to=[request.POST.get("email")],
+       )
+       email.content_subtype = "html"
+       email.send(fail_silently=False)
+       '''
        return redirect("career")
+   
+
    jobnofications=jobnotification.objects.filter(is_published=True,status='open')
    context={
        'jobnotifications':jobnofications
@@ -418,6 +461,7 @@ def update_user_status(request, user_id):
 
     user.status = status
     user.save()
+    '''
     # Send email notification to user about status change
     html_content = render_to_string('email_templates/status_update.html', {'user': user, 'status': status})
     
@@ -429,7 +473,7 @@ def update_user_status(request, user_id):
     )
     email.content_subtype = "html"  
     email.send(fail_silently=False)
-
+    '''
 
     messages.success(request, f"{user.username} status updated to {status}")
     return redirect('employee_management')
@@ -468,8 +512,9 @@ def general_manager_dashboard(request):
             status='hold'
         )
 
-        
-        return redirect('general_manager_dashboard')
+        newsletter_subscribe = newsletter_subscribers.objects.count()
+
+        return redirect('general_manager_dashboard', newsletter_subscribe=newsletter_subscribe)
 
     posts = Post.objects.all().order_by('-created_at')
 
@@ -515,10 +560,7 @@ def healthy_savings(request):
 
 
 
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+
 
 
 # the news letter subscribe view in the index page, careee
@@ -535,7 +577,7 @@ def newsletter_subscribe(request):
             return redirect("career")
 
         newsletter_subscribers.objects.create(email=email)
-
+        '''
         html_content = render_to_string(
             'email_templates/newsletter_subscription.html',
             {'email': email}
@@ -549,8 +591,23 @@ def newsletter_subscribe(request):
         )
         mail.content_subtype = "html"
         mail.send()
-
+        '''
         messages.success(request, "Successfully subscribed to the newsletter.")
         return redirect("career")
 
     return redirect("career")
+
+
+
+#profiles of doctors links in index.html
+def vamshidhar_reddy(request):
+    return render(request, 'profiles/vamshidhar_reddy.html')
+
+def srinivas_reddy(request):
+    return render(request, 'profiles/srinivas_reddy.html')
+
+def swetha_reddy(request):
+    return render(request, 'profiles/swetha_reddy.html')
+
+def samyuktha_reddy(request):
+    return render(request, 'profiles/samyuktha_reddy.html')

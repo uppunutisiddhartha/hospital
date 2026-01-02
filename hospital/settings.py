@@ -165,3 +165,23 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'uppunutisiddhartha@gmail.com'
 EMAIL_HOST_PASSWORD = 'rzwl vyhr ywfe mpgp'  # Gmail App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+
+# Session settings
+SESSION_COOKIE_AGE = 1209600  # Two weeks in seconds
+SESSION_SAVE_EVERY_REQUEST = True
+CSRF_COOKIE_AGE = 1209600  # Two weeks in seconds
+CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+#CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://
+
+#for location  for login redirection
+
+
+HOSPITAL_ALLOWED_IPS = [
+    # "192.168.1.",     
+    # "10.0.0.",        
+    # "203.0.113.45",  
+
+]

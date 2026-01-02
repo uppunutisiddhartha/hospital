@@ -27,10 +27,23 @@ urlpatterns = [
    path('gm/post/delete/<int:id>/', views.delete_post, name='delete_post'),
    path('healthy-savings/', views.healthy_savings, name='healthy_savings'),
    path('update_user_role/<int:user_id>/', views.update_user_role, name='update_user_role'),
-   path('logout/', views.logout_view, name='logout'),
+   path('logout', views.logout_view, name='logout'),
    #path('main_admin/', views.main_admin, name='main_admin'),
    path('mod/respond/<int:consultation_id>/', views.respond_consultation, name='respond_consultation'),
    path('newsletter/subscribe/', views.newsletter_subscribe, name='subscribe_newsletter'),
+
+
+
+
+
+
+
+
+   #profiles
+   path('doctor/vamshidhar_reddy/', views.vamshidhar_reddy, name='vamshidhar_reddy'),
+   path('doctor/srinivas_reddy/', views.srinivas_reddy, name='srinivas_reddy'),
+   path('doctor/swetha_reddy/', views.swetha_reddy, name='swetha_reddy'),
+   path('doctor/samyuktha_reddy/', views.samyuktha_reddy, name='samyuktha_reddy'),
 ]
    
 

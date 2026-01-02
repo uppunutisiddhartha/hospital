@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Acknowledgement | Pioneer Hospitals</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a365d;
+            background-color: #f8fafc;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .email-wrapper {
+            max-width: 640px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Header Section */
+        .email-header {
+            background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: cover;
+        }
+        
+        .hospital-logo-container {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hospital-logo {
+            max-width: 220px;
+            height: auto;
+            display: block;
+        }
+        
+        .hospital-title {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-top: 25px;
+            position: relative;
+            z-index: 2;
+            opacity: 0.95;
+        }
+        
+        /* Content Section */
+        .email-content {
+            padding: 50px 45px;
+        }
+        
+        .salutation {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .salutation:before {
+            content: "";
+            width: 4px;
+            height: 24px;
+            background: #3182ce;
+            border-radius: 2px;
+            display: inline-block;
+        }
+        
+        .message-paragraph {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+        
+        /* Status Card */
+        .status-card {
+            background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
+            border-radius: 10px;
+            padding: 28px;
+            margin: 35px 0;
+            border-left: 5px solid #3182ce;
+            box-shadow: 0 4px 15px rgba(49, 130, 206, 0.1);
+        }
+        
+        .status-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-title:before {
+            content: "✓";
+            background: #3182ce;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .status-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .detail-item {
+            padding: 12px 0;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: #718096;
+            font-weight: 500;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+            font-size: 16px;
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        /* Process Timeline */
+        .process-section {
+            margin: 40px 0;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline:before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #3182ce;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .timeline-item:before {
+            content: "";
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #3182ce;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #3182ce;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .timeline-desc {
+            color: #718096;
+            font-size: 14.5px;
+            line-height: 1.6;
+        }
+        
+        /* Contact Block */
+        .contact-block {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .contact-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .contact-info {
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        .contact-email {
+            color: #3182ce;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+        
+        /* Closing */
+        .closing-section {
+            margin-top: 45px;
+        }
+        
+        .closing-text {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .signature {
+            font-weight: 600;
+            color: #1a365d;
+            font-size: 17px;
+            margin-top: 35px;
+        }
+        
+        /* Footer */
+        .email-footer {
+            background: #1a202c;
+            color: #a0aec0;
+            padding: 35px 45px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: #cbd5e0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: #ffffff;
+        }
+        
+        .copyright {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+        
+        .footer-note {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        /* Responsive */
+        @media (max-width: 640px) {
+            .email-content, .email-header, .email-footer {
+                padding: 30px 25px;
+            }
+            
+            .status-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .hospital-logo-container {
+                padding: 15px;
+            }
+            
+            .hospital-logo {
+                max-width: 180px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .email-wrapper {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .email-wrapper {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <!-- Header -->
+        <div class="email-header">
+            <div class="header-overlay"></div>
+            <div class="hospital-logo-container">
+                <img src="https://pioneerhospitals.in/wp-content/uploads/2021/07/Pioneer-Hospitals-logo.png" 
+                     alt="Pioneer Hospitals Logo" 
+                     class="hospital-logo">
+            </div>
+            <div class="hospital-title">EXCELLENCE IN HEALTHCARE & COMPASSION</div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="email-content">
+            <div class="salutation">Dear {{ applicant_name }},</div>
+            
+            <p class="message-paragraph">
+                Thank you for submitting your application for consideration at Pioneer Hospitals. 
+                We acknowledge receipt of your application materials and appreciate your interest 
+                in joining our esteemed healthcare institution.
+            </p>
+            
+            <!-- Status Card -->
+            <div class="status-card">
+                <div class="status-title">Application Successfully Received</div>
+                <div class="status-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Reference Number</div>
+                        <div class="detail-value">PH-{{ date('Ymd') }}-{{ random(1000,9999) }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Date Received</div>
+                        <div class="detail-value">{{ current_date }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Department</div>
+                        <div class="detail-value">{{ position_department }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value" style="color: #3182ce;">Under Review</div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="message-paragraph">
+                Our Talent Acquisition team will conduct a comprehensive review of your qualifications 
+                and experience. We are committed to a thorough evaluation process to ensure we select 
+                candidates who align with our mission of delivering exceptional patient care.
+            </p>
+            
+            <!-- Process Timeline -->
+            <div class="process-section">
+                <div class="section-title">Application Review Process</div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Initial Screening</div>
+                        <div class="timeline-desc">
+                            Your application will be reviewed against the position requirements 
+                            (1-3 business days)
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Department Review</div>
+                        <div class="timeline-desc">
+                            Shortlisted applications proceed to departmental assessment 
+                            (3-5 business days)
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Interview Coordination</div>
+                        <div class="timeline-desc">
+                            Selected candidates will be contacted for interview scheduling
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Final Decision</div>
+                        <div class="timeline-desc">
+                            All applicants will receive notification of the final outcome
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="contact-block">
+                <div class="contact-title">Need Assistance?</div>
+                <div class="contact-info">
+                    For inquiries regarding your application, please contact:<br>
+                    <strong>Human Resources Department</strong><br>
+                    Email: <a href="mailto:hr@pioneerhospitals.in" class="contact-email">hr@pioneerhospitals.in</a><br>
+                    Phone: +91-XXX-XXXX-XXXX<br>
+                    Hours: Mon-Fri, 9:00 AM - 5:00 PM IST
+                </div>
+            </div>
+            
+            <!-- Closing -->
+            <div class="closing-section">
+                <p class="closing-text">
+                    We value the time and effort you have invested in your application. 
+                    At Pioneer Hospitals, we believe in building a team of dedicated professionals 
+                    who share our commitment to healthcare excellence.
+                </p>
+                
+                <div class="signature">
+                    Sincerely,<br>
+                    <strong>Recruitment Division</strong><br>
+                    Pioneer Hospitals<br>
+                    <span style="font-size: 14px; color: #718096; font-weight: normal;">Talent Acquisition Team</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <div class="footer-links">
+                <a href="https://pioneerhospitals.in" class="footer-link">Our Website</a>
+                <a href="https://pioneerhospitals.in/careers" class="footer-link">Career Portal</a>
+                <a href="https://pioneerhospitals.in/about" class="footer-link">About Us</a>
+                <a href="https://pioneerhospitals.in/contact" class="footer-link">Contact</a>
+            </div>
+            
+            <div class="copyright">
+                © 2024 Pioneer Hospitals. All rights reserved.<br>
+                [Hospital Address] | [City, State, ZIP Code]
+            </div>
+            
+            <div class="footer-note">
+                This email was automatically generated. Please do not reply to this message.<br>
+                Confidentiality Notice: This communication contains privileged information intended solely for the recipient.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
