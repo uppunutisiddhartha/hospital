@@ -179,9 +179,26 @@ CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
 #for location  for login redirection
 
 
-HOSPITAL_ALLOWED_IPS = [
-    # "192.168.1.",     
-    # "10.0.0.",        
-    # "203.0.113.45",  
+SESSION_COOKIE_SECURE = True          # HTTPS only
+CSRF_COOKIE_SECURE = True             # HTTPS only
+SESSION_COOKIE_HTTPONLY = True        # JS can't access session
+CSRF_COOKIE_HTTPONLY = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 60 * 30           # 30 minutes
 
+
+CSRF_COOKIE_SECURE = True             # HTTPS only
+CSRF_COOKIE_HTTPONLY = True
+CSRF_TRUSTED_ORIGINS = ['']  # Replace with your domain
+
+
+
+INSTALLED_APPS += ['axes']
+
+MIDDLEWARE += [
+    'axes.middleware.AxesMiddleware',
 ]
+
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1  # hours
+AXES_LOCKOUT_CALLABLE = 'axes.handlers.database.AxesDatabaseHandler'

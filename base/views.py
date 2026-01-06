@@ -601,6 +601,7 @@ def newsletter_subscribe(request):
 
 #profiles of doctors links in index.html
 def vamshidhar_reddy(request):
+    
     return render(request, 'profiles/vamshidhar_reddy.html')
 
 def srinivas_reddy(request):
