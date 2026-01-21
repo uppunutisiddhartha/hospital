@@ -1007,20 +1007,21 @@
                 <!-- Contact Form -->
                 <div class="contact-form">
                     <h3>Send us a Message</h3>
-                    <form id="contactForm">
+                    <form method="POST" id="contactForm">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label for="name">Full Name *</label>
-                            <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+                            <input name="name" type="text" id="name" class="form-control" placeholder="Enter your full name" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                            <input name="phone" type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" class="form-control" placeholder="Enter your email address">
+                            <input name="email" type="email" id="email" class="form-control" placeholder="Enter your email address">
                         </div>
                         
                         <div class="form-group">
@@ -1031,15 +1032,15 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="subject">Subject</label>
-                            <input type="text" id="subject" class="form-control" placeholder="Message subject">
+                            <input name="subject" type="text" id="subject" class="form-control" placeholder="Message subject">
                         </div>
                         
                         <div class="form-group">
                             <label for="message">Your Message *</label>
-                            <textarea id="message" class="form-control" placeholder="Please describe your requirement or query..." required></textarea>
+                            <textarea name="message" id="message" class="form-control" placeholder="Please describe your requirement or query..." required></textarea>
                         </div>
                         
                         <button type="submit" class="submit-btn">
@@ -1237,80 +1238,5 @@
         </div>
     </footer>
 
-    <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-toggle').addEventListener('click', function() {
-            document.querySelector('.nav-menu').classList.toggle('active');
-            this.querySelector('i').classList.toggle('fa-bars');
-            this.querySelector('i').classList.toggle('fa-times');
-        });
-
-        // Navigation active state
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.getAttribute('href') === '#') {
-                    e.preventDefault();
-                }
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Appointment button click
-        document.querySelector('.appointment-button').addEventListener('click', function() {
-            document.querySelector('#appointment').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Contact form submission
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for contacting Pioneer Hospitals! We will get back to you shortly.');
-            this.reset();
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.nav-menu') && !e.target.closest('.mobile-toggle')) {
-                document.querySelector('.nav-menu').classList.remove('active');
-                document.querySelector('.mobile-toggle i').classList.add('fa-bars');
-                document.querySelector('.mobile-toggle i').classList.remove('fa-times');
-            }
-        });
-
-        // Emergency number click
-        document.querySelectorAll('.emergency-highlight, .emergency-banner a').forEach(element => {
-            element.addEventListener('click', function(e) {
-                if (window.innerWidth > 768) {
-                    e.preventDefault();
-                    window.location.href = 'tel:+919775108108';
-                }
-            });
-        });
-
-        // Set current year in copyright
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // Back to top button
-        document.querySelector('.back-to-top').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                if (this.getAttribute('href') !== '#') {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId !== '#') {
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            targetElement.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 </html>

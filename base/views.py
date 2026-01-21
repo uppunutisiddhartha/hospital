@@ -89,6 +89,23 @@ def pre_consultation(request):
     return render(request, 'pre_consultation.html' , {'appointments': appointments})
 
 def contact(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        subject = request.POST.get("subject")
+        message = request.POST.get("message")
+
+        ContactUs.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            subject=subject,
+            message=message
+        )
+
+        messages.success(request, "Your message has been sent successfully.")
+        return redirect('contact')
     return render(request, 'contact.html')
 
 
@@ -640,6 +657,10 @@ def newsletter_subscribe(request):
 
 
 #profiles of doctors links in index.html
+
+def general_contact_manager(request):
+    contact_messages = ContactUs.objects.all().order_by('-submitted_at')
+    return render(request, 'general_contact_manager.html', {'contact_messages': contact_messages})
 
 def doctors(request):
     return render(request, 'doctors.html')

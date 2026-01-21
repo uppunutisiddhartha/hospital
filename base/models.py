@@ -176,8 +176,9 @@ class newsletter_subscribers(models.Model):
 
 class ContactUs(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField()
-    subject = models.CharField(max_length=200)
+    email = models.EmailField(null=True, blank=True)
+    phone = models.CharField(max_length=15)
+    subject = models.CharField(max_length=200,null=True, blank=True)
     message = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True)
 
