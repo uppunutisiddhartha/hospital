@@ -31,6 +31,7 @@ def index(request):
         email = request.POST.get('email')
         specialist = request.POST.get('specialist')
         reason = request.POST.get('reason')
+        gender= request.POST.get('gender')
 
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
@@ -46,12 +47,11 @@ def index(request):
             date=date,
             time=time,
             specialist=specialist,
-            reason=reason
+            reason=reason,
+            gender=gender
         )
 
-        # Save message (optional)
-
-        # 📧 SEND EMAIL TO USER
+        messages.success(request, "Your consultation has been booked successfully.")
         '''
         subject = "Consultation Confirmation"
         message = f"""
@@ -79,11 +79,49 @@ Thank you for choosing us.
     return render(request, 'index.html', context)
 
 
+def hospital_info(request):
+    return render(request, 'hospital_info.html')
+
+@never_cache
+@login_required
 def pre_consultation(request):
     appointments = Appointment.objects.all()
     return render(request, 'pre_consultation.html' , {'appointments': appointments})
 
+def contact(request):
+    return render(request, 'contact.html')
 
+
+def appointment(request):
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        specialist = request.POST.get('specialist')
+        reason = request.POST.get('reason')
+        gender= request.POST.get('gender')
+
+        date_str = request.POST.get('date')
+        time_str = request.POST.get('time')
+
+        date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        time = datetime.strptime(time_str, "%H:%M").time()
+
+        Appointment.objects.create(
+            full_name=full_name,
+            phone=phone,
+            email=email,
+            date=date,
+            time=time,
+            specialist=specialist,
+            reason=reason,
+            gender=gender 
+        )
+
+        messages.success(request, "Your appointment has been booked successfully.")
+        return redirect('appointment')
+
+    return render(request, 'appionments.html')
 
 def register(request):
     if request.method == 'POST':
@@ -122,7 +160,7 @@ def register(request):
         return redirect('login')
 
     return render(request, 'register.html')
-
+@never_cache
 @login_required
 def MOD(request):
     today = date.today()
@@ -206,7 +244,7 @@ def respond_consultation(request, consultation_id):
     consultation.save()
 
     return redirect(request.META.get("HTTP_REFERER", "MOD"))
-
+@never_cache
 @login_required
 def insurance_admin(request):
     insurance_list = Appointment.objects.all()
@@ -249,7 +287,7 @@ def insurance_list(request):
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@never_cache
+
 def login_view(request):
     if request.method == 'POST':
         #client_ip = get_client_ip(request)
@@ -312,7 +350,7 @@ def logout_view(request):
 
 
 
-
+@never_cache
 @login_required
 def hr_dashboard(request):
     if request.user.role != 'hr':
@@ -494,7 +532,7 @@ def update_user_role(request, user_id):
 
     messages.success(request, f"{user.username} role updated to {role}")
     return redirect('employee_management')
-
+@never_cache
 @login_required
 def general_manager_dashboard(request):
     if request.user.role != 'general_manager':
@@ -512,9 +550,10 @@ def general_manager_dashboard(request):
             status='hold'
         )
 
-        newsletter_subscribe = newsletter_subscribers.objects.count()
+        #newsletter_subscribe = newsletter_subscribers.objects.count()
 
-        return redirect('general_manager_dashboard', newsletter_subscribe=newsletter_subscribe)
+        #return redirect('general_manager_dashboard', newsletter_subscribe=newsletter_subscribe)
+        return redirect('general_manager_dashboard')
 
     posts = Post.objects.all().order_by('-created_at')
 
@@ -522,6 +561,7 @@ def general_manager_dashboard(request):
         'posts': posts,
         'published_count': Post.objects.filter(status='publish').count(),
         'pending_count': Post.objects.filter(status='hold').count(),
+        'newsletter_subscribe': newsletter_subscribers.objects.count(),
     })
 
 @login_required
@@ -600,8 +640,12 @@ def newsletter_subscribe(request):
 
 
 #profiles of doctors links in index.html
+
+def doctors(request):
+    return render(request, 'doctors.html')
+
 def vamshidhar_reddy(request):
-    
+
     return render(request, 'profiles/vamshidhar_reddy.html')
 
 def srinivas_reddy(request):
@@ -612,3 +656,7 @@ def swetha_reddy(request):
 
 def samyuktha_reddy(request):
     return render(request, 'profiles/samyuktha_reddy.html')
+
+
+
+    

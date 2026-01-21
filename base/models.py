@@ -80,6 +80,7 @@ class Consultation(models.Model):
     time = models.TimeField()
     specialist = models.CharField(max_length=100)
     reason = models.TextField()
+    gender = models.CharField(max_length=10)
     responded_by=models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,on_delete=models.SET_NULL,limit_choices_to={'role': 'MOD'})
     responded_at = models.DateTimeField(null=True, blank=True)
 
@@ -171,3 +172,14 @@ class newsletter_subscribers(models.Model):
 
     def __str__(self):
         return self.email
+    
+
+class ContactUs(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.subject}"

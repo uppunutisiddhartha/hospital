@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Swetha Reddy T | Neurologist | Pioneer Hospitals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary: #d32f2f;
+            --accent: #9c27b0;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.7;
+            background-color: var(--light-bg);
+        }
+        
+        /* Minimal Header */
+        .mini-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mini-header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .hospital-logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .hospital-logo i {
+            color: #ffd700;
+        }
+        
+        .mini-nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .mini-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        
+        .mini-nav a:hover {
+            color: white;
+        }
+        
+        .back-btn {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* Doctor Hero Section */
+        .doctor-hero {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .hero-container {
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .hero-image-container {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .doctor-avatar {
+            width: 380px;
+            height: 380px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 8px solid white;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .doctor-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Fallback icon if image doesn't load */
+        .doctor-avatar i {
+            font-size: 120px;
+            color: var(--accent);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
+        .hero-content {
+            flex: 2;
+            padding: 50px 40px;
+            position: relative;
+        }
+        
+        .doctor-badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+        }
+        
+        .doctor-name {
+            font-size: 36px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        .doctor-title {
+            font-size: 20px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .doctor-qual {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .doctor-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .tag {
+            background-color: #f3e5f5;
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .contact-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .primary-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.2);
+        }
+        
+        .primary-btn:hover {
+            background-color: #7b1fa2;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.3);
+        }
+        
+        .secondary-btn {
+            background-color: white;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 12px 26px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .secondary-btn:hover {
+            background-color: #f3e5f5;
+            transform: translateY(-3px);
+        }
+        
+        /* Content Sections */
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 992px) {
+            .content-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title i {
+            color: var(--accent);
+        }
+        
+        .expertise-list, .qualification-list, .experience-list, .publication-list {
+            list-style: none;
+        }
+        
+        .expertise-list li, .qualification-list li, .experience-list li, .publication-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px dashed var(--border);
+        }
+        
+        .expertise-list li:last-child, .qualification-list li:last-child, 
+        .experience-list li:last-child, .publication-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .expertise-list li:before {
+            content: "•";
+            color: var(--accent);
+            font-size: 24px;
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+        
+        .qualification-list li:before {
+            content: "🎓";
+            position: absolute;
+            left: 0;
+        }
+        
+        .experience-list li:before {
+            content: "💼";
+            position: absolute;
+            left: 0;
+        }
+        
+        .publication-list li:before {
+            content: "📚";
+            position: absolute;
+            left: 0;
+        }
+        
+        .experience-year {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .publication-item {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Contact Card */
+        .contact-card {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 15px 30px rgba(13, 71, 161, 0.2);
+            margin-top: 30px;
+            grid-column: 1 / -1;
+        }
+        
+        .contact-title {
+            font-size: 26px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .contact-icon {
+            background: rgba(255, 255, 255, 0.15);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .contact-text h4 {
+            margin-bottom: 5px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .contact-text p {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .emergency-contact {
+            color: #ffcdd2;
+            font-weight: 700;
+        }
+        
+        /* Footer */
+        .profile-footer {
+            background-color: #1a202c;
+            color: #a0aec0;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3748;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-container {
+                flex-direction: column;
+            }
+            
+            .doctor-avatar {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .doctor-avatar i {
+                font-size: 80px;
+            }
+            
+            .doctor-name {
+                font-size: 28px;
+            }
+            
+            .doctor-title {
+                font-size: 18px;
+            }
+            
+            .contact-actions {
+                flex-direction: column;
+            }
+            
+            .mini-header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .section-card {
+                padding: 25px;
+            }
+            
+            .content-container {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Minimal Header -->
+    <header class="mini-header">
+        <div class="mini-header-container">
+            <a href="#" class="hospital-logo">
+                <i class="fas fa-hospital"></i> PIONEER HOSPITALS
+            </a>
+            <div class="mini-nav">
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-user-md"></i> Doctors</a>
+                <a href="#"><i class="fas fa-calendar-check"></i> Appointments</a>
+                <a href="#" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Doctors
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Doctor Hero Section -->
+    <section class="doctor-hero">
+        <div class="hero-container">
+            <div class="hero-image-container">
+                <div class="doctor-avatar">
+                    <!-- Placeholder for doctor image -->
+                    <img src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/07/DR.-SWETHA-REDDY-T.jpg?fit=242%2C286&ssl=1" 
+                         alt="Dr. Swetha Reddy T" 
+                         class="doctor-img">
+                    <!-- Fallback icon -->
+                    <i class="fas fa-user-md"></i>
+                </div>
+            </div>
+            
+            <div class="hero-content">
+                <div class="doctor-badge">
+                    <i class="fas fa-award"></i> Gold Medalist
+                </div>
+                
+                <h1 class="doctor-name">DR. SWETHA REDDY T</h1>
+                <div class="doctor-title">Sr. Consultant Neurologist</div>
+                <div class="doctor-qual">MBBS (Gold Medalist), MD (General Medicine), DM (Neurology) Osmania</div>
+                
+                <div class="doctor-tags">
+                    <div class="tag">Former Asst. Professor, NIMS</div>
+                    <div class="tag">15+ Years Experience</div>
+                    <div class="tag">Neuroimmunology</div>
+                    <div class="tag">Stroke Specialist</div>
+                </div>
+                
+                <div class="contact-actions">
+                    <a class="primary-btn" id="bookAppointment" href="{% url 'appointment' %}">
+                        <i class="fas fa-calendar-plus"></i> Book Appointment
+                    </a>
+                    <button class="secondary-btn" id="contactDoctor">
+                        <i class="fas fa-phone-alt"></i> +91 9154757751
+                    </button>
+                    <button class="secondary-btn" id="viewSchedule">
+                        <i class="fas fa-clock"></i> View Availability
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Sections -->
+    <main class="content-container">
+        <!-- Expertise Section -->
+        <div class="section-card">
+            <h2 class="section-title">
+                <i class="fas fa-stethoscope"></i> Areas of Expertise
+            </h2>
+            <ul class="expertise-list">
+                <li><strong>Neuroimmunology</strong> - Diagnosis and treatment of autoimmune neurological disorders</li>
+                <li><strong>Stroke</strong> - Acute stroke management, stroke prevention, and rehabilitation</li>
+                <li><strong>Movement Disorders</strong> - Parkinson's disease, tremors, dystonia, and other movement disorders</li>
+                <li><strong>Epilepsy</strong> - Seizure disorders management and treatment</li>
+                <li><strong>Headache & Migraine</strong> - Comprehensive headache management</li>
+                <li><strong>Neuromuscular Disorders</strong> - Diagnosis and treatment of nerve and muscle disorders</li>
+                <li><strong>Neurodegenerative Disorders</strong> - Dementia, Alzheimer's disease, and related conditions</li>
+            </ul>
+        </div>
+        
+        <!-- Qualifications Section -->
+        <div class="section-card">
+            <h2 class="section-title">
+                <i class="fas fa-graduation-cap"></i> Qualifications
+            </h2>
+            <ul class="qualification-list">
+                <li>
+                    <strong>MBBS</strong><br>
+                    Gandhi Medical College, Hyderabad - 2004<br>
+                    <span style="color: var(--accent); font-weight: 600;">Gold Medalist</span>
+                </li>
+                <li>
+                    <strong>MD (General Medicine)</strong><br>
+                    Gandhi Medical College, Hyderabad - 2009
+                </li>
+                <li>
+                    <strong>DM (Neurology)</strong><br>
+                    Osmania Medical College, Hyderabad - 2014
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Experience Section -->
+        <div class="section-card">
+            <h2 class="section-title">
+                <i class="fas fa-briefcase"></i> Professional Experience
+            </h2>
+            <ul class="experience-list">
+                <li>
+                    <strong>Consultant Neurologist</strong><br>
+                    Ozone Hospital, Hyderabad
+                    <span class="experience-year">Aug 2020 - Present</span>
+                </li>
+                <li>
+                    <strong>Assistant Professor of Neurology</strong><br>
+                    Nizam's Institute of Medical Sciences (NIMS), Hyderabad
+                    <span class="experience-year">Jun 2016 - Jul 2020</span>
+                </li>
+                <li>
+                    <strong>Junior Consultant Neurologist</strong><br>
+                    Care Hospital, Hyderabad
+                    <span class="experience-year">Feb 2016 - Jun 2016</span>
+                </li>
+                <li>
+                    <strong>Consultant Neurologist</strong><br>
+                    Durgabai Deshmukh Hospital and Research Centre, Hyderabad
+                </li>
+                <li>
+                    <strong>Senior Resident Super Specialist in Neurology</strong><br>
+                    Osmania General Hospital, Hyderabad
+                    <span class="experience-year">Feb 2015 - Feb 2016</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Publications Section -->
+        <div class="section-card" style="grid-column: 1 / -1;">
+            <h2 class="section-title">
+                <i class="fas fa-file-alt"></i> Research Publications
+            </h2>
+            <ul class="publication-list">
+                <li class="publication-item">
+                    <strong>Tandra S, Ramavath B, Kandadai RM, Jabeen SA, Kannan MA, Borgohain R.</strong><br>
+                    "Functional Outcome of Bilateral Subthalamic Nucleus-Deep Brain Stimulation in Advanced Parkinson's Disease Patients: A Prospective Study."<br>
+                    <em>Annals of Indian Academy of Neurology</em> 2020;23(1):54-58. doi:10.4103/aian.AIAN_357_18
+                </li>
+                <li class="publication-item">
+                    <strong>Tandra S, Kandadai RM, Peddisetty RP, et al.</strong><br>
+                    "The Effect of Dual Tasking and Deep Brain Stimulation Frequency Parameters on Gait in Advanced Parkinson's Disease."<br>
+                    <em>Annals of Indian Academy of Neurology</em> 2020;23(3):308-312. doi:10.4103/aian.AIAN_11_19
+                </li>
+                <li class="publication-item">
+                    <strong>Borgohain R, Mridula RK, Tandra S.</strong><br>
+                    "Deep brain stimulation in dystonia: The current status."<br>
+                    <em>Neurology India</em> 2017;65:1234-5
+                </li>
+                <li class="publication-item">
+                    <strong>Tandra S, Mridula RM, Borgohain R.</strong><br>
+                    "Blink Recovery Pattern and Somatosensory Evoked Blink Reflex in patients with Parkinsonism syndromes."<br>
+                    <em>Movement Disorders</em> 2018;33(suppl 2).
+                </li>
+                <li class="publication-item">
+                    <strong>Shaik AJ, Reddy K, Mohammed N, Tandra SR, Rukmini Mridula Kandadai, Baba Kss S.</strong><br>
+                    "Neuron specific enolase as a marker of seizure related neuronal injury."<br>
+                    <em>Neurochemistry International</em> 2019 Dec;131:104509. doi:10.1016/j.neuint.2019.104509
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Contact Card -->
+        <div class="contact-card">
+            <h2 class="contact-title">
+                <i class="fas fa-address-card"></i> Contact Information
+            </h2>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Email Address</h4>
+                        <p>swethareddy@pioneerhospitals.in</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Direct Consultation</h4>
+                        <p>+91 9154757751</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>OP Timings</h4>
+                        <p>9:00 AM - 9:00 PM</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Emergency Contact</h4>
+                        <p class="emergency-contact">+91 9775108108</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="profile-footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-hospital"></i> The Hospital</a>
+                <a href="#"><i class="fas fa-users"></i> Leadership Team</a>
+                <a href="#"><i class="fas fa-procedures"></i> Facilities</a>
+                <a href="#"><i class="fas fa-heartbeat"></i> Specialities</a>
+                <a href="#"><i class="fas fa-newspaper"></i> Media</a>
+                <a href="#"><i class="fas fa-file-contract"></i> Insurance Plans</a>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2023 Pioneer Hospitals. All rights reserved.</p>
+                <p style="margin-top: 10px; font-size: 13px;">
+                    <i class="fas fa-map-marker-alt"></i> 4&5, Padmavathi Nagar, Hasthinapuram South, Hyderabad, Telangana 500070
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Appointment booking
+            document.getElementById('bookAppointment').addEventListener('click', function() {
+                const confirmBooking = confirm("Would you like to book an appointment with Dr. Swetha Reddy T?");
+                if (confirmBooking) {
+                    alert("Redirecting to appointment booking system...");
+                }
+            });
+            
+            // Contact doctor button
+            document.getElementById('contactDoctor').addEventListener('click', function() {
+                alert("Calling Dr. Swetha Reddy T at +91 9154757751");
+            });
+            
+            // View schedule button
+            document.getElementById('viewSchedule').addEventListener('click', function() {
+                const availability = `
+                Dr. Swetha Reddy T's Weekly Schedule:
+                
+                Monday - Friday: 9:00 AM - 6:00 PM
+                Saturday: 9:00 AM - 2:00 PM
+                Sunday: Emergency only
+                
+                Neuroimmunology Clinic: Wednesday (10:00 AM - 1:00 PM)
+                Stroke Clinic: Thursday (2:00 PM - 5:00 PM)
+                
+                Next available slot: Tomorrow at 11:00 AM
+                `;
+                alert(availability);
+            });
+            
+            // Back button functionality
+            document.querySelector('.back-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Going back to doctors listing page");
+            });
+            
+            // Add hover effect to all cards
+            const cards = document.querySelectorAll('.section-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.1)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.05)';
+                });
+            });
+            
+            // Image fallback functionality
+            const doctorImage = document.querySelector('.doctor-img');
+            if (doctorImage) {
+                doctorImage.addEventListener('error', function() {
+                    // If image fails to load, show the fallback icon
+                    this.style.display = 'none';
+                    const icon = this.nextElementSibling;
+                    if (icon && icon.classList.contains('fa-user-md')) {
+                        icon.style.display = 'block';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

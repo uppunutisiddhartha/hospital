@@ -3,14 +3,1175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Our Doctors - Pioneer Hospitals</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004d99;
+            --accent: #e63946;
+            --accent-dark: #c1121f;
+            --light: #f8fbfd;
+            --dark: #1a1a1a;
+            --gray: #666;
+            --light-gray: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background: var(--light);
+            line-height: 1.6;
+        }
+
+        /* ==================== HEADER ==================== */
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 60px;
+            margin-right: 15px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .logo-tagline {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 10px 18px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .emergency-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .emergency-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* ==================== DOCTORS HERO ==================== */
+        .doctors-hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                        url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .emergency-banner {
+            background: rgba(230, 57, 70, 0.9);
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* ==================== DOCTORS SECTION ==================== */
+        .section {
+            padding: 80px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Specialty Filter */
+        .specialty-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            color: var(--dark);
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Doctors Grid */
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .doctor-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .doctor-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 15px;
+            overflow: hidden;
+        }
+
+        .doctor-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .doctor-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .doctor-specialty {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .doctor-qualification {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .doctor-body {
+            padding: 30px;
+        }
+
+        .doctor-info {
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .info-item i {
+            color: var(--primary);
+            width: 20px;
+            margin-top: 2px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 100px;
+        }
+
+        .info-value {
+            color: var(--gray);
+            flex: 1;
+        }
+
+        .experience {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .experience h5 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .experience ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .experience li {
+            padding: 5px 0;
+            color: var(--gray);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .experience li:before {
+            content: "✓";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .doctor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--light);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-dark);
+        }
+
+        /* ==================== SPECIALTY SECTION ==================== */
+        .specialty-section {
+            background: var(--light-gray);
+        }
+
+        .specialty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .specialty-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        }
+
+        .specialty-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .specialty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .specialty-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .specialty-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .specialty-doctors {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 15px;
+        }
+
+        /* ==================== APPOINTMENT BANNER ==================== */
+        .appointment-banner {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .appointment-banner h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .appointment-banner p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .banner-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary);
+            padding: 15px 35px;
+            border-radius: 5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-white:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: #1a2b3c;
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 90px;
+                left: -100%;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                transition: left 0.3s;
+                z-index: 999;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-link {
+                display: block;
+                padding: 15px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .doctors-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .doctor-card {
+                grid-template-columns: 1fr;
+            }
+
+            .doctor-actions {
+                flex-direction: column;
+            }
+
+            .banner-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-white {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo-name {
+                font-size: 1.4rem;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .specialty-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .doctors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .doctor-header {
+                padding: 20px;
+            }
+
+            .doctor-img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    {% for doc in doctors %}
-        <h2> Dr. {{ doc.name }} </h2>
-        <p> Specialization: {{ doc.specialization }} </p>
-        <p> Experience: {{ doc.experience }} years </p>
-        <hr>
-    {% endfor %}
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <img src="https://th.bing.com/th/id/OIP.oYTUAqgFX7zJpnAr7_mAuAAAAA?w=325&h=147" 
+                     alt="Pioneer Hospital Logo" class="logo-img">
+                <div class="logo-text">
+                    <div class="logo-name">PIONEER HOSPITALS</div>
+                    <div class="logo-tagline">PUTTING LIFE FIRST</div>
+                </div>
+            </a>
+
+            <!-- Navigation -->
+            <button class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">ABOUT</a></li>
+                    <li class="nav-item"><a href="specialties.html" class="nav-link">SPECIALTIES</a></li>
+                    <li class="nav-item"><a href="doctors.html" class="nav-link active">DOCTORS</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">CONTACT</a></li>
+                    <li class="nav-item">
+                        <a href="tel:+919775108108" class="emergency-btn">
+                            <i class="fas fa-ambulance"></i> EMERGENCY
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Doctors Hero -->
+    <section class="doctors-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Meet Our Expert Doctors</h1>
+            <p class="hero-subtitle">Experienced medical professionals dedicated to providing exceptional healthcare with compassion and expertise</p>
+            <div class="emergency-banner">
+                <i class="fas fa-ambulance"></i>
+                <span>EMERGENCY: +91 9775 108 108</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Medical Team</h2>
+                <p>Highly qualified and experienced doctors committed to your health and well-being</p>
+            </div>
+
+            <!-- Specialty Filter -->
+            <div class="specialty-filter">
+                <button class="filter-btn active" data-filter="all">All Specialties</button>
+                <button class="filter-btn" data-filter="gastroenterology">Gastroenterology</button>
+                <button class="filter-btn" data-filter="neurology">Neurology</button>
+                <button class="filter-btn" data-filter="general">General Medicine</button>
+                <button class="filter-btn" data-filter="pediatrics">Pediatrics</button>
+            </div>
+
+            <!-- Doctors Grid -->
+            <div class="doctors-grid">
+                <!-- Doctor 1 -->
+                <div class="doctor-card" data-specialty="gastroenterology">
+                    <div class="doctor-header">
+                        <div class="doctor-img">
+                            <img src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-VAMSHIDHAR-REDDY-T.png" 
+                                 alt="Dr. Vamshidhar Reddy">
+                        </div>
+                        <h3 class="doctor-name">DR. VAMSHIDHAR REDDY T</h3>
+                        <div class="doctor-specialty">Sr. Consultant Gastroenterologist & Hepatologist</div>
+                        <div class="doctor-qualification">MD, DM (Gastroenterology)</div>
+                    </div>
+                    <div class="doctor-body">
+                        <div class="doctor-info">
+                            
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <span class="info-label">Contact:</span>
+                                <span class="info-value">91547 57748</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span class="info-label">Timings:</span>
+                                <span class="info-value">Mon-Sat: 10 AM - 6 PM</span>
+                            </div>
+                        </div>
+                        <div class="experience">
+                            <h5>Special Expertise</h5>
+                            <ul>
+                                <li>Advanced Endoscopy Procedures</li>
+                                <li>Liver Disease Management</li>
+                                <li>ERCP & Therapeutic Endoscopy</li>
+                                <li>Inflammatory Bowel Disease</li>
+                            </ul>
+                        </div>
+                        <div class="doctor-actions">
+                        
+                            <a href="{% url 'index' %}" class="btn btn-primary">
+                                <i class="far fa-calendar-check"></i> Book Appointment
+                            </a>
+                            <a href="{% url 'vamshidhar_reddy' %}" class="btn btn-outline">
+                                View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor 2 -->
+                <div class="doctor-card" data-specialty="neurology">
+                    <div class="doctor-header">
+                        <div class="doctor-img">
+                            <img src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-SWETHA-REDDY-T.png" 
+                                 alt="Dr. Swetha Reddy">
+                        </div>
+                        <h3 class="doctor-name">DR. SWETHA REDDY T</h3>
+                        <div class="doctor-specialty">Sr. Consultant Neurologist</div>
+                        <div class="doctor-qualification">MD, DM (Neurology)</div>
+                    </div>
+                    <div class="doctor-body">
+                        <div class="doctor-info">
+                            
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <span class="info-label">Contact:</span>
+                                <span class="info-value">91547 57751</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span class="info-label">Timings:</span>
+                                <span class="info-value">Mon-Sat: 11 AM - 7 PM</span>
+                            </div>
+                        </div>
+                        <div class="experience">
+                            <h5>Special Expertise</h5>
+                            <ul>
+                                <li>Stroke Management</li>
+                                <li>Epilepsy & Movement Disorders</li>
+                                <li>Headache & Migraine Management</li>
+                                <li>Neuropathy Treatment</li>
+                            </ul>
+                        </div>
+                        <div class="doctor-actions">
+                           
+                            <a href="{% url 'appointment' %}" class="btn btn-primary">
+                                <i class="far fa-calendar-check"></i> Book Appointment
+                            </a>
+                            <a href="{% url 'swetha_reddy' %}" class="btn btn-outline">
+                                View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor 3 -->
+                <div class="doctor-card" data-specialty="general">
+                    <div class="doctor-header">
+                        <div class="doctor-img">
+                            <img src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-SRINIVAS-REDDY-K.png" 
+                                 alt="Dr. Srinivas Reddy">
+                        </div>
+                        <h3 class="doctor-name">DR. SRINIVAS REDDY K</h3>
+                        <div class="doctor-specialty">Sr. Consultant Physician & Diabetologist</div>
+                        <div class="doctor-qualification">MD (General Medicine)</div>
+                    </div>
+                    <div class="doctor-body">
+                        <div class="doctor-info">
+                           
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <span class="info-label">Contact:</span>
+                                <span class="info-value">90098 90990</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span class="info-label">Timings:</span>
+                                <span class="info-value">Mon-Sat: 9 AM - 5 PM</span>
+                            </div>
+                        </div>
+                        <div class="experience">
+                            <h5>Special Expertise</h5>
+                            <ul>
+                                <li>Diabetes Management</li>
+                                <li>Hypertension Treatment</li>
+                                <li>Geriatric Care</li>
+                                <li>Preventive Health Checkups</li>
+                            </ul>
+                        </div>
+                        <div class="doctor-actions">
+                          
+                            <a href="{% url 'appointment' %}" class="btn btn-primary">
+                                <i class="far fa-calendar-check"></i> Book Appointment
+                            </a>
+                            <a href="{% url 'srinivas_reddy' %}" class="btn btn-outline">
+                                View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor 4 -->
+                <div class="doctor-card" data-specialty="pediatrics">
+                    <div class="doctor-header">
+                        <div class="doctor-img">
+                            <img src="https://i0.wp.com/pioneerhospitals.in/wp-content/uploads/2021/08/DR.-SAMYUKTHA-REDDY-K.png" 
+                                 alt="Dr. Samyuktha Reddy">
+                        </div>
+                        <h3 class="doctor-name">DR. SAMYUKTHA REDDY K</h3>
+                        <div class="doctor-specialty">Sr. Consultant Pediatrician</div>
+                        <div class="doctor-qualification">MD (Pediatrics)</div>
+                    </div>
+                    <div class="doctor-body">
+                        <div class="doctor-info">
+                            
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <span class="info-label">Contact:</span>
+                                <span class="info-value">90098 90790</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span class="info-label">Timings:</span>
+                                <span class="info-value">Mon-Sat: 10 AM - 6 PM</span>
+                            </div>
+                        </div>
+                        <div class="experience">
+                            <h5>Special Expertise</h5>
+                            <ul>
+                                <li>Neonatal Care</li>
+                                <li>Childhood Vaccinations</li>
+                                <li>Growth & Development Monitoring</li>
+                                <li>Pediatric Emergency Care</li>
+                            </ul>
+                        </div>
+                        <div class="doctor-actions">
+                    
+                            <a href="{% url 'appointment' %}" class="btn btn-primary">
+                                <i class="far fa-calendar-check"></i> Book Appointment
+                            </a>
+                            <a href="{% url 'samyuktha_reddy' %}" class="btn btn-outline">
+                                View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialty Information -->
+    <section class="section specialty-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Medical Specialties</h2>
+                <p>Comprehensive healthcare services across various medical disciplines</p>
+            </div>
+            <div class="specialty-grid">
+                <div class="specialty-card">
+                    <div class="specialty-icon">
+                        <i class="fas fa-stomach"></i>
+                    </div>
+                    <h4>Gastroenterology</h4>
+                    <p>Comprehensive care for digestive system disorders including liver diseases, endoscopic procedures, and gastrointestinal surgeries.</p>
+                    
+                </div>
+                <div class="specialty-card">
+                    <div class="specialty-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>Neurology</h4>
+                    <p>Advanced treatment for neurological disorders including stroke, epilepsy, Parkinson's disease, and migraine management.</p>
+                    
+                </div>
+                <div class="specialty-card">
+                    <div class="specialty-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h4>General Medicine</h4>
+                    <p>Comprehensive primary care for adults including diabetes, hypertension, preventive health, and chronic disease management.</p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Banner -->
+    <section class="appointment-banner" id="appointment">
+        <div class="container">
+            <h3>Book Your Appointment Today</h3>
+            <p>Schedule a consultation with our expert doctors for personalized healthcare solutions</p>
+            <div class="banner-buttons">
+                <a href="tel:+919775108108" class="btn-white">
+                    <i class="fas fa-phone-alt"></i> Call for Appointment
+                </a>
+
+                <a href="{% url 'contact' %}" class="btn-white">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Pioneer Hospitals</h4>
+                    <p style="color: #ccc; margin-bottom: 20px;">PUTTING LIFE FIRST - Your health is our priority</p>
+                    <ul class="footer-links footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>4&5, Padmavathi Nagar, Hasthinapuram South, Hastinapuram, Hyderabad, Telangana 500070</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>Emergency: +91 9775 108 108</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@pioneerhospitals.in</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Doctor Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="">Gastroenterology</a></li>
+                        <li><a href="">Neurology</a></li>
+                        <li><a href="">General Medicine</a></li>
+                        <li><a href="">Pediatrics</a></li>
+                        <li><a href="">Book Appointment</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p style="color: #ccc; margin-top: 20px; font-size: 0.9rem;">OP Timings: 9 AM – 9 PM | Emergency: 24/7</p>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2024 Pioneer Hospitals – All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Doctor filtering functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const doctorCards = document.querySelectorAll('.doctor-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                // Show all doctors if "all" is selected
+                if (filterValue === 'all') {
+                    doctorCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                } else {
+                    // Show only doctors with matching specialty
+                    doctorCards.forEach(card => {
+                        if (card.getAttribute('data-specialty') === filterValue) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Close mobile menu if open
+                        document.querySelector('.nav-menu').classList.remove('active');
+                        document.querySelector('.mobile-toggle i').classList.add('fa-bars');
+                        document.querySelector('.mobile-toggle i').classList.remove('fa-times');
+                        
+                        // Smooth scroll
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Update copyright year
+        document.addEventListener('DOMContentLoaded', function() {
+            const year = new Date().getFullYear();
+            document.querySelector('.copyright').textContent = 
+                `© ${year} Pioneer Hospitals – All Rights Reserved.`;
+        });
+
+        // Doctor card hover effect enhancement
+        doctorCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '0 5px 20px rgba(0,0,0,0.08)';
+            });
+        });
+
+        // Appointment booking functionality
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            if (button.textContent.includes('Book Appointment')) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('You will be redirected to the appointment booking page.');
+                    window.location.href = 'contact.html#appointment-form';
+                });
+            }
+        });
+
+        // Call button functionality
+        document.querySelectorAll('.btn-accent').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const phoneNumber = this.closest('.doctor-actions').querySelector('.btn-accent').getAttribute('href').replace('tel:', '');
+                if (confirm(`Call ${phoneNumber}?`)) {
+                    window.location.href = this.getAttribute('href');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

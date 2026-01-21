@@ -31,6 +31,9 @@ urlpatterns = [
    #path('main_admin/', views.main_admin, name='main_admin'),
    path('mod/respond/<int:consultation_id>/', views.respond_consultation, name='respond_consultation'),
    path('newsletter/subscribe/', views.newsletter_subscribe, name='subscribe_newsletter'),
+   path('appointment/', views.appointment, name='appointment'),
+   path('hospital-info/', views.hospital_info, name='hospital_info'),
+   path('contact/', views.contact, name='contact'),
 
 
 
@@ -40,6 +43,7 @@ urlpatterns = [
 
 
    #profiles
+   path('doctors/', views.doctors, name='doctors'),
    path('doctor/vamshidhar_reddy/', views.vamshidhar_reddy, name='vamshidhar_reddy'),
    path('doctor/srinivas_reddy/', views.srinivas_reddy, name='srinivas_reddy'),
    path('doctor/swetha_reddy/', views.swetha_reddy, name='swetha_reddy'),

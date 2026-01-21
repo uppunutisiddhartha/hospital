@@ -154,7 +154,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'login'
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -174,7 +174,7 @@ SESSION_COOKIE_AGE = 1209600  # Two weeks in seconds
 SESSION_SAVE_EVERY_REQUEST = True
 CSRF_COOKIE_AGE = 1209600  # Two weeks in seconds
 CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
-#CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'https://hospital-81x7.onrender.com']
 
 #for location  for login redirection
 
@@ -189,16 +189,9 @@ SESSION_COOKIE_AGE = 60 * 30           # 30 minutes
 
 CSRF_COOKIE_SECURE = True             # HTTPS only
 CSRF_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = ['']  # Replace with your domain
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'https://hospital-81x7.onrender.com']  # Replace with your domain
 
 
 
-INSTALLED_APPS += ['axes']
 
-MIDDLEWARE += [
-    'axes.middleware.AxesMiddleware',
-]
 
-AXES_FAILURE_LIMIT = 5
-AXES_COOLOFF_TIME = 1  # hours
-AXES_LOCKOUT_CALLABLE = 'axes.handlers.database.AxesDatabaseHandler'

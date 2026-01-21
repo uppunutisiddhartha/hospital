@@ -894,6 +894,23 @@
             </div>
           </div>
         </div>
+        <div class="stat-card published fade-in" style="animation-delay: 0.1s">
+          <div class="stat-content">
+            <div class="stat-numbers">
+              <div class="stat-value">{{ newsletter_subscribe }}</div>
+              <div class="stat-label">
+                <i class="fas fa-check-circle"></i>
+                Active Subscribers
+              </div>
+              <div class="stat-change">
+                {{ newsletter_percentage|default:"0" }}% of total
+              </div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          </div>
+        </div>
 
         <div class="stat-card hold fade-in" style="animation-delay: 0.2s">
           <div class="stat-content">
@@ -1296,7 +1313,7 @@
               >
                 <div>
                   <div style="font-size: 0.9rem; color: var(--gray-600)">
-                   All subscribed users
+                    All subscribed users
                   </div>
                   <div
                     style="

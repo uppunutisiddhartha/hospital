@@ -231,9 +231,9 @@
         object-fit: contain;
         transition: all 0.3s;
       }
-       .insurance-logo-item img:hover{
+      .insurance-logo-item img:hover {
         transform: scale(1.1);
-       }
+      }
       .insurance-cta {
         background-color: var(--accent-color);
         color: white;
@@ -295,13 +295,10 @@
         font-size: 13px;
         color: #777;
       }
-    
-     
     </style>
   </head>
 
   <body>
-    
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
       <div class="container">
         <a class="navbar-brand" href="#">
@@ -324,19 +321,27 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto align-items-center">
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'healthy_savings' %}">Healthy Savings</a>
+              <a class="nav-link" href="{% url 'healthy_savings' %}"
+                >Healthy Savings</a
+              >
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'career' %}">Careers</a>
-            </li>
+            
             <li class="nav-item">
               <a class="nav-link" href="#2">FACILITIES</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#1">SPECIALITIES</a>
             </li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'insurance_list' %}">INSURANCE</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'insurance_list' %}"
+                >INSURANCE</a
+              >
+              <li class="nav-item">
+              <a class="nav-link" href="{% url 'doctors' %}"
+                >The Doctors</a
+              >
+            </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">CONTACT</a></li>
             <li class="nav-item">
               <a href="#appointment-form" class="btn btn-cta"
                 >BOOK APPOINTMENT</a
@@ -420,7 +425,7 @@
       </div>
     </div>
 
-    <h2  id="1" class="section-title">MULTISPECIALITY EXCELLENCE</h2>
+    <h2 id="1" class="section-title">MULTISPECIALITY EXCELLENCE</h2>
     <div class="container">
       <div class="row">
         <div class="col-lg-3 col-md-4 col-sm-6">
@@ -530,7 +535,9 @@
             />
             <h5>DR. VAMSHIDHAR REDDY</h5>
             <p>Sr. Consultant Gastroenterologist</p>
-            <a href="{% url 'vamshidhar_reddy' %}" class="btn btn-primary">View Profile</a>
+            <a href="{% url 'vamshidhar_reddy' %}" class="btn btn-primary"
+              >View Profile</a
+            >
           </div>
         </div>
 
@@ -541,7 +548,9 @@
             />
             <h5>DR. SRINIVAS REDDY</h5>
             <p>Sr. Consultant Physician & Diabetologist</p>
-            <a href="{% url 'srinivas_reddy' %}" class="btn btn-primary">View Profile</a>
+            <a href="{% url 'srinivas_reddy' %}" class="btn btn-primary"
+              >View Profile</a
+            >
           </div>
         </div>
 
@@ -552,7 +561,9 @@
             />
             <h5>DR. SWETHA REDDY</h5>
             <p>Neurologist & Neuro-Physician</p>
-            <a href="{% url 'swetha_reddy' %}" class="btn btn-primary">View Profile</a>
+            <a href="{% url 'swetha_reddy' %}" class="btn btn-primary"
+              >View Profile</a
+            >
           </div>
         </div>
 
@@ -563,73 +574,118 @@
             />
             <h5>DR. SAMYUKTHA REDDY</h5>
             <p>Consultant Pediatrician</p>
-            <a href="{% url 'samyuktha_reddy' %}" class="btn btn-primary">View Profile</a>
+            <a href="{% url 'samyuktha_reddy' %}" class="btn btn-primary"
+              >View Profile</a
+            >
           </div>
         </div>
       </div>
     </div>
- <form action="" id="book" method="post">
-  {% csrf_token %}
-  <div class="container" id="appointment-form">
-    <h2 class="section-title">BOOK YOUR APPOINTMENT</h2>
+    <form action="" id="book" method="post">
+      {% csrf_token %}
+      <div class="container" id="appointment-form">
+        <h2 class="section-title">BOOK YOUR APPOINTMENT</h2>
 
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="info-box">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="info-box">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <input
+                    name="name"
+                    type="text"
+                    class="form-control"
+                    placeholder="Your Full Name"
+                    required
+                  />
+                </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <input name="name" type="text" class="form-control"
-                placeholder="Your Full Name" required />
-            </div>
+                <div class="form-group col-md-6">
+                  <input
+                    name="phone"
+                    type="text"
+                    class="form-control"
+                    placeholder="Phone Number (Required)"
+                    required
+                  />
+                </div>
+              </div>
 
-            <div class="form-group col-md-6">
-              <input name="phone" type="text" class="form-control"
-                placeholder="Phone Number (Required)" required />
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <input
+                    name="email"
+                    type="email"
+                    class="form-control"
+                    placeholder="Email Address (Optional)"
+                  />
+                </div>
+
+                <div class="form-group col-md-6">
+                  <select name="specialist" class="form-control" required>
+                    <option value="">Select Specialty</option>
+                    <option>Neurology</option>
+                    <option>Gastroenterology</option>
+                    <option>Orthopedic</option>
+                    <option>General Medicine</option>
+                    <option>Emergency</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <input
+                    name="date"
+                    type="date"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <select
+                    id="gender"
+                    name="gender"
+                    class="form-control"
+                    required
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <input
+                    name="time"
+                    type="time"
+                    class="form-control"
+                    required
+                  />
+                </div>
+              </div>
+
+              <textarea
+                name="reason"
+                class="form-control mb-3"
+                rows="3"
+                placeholder="Describe your condition (optional)"
+              ></textarea>
+
+              <button
+                class="btn btn-block btn-cta"
+                type="submit"
+                style="font-size: 18px"
+              >
+                CONFIRM APPOINTMENT
+              </button>
             </div>
           </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <input name="email" type="email" class="form-control"
-                placeholder="Email Address (Optional)" />
-            </div>
-
-            <div class="form-group col-md-6">
-              <select name="specialist" class="form-control" required>
-                <option value="">Select Specialty</option>
-                <option>Neurology</option>
-                <option>Gastroenterology</option>
-                <option>Orthopedic</option>
-                <option>General Medicine</option>
-                <option>Emergency</option>
-                <option>Other</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <input name="date" type="date" class="form-control" required />
-            </div>
-
-            <div class="form-group col-md-6">
-              <input name="time" type="time" class="form-control" required />
-            </div>
-          </div>
-
-          <textarea name="reason" class="form-control mb-3" rows="3"
-            placeholder="Describe your condition (optional)"></textarea>
-
-          <button class="btn btn-block btn-cta" type="submit" style="font-size: 18px">
-            CONFIRM APPOINTMENT
-          </button>
-
         </div>
       </div>
-    </div>
-  </div>
-</form>
+    </form>
 
     <footer>
       <div class="container">
@@ -651,10 +707,10 @@
 
           <div class="col-md-4 mb-4 mb-md-0">
             <h5>Quick Navigation</h5>
-            <a href="#">The Hospital</a>
-            <a href="#">Facilities & ICU</a>
-            <a href="#">Cashless Insurance</a>
-            <a href="#">Find a Doctor</a>
+            <a href="{% url 'hospital_info' %}">The Hospital</a>
+            <a href="{% url 'healthy_savings' %}">Updates</a>
+            <a href="{% url 'insurance_list' %}">Cashless Insurance</a>
+            <a href="{% url 'career' %}">Carrers</a>
             <a href="{% url 'login' %}">login</a>
           </div>
 

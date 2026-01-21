@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Appointment | Pioneer Hospitals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary: #d32f2f;
+            --accent: #00b894;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.7;
+            background-color: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .appointment-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 40px auto;
+        }
+        
+        .appointment-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hospital-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+        
+        .hospital-logo i {
+            color: var(--secondary);
+        }
+        
+        .section-title {
+            font-size: 32px;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        #appointment-form {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        #appointment-form:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .form-group {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding: 0 15px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-group {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-label i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f8fafc;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-light);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231a73e8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        
+        .required-field::after {
+            content: " *";
+            color: var(--secondary);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+        }
+        
+        .submit-btn:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(211, 47, 47, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .emergency-notice {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .emergency-notice i {
+            color: #ff9800;
+            font-size: 20px;
+        }
+        
+        .emergency-contact {
+            color: var(--secondary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .emergency-contact:hover {
+            text-decoration: underline;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+        }
+        
+        .contact-item i {
+            color: var(--primary);
+        }
+        
+        /* Animation for form submission */
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: successPulse 0.6s ease;
+            display: none;
+        }
+        
+        .success-message i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="appointment-container">
+        <!-- Success Message (Hidden by default) -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <h3>Appointment Request Submitted Successfully!</h3>
+            <p>Our team will contact you shortly to confirm your appointment.</p>
+        </div>
+        
+        <div class="appointment-header">
+            <div class="hospital-logo">
+                <i class="fas fa-hospital"></i> PIONEER HOSPITALS
+            </div>
+            <h1 class="section-title">BOOK YOUR APPOINTMENT</h1>
+            <p class="section-subtitle">Fill out the form below to schedule your appointment with our specialists</p>
+        </div>
+        
+        <!-- Emergency Notice -->
+        <div class="emergency-notice">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>Emergency?</strong> Call us immediately at 
+                <a href="tel:+919775108108" class="emergency-contact">+91 9775 108 108</a>
+                <div style="font-size: 14px; margin-top: 5px;">24/7 Emergency Services Available</div>
+            </div>
+        </div>
+        
+        <form action="{% url 'index' %}" id="appointment-form" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name" class="form-label required-field">
+                        <i class="fas fa-user"></i> Full Name
+                    </label>
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter your full name"
+                        required
+                    />
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="form-label required-field">
+                        <i class="fas fa-phone"></i> Phone Number
+                    </label>
+                    <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        class="form-control"
+                        placeholder="Enter your 10-digit mobile number"
+                        pattern="[0-9]{10}"
+                        required
+                    />
+                    <small style="color: var(--text-light); font-size: 12px; display: block; margin-top: 5px;">
+                        We'll contact you on this number to confirm
+                    </small>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i> Email Address
+                    </label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="Enter your email address (optional)"
+                    />
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender" class="form-label required-field">
+                        <i class="fas fa-venus-mars"></i> Gender
+                    </label>
+                    <select id="gender" name="gender" class="form-control" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="specialist" class="form-label required-field">
+                        <i class="fas fa-stethoscope"></i> Select Specialty
+                    </label>
+                    <select id="specialist" name="specialist" class="form-control" required>
+                        <option value="">Choose a specialty</option>
+                        <option value="neurology">Neurology - Dr. Swetha Reddy T</option>
+                        <option value="gastroenterology">Gastroenterology - Dr. Vamshidhar Reddy T</option>
+                        <option value="general-medicine">General Medicine & Diabetology - Dr. Srinivas Reddy K</option>
+                        <option value="pediatrics">Pediatrics - Dr. Samyuktha Reddy K</option>
+                        <option value="orthopedics">Orthopedics</option>
+                        <option value="urology">Urology</option>
+                        <option value="emergency">Emergency Medicine</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="dermatology">Dermatology</option>
+                        <option value="other">Other Specialties</option>
+                    </select>
+                </div>
+                
+                
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date" class="form-label required-field">
+                        <i class="fas fa-calendar-alt"></i> Preferred Date
+                    </label>
+                    <input
+                        id="date"
+                        name="date"
+                        type="date"
+                        class="form-control"
+                        required
+                        min=""
+                    />
+                </div>
+                
+                <div class="form-group">
+                    <label for="time" class="form-label required-field">
+                        <i class="fas fa-clock"></i> Preferred Time
+                    </label>
+                    <select id="time" name="time" class="form-control" required>
+                        <option value="">Select Time Slot</option>
+                        <option value="09:00">09:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="14:00">02:00 PM</option>
+                        <option value="15:00">03:00 PM</option>
+                        <option value="16:00">04:00 PM</option>
+                        <option value="17:00">05:00 PM</option>
+                        <option value="18:00">06:00 PM</option>
+                        <option value="19:00">07:00 PM</option>
+                        <option value="20:00">08:00 PM</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group" style="flex: 0 0 100%; max-width: 100%;">
+                <label for="reason" class="form-label">
+                    <i class="fas fa-file-medical"></i> Medical Concern / Symptoms
+                </label>
+                <textarea
+                    id="reason"
+                    name="reason"
+                    class="form-control"
+                    rows="4"
+                    placeholder="Briefly describe your symptoms or reason for appointment (optional)"
+                ></textarea>
+            </div>
+            
+            <button class="submit-btn" type="submit">
+                <i class="fas fa-paper-plane"></i> CONFIRM APPOINTMENT
+            </button>
+        </form>
+        <h6>{{ message }}</h6>
+        <div class="form-footer">
+            <p>Your privacy is important to us. All information submitted is confidential.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>For queries: +91 9009890790</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email: info@pioneerhospitals.in</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <span>OP Timings: 9AM - 9PM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').setAttribute('min', today);
+            
+            // Phone number validation
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
+            });
+            
+            // Form submission
+            const appointmentForm = document.getElementById('appointment-form');
+            const successMessage = document.getElementById('successMessage');
+            
+            appointmentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simple validation
+                if (!this.checkValidity()) {
+                    this.reportValidity();
+                    return;
+                }
+                
+                // In a real implementation, this would send data to server
+                // For demo purposes, we'll show success message
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                appointmentForm.style.display = 'none';
+                
+                // Scroll to success message
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+                
+                // Simulate form submission (remove this in actual implementation)
+                setTimeout(() => {
+                    // Reset form and hide success message after 5 seconds
+                    successMessage.style.display = 'none';
+                    appointmentForm.style.display = 'block';
+                    appointmentForm.reset();
+                    // Set min date again after reset
+                    document.getElementById('date').setAttribute('min', today);
+                }, 5000);
+            });
+            
+            // Specialist change updates doctor options
+            const specialistSelect = document.getElementById('specialist');
+            const doctorSelect = document.getElementById('doctor');
+            
+            specialistSelect.addEventListener('change', function() {
+                const specialty = this.value;
+                
+                // Reset doctor options
+                doctorSelect.innerHTML = '<option value="">Any Available Doctor</option>';
+                
+                // Add doctors based on specialty
+                if (specialty === 'neurology') {
+                    doctorSelect.innerHTML += `
+                        <option value="dr-swetha">Dr. Swetha Reddy T (Neurology)</option>
+                    `;
+                } else if (specialty === 'gastroenterology') {
+                    doctorSelect.innerHTML += `
+                        <option value="dr-vamshidhar">Dr. Vamshidhar Reddy T (Gastroenterology)</option>
+                    `;
+                } else if (specialty === 'general-medicine') {
+                    doctorSelect.innerHTML += `
+                        <option value="dr-srinivas">Dr. Srinivas Reddy K (General Medicine)</option>
+                    `;
+                } else if (specialty === 'pediatrics') {
+                    doctorSelect.innerHTML += `
+                        <option value="dr-samyuktha">Dr. Samyuktha Reddy K (Pediatrics)</option>
+                    `;
+                } else {
+                    doctorSelect.innerHTML += `
+                        <option value="dr-vamshidhar">Dr. Vamshidhar Reddy T (Gastroenterology)</option>
+                        <option value="dr-srinivas">Dr. Srinivas Reddy K (General Medicine)</option>
+                        <option value="dr-swetha">Dr. Swetha Reddy T (Neurology)</option>
+                        <option value="dr-samyuktha">Dr. Samyuktha Reddy K (Pediatrics)</option>
+                    `;
+                }
+            });
+            
+            // Add styling to required fields on blur
+            const requiredInputs = document.querySelectorAll('[required]');
+            requiredInputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.style.borderColor = var('--secondary');
+                    } else {
+                        this.style.borderColor = var('--border');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
