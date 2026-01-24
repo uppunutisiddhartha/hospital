@@ -177,6 +177,9 @@ def register(request):
         return redirect('login')
 
     return render(request, 'register.html')
+
+
+
 @never_cache
 @login_required
 def MOD(request):
@@ -261,6 +264,9 @@ def respond_consultation(request, consultation_id):
     consultation.save()
 
     return redirect(request.META.get("HTTP_REFERER", "MOD"))
+
+
+
 @never_cache
 @login_required
 def insurance_admin(request):

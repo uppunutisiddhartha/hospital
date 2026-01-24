@@ -1,0 +1,276 @@
+ /* ------------------ COLOR PALETTE ------------------ */
+      :root {
+        --primary-color: #004d66; /* Dark Teal - Trust */
+        --accent-color: #c62828; /* Maroon Red - Emergency/CTA */
+        --light-bg: #f8fbfd; /* Very Light Blue-White */
+        --text-dark: #333;
+      }
+
+      /* ------------------ GLOBAL & BASE STYLES ------------------ */
+      body {
+        font-family: "Poppins", Arial, sans-serif;
+        background-color: var(--light-bg);
+        color: var(--text-dark);
+      }
+
+      /* NAVBAR */
+      .navbar-custom {
+        background-color: var(--primary-color) !important;
+        padding: 0.5rem 0;
+      }
+      .navbar-custom .nav-link {
+        color: #fff;
+        font-weight: 600;
+        padding: 20px 15px;
+        text-transform: uppercase;
+        font-size: 14px;
+        transition: background-color 0.3s;
+      }
+      .navbar-custom .nav-link:hover {
+        background-color: #003344;
+        color: #fff;
+      }
+      .navbar-brand img {
+        height: 60px;
+      }
+      .btn-cta {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        font-weight: 700;
+        padding: 8px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        margin-left: 15px;
+      }
+      .btn-cta:hover {
+        background-color: #a01a1a;
+        color: white;
+      }
+
+      /* HERO SECTION */
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+          url("https://img.freepik.com/free-photo/hospital-building-with-modern-architecture_23-2149667538.jpg")
+            center/cover no-repeat;
+        height: 420px;
+        border-bottom: 6px solid var(--accent-color);
+        position: relative;
+      }
+      .hero-title {
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
+        color: white;
+        font-size: 52px;
+        font-weight: 800;
+        text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.8);
+        line-height: 1.1;
+      }
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 36px;
+          left: 20px;
+          bottom: 30px;
+        }
+      }
+
+      /* EMERGENCY BAR */
+      .emergency-bar {
+        background: var(--accent-color);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      /* SECTION HEADINGS */
+      h2.section-title {
+        text-align: center;
+        margin: 60px 0 30px;
+        font-weight: 800;
+        color: var(--primary-color);
+        font-size: 32px;
+        position: relative;
+      }
+      h2.section-title::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 10px auto 0;
+        border-radius: 5px;
+      }
+
+      /* INFORMATION BOXES (GENERAL) */
+      .info-box {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-top: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid var(--primary-color);
+      }
+
+      /* SPECIALITY & WHY CHOOSE US CARDS */
+      .speciality-card,
+      .reason-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .reason-card i {
+        font-size: 36px;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+      }
+      .reason-card:hover {
+        transform: translateY(-5px);
+        background: var(--light-bg);
+        border-bottom: 3px solid var(--accent-color);
+      }
+      .speciality-card:hover {
+        background: #e6f5ff;
+      }
+      .speciality-card h5 {
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 16px;
+        margin: 0;
+      }
+
+      /* DOCTOR CARDS */
+      .doctor-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s;
+      }
+      .doctor-card:hover {
+        transform: scale(1.02);
+      }
+      .doctor-card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--primary-color);
+        margin-bottom: 15px;
+      }
+      .doctor-card h5 {
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      .doctor-card p {
+        font-size: 14px;
+        color: #555;
+      }
+
+      /* INSURANCE SECTION STYLES */
+      .insurance-section {
+        background-color: var(--primary-color);
+        padding: 50px 0;
+        color: white;
+      }
+      .insurance-section .section-title {
+        color: white;
+      }
+      .insurance-card-grid {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      }
+      .insurance-logo-item {
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+      .insurance-logo-item img {
+        width: 100%;
+        max-width: 150px;
+        height: 90px;
+        object-fit: contain;
+        transition: all 0.3s;
+      }
+      .insurance-logo-item img:hover {
+        transform: scale(1.1);
+      }
+      .insurance-cta {
+        background-color: var(--accent-color);
+        color: white;
+        border: 2px solid white;
+        font-weight: 700;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 18px;
+        display: inline-block;
+        margin-top: 20px;
+        transition: background-color 0.3s;
+      }
+      .insurance-cta:hover {
+        background-color: #a01a1a;
+        color: white;
+        text-decoration: none;
+      }
+
+      /* FOOTER */
+      footer {
+        background: #002b36;
+        color: #ccc;
+        padding: 40px 0 20px;
+        margin-top: 50px;
+      }
+      footer h5 {
+        color: white;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+      footer a {
+        color: #4fc3f7;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 5px;
+        transition: color 0.3s;
+      }
+      footer a:hover {
+        color: white;
+      }
+      .footer-details i {
+        margin-right: 10px;
+        color: var(--accent-color);
+      }
+      .social-icons i {
+        font-size: 24px;
+        margin-right: 15px;
+        color: #90caf9;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+      .social-icons i:hover {
+        color: white;
+      }
+      .copyright {
+        border-top: 1px solid #004d66;
+        padding-top: 20px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #777;
+      }
