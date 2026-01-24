@@ -1,0 +1,183 @@
+ /* New Sleek Color Palette */
+        :root {
+            --primary-color: #0077b6; /* Deep Ocean Blue */
+            --accent-color: #48cae4; /* Light Blue Accent */
+            --header-bg: #e6f1ff; /* Very Light Blue Header BG */
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --font-family: 'Inter', sans-serif;
+        }
+
+        /* Base Styles */
+        body { 
+            font-family: var(--font-family); 
+            background-color: #f4f7f9; 
+            padding-top: 0;
+            padding-bottom: 70px; /* Space for fixed footer */
+        }
+        .container { max-width: 1400px; }
+
+        /* --- 1. PERFECT HEADER --- */
+        .app-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+        .app-header h2 { 
+            font-weight: 700; 
+            margin: 0; 
+            font-size: 1.5rem; 
+        }
+        .app-header .admin-name { 
+            font-weight: 500; 
+            font-size: 0.95rem; 
+            opacity: 0.8;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        #searchInput { 
+            flex-grow: 1;
+            max-width: 450px; 
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+        }
+
+        /* --- 2. CARD MODIFICATIONS --- */
+        .insurance-card {
+            border: 1px solid #e9ecef; 
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 25px;
+            background: #ffffff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .insurance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 119, 182, 0.15);
+        }
+        
+        /* Card Header */
+        .card-header-custom {
+            background-color: #f8fafd;
+            border-bottom: 3px solid var(--accent-color);
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .card-title-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #343a40;
+        }
+
+        /* Card Body Text */
+        .card-body p {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        .card-body p strong {
+            color: #000;
+            font-weight: 600;
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        /* Document Preview - Clickable link inside card */
+        .document-preview {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px dashed #ced4da;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: background 0.2s;
+        }
+        .document-preview:hover {
+            background-color: #f0f8ff;
+        }
+        .document-preview img {
+            width: 40px; 
+            height: 40px; 
+            object-fit: cover; 
+            border-radius: 4px;
+            margin-right: 12px;
+            border: 1px solid #eee;
+        }
+        .document-preview i {
+             font-size: 1.4rem;
+             margin-right: 12px;
+        }
+        
+        /* Action Group */
+        .action-group {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            background-color: #fcfcfc;
+            border-radius: 0 0 10px 10px;
+        }
+        .action-btn-icon {
+            font-size: 0.85rem;
+            padding: 7px 10px;
+        }
+        /* Color adjustments for action buttons */
+        .btn-success { background-color: #28a745 !important; border-color: #28a745 !important; }
+        .btn-info { background-color: #17a2b8 !important; border-color: #17a2b8 !important; }
+        .btn-primary { background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; }
+        .btn-warning { background-color: #ffc107 !important; border-color: #ffc107 !important; color: #333 !important; }
+
+        /* Notes Box - Hidden until triggered */
+        .notes-box {
+            background: #fff8e1; 
+            padding: 15px;
+            border-top: 3px solid #ffd700; 
+            border-radius: 0; 
+            display: none; /* Crucial: Hides content on page load */
+        }
+        .notes-box h6 {
+            color: #d39e00;
+        }
+
+        /* Status badges */
+        .status-badge { 
+            padding: 4px 10px; 
+            font-size: 10px; 
+            font-weight: 700; 
+            border-radius: 12px;
+        }
+        .in-progress { background: #ffc107; color: #333; }
+        .completed { background: #28a745; color: #fff; }
+        .closed { background: #dc3545; color: #fff; }
+
+        /* --- 3. SIMPLE FOOTER --- */
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #343a40; 
+            color: #dee2e6;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1030;
+        }
+        .app-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }

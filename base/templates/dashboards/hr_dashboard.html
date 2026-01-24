@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,119 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        body {
-            background-color: #f5f7fb;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .sidebar {
-            background-color: #1e293b;
-            min-height: 100vh;
-            padding: 0;
-        }
-        
-        .sidebar .logo {
-            padding: 20px;
-            border-bottom: 1px solid #334155;
-        }
-        
-        .sidebar .logo h3 {
-            color: white;
-            margin: 0;
-        }
-        
-        .sidebar .logo span {
-            color: #3b82f6;
-        }
-        
-        .sidebar .nav-link {
-            color: #cbd5e1;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            border-left: 3px solid transparent;
-        }
-        
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: white;
-            border-left-color: #3b82f6;
-        }
-        
-        .sidebar .nav-link i {
-            margin-right: 10px;
-            width: 20px;
-        }
-        
-        .main-content {
-            padding: 20px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid;
-        }
-        
-        .stat-card h3 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .stat-card p {
-            color: #64748b;
-            margin: 0;
-        }
-        
-        .card-custom {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        
-        .card-header-custom {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 15px 20px;
-            border-radius: 10px 10px 0 0;
-        }
-        
-        .card-body-custom {
-            padding: 20px;
-        }
-        
-        .job-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .job-card:hover {
-            border-color: #3b82f6;
-            background-color: #f8fafc;
-        }
-        
-        .btn-primary-custom {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-        }
-        
-        .btn-primary-custom:hover {
-            background: #2563eb;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'base/dashboards/hr_dashboard.css' %}">
 </head>
 <body>
     <div class="container-fluid">
