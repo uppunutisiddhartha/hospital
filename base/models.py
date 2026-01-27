@@ -184,3 +184,46 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.subject}"
+    
+
+
+from django.db import models
+
+from django.db import models
+from django.utils import timezone
+
+class MedicalCamp(models.Model):
+    STATUS_CHOICES = (
+        ("upcoming", "Upcoming"),
+        ("ongoing", "Ongoing"),
+        ("completed", "Completed"),
+    )
+
+    POST_CHOICES = (
+        ("publish", "Publish"),
+        ("hold", "Hold"),
+    )
+
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='camp_images/', blank=True, null=True)
+    tests_offered = models.TextField()
+    description = models.TextField()
+    date = models.DateField()
+    timing = models.CharField(max_length=100)
+    location = models.CharField(max_length=200)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='upcoming')
+    post = models.CharField(max_length=10, choices=POST_CHOICES, default='hold')
+
+    def __str__(self):
+        return self.title
+
+    # ✅ This property automatically calculates status
+    @property
+    def current_status(self):
+        today = timezone.localdate()
+        if self.date < today:
+            return "completed"
+        elif self.date == today:
+            return "ongoing"
+        else:
+            return "upcoming"

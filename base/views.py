@@ -6,7 +6,7 @@ from .models import *
 from django.db.models import Count
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from datetime import datetime,date
+from datetime import datetime,date, timezone
 from calendar import monthrange
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
@@ -74,8 +74,9 @@ Thank you for choosing us.
             fail_silently=False
         )
 '''
+    medical_camps = MedicalCamp.objects.filter(post__iexact='publish')
     post = Post.objects.filter(status='publish').order_by('-created_at')
-    context = {'posts': post}
+    context = {'posts': post, 'medical_camps': medical_camps}
     return render(request, 'index.html', context)
 
 
@@ -661,6 +662,28 @@ def newsletter_subscribe(request):
     return redirect("career")
 
 
+def medical_camps(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        date = request.POST.get("date")
+        location = request.POST.get("location")
+        time= request.POST.get("time")
+        offers_tests = request.POST.get("offers_tests")
+        description = request.POST.get("description")
+
+        MedicalCamp.objects.create(
+            title=title,
+            date=date,
+            location=location,
+            description=description,
+            tests_offered=offers_tests,
+            timing=time
+        )
+
+        messages.success(request, "Medical camp created successfully.")
+        return redirect('medical_camps')
+
+
 
 #profiles of doctors links in index.html
 
@@ -685,5 +708,67 @@ def samyuktha_reddy(request):
     return render(request, 'profiles/samyuktha_reddy.html')
 
 
+def medical_camps(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        image = request.FILES.get("image")
+        date = request.POST.get("date")
+        location = request.POST.get("location")
+        timing = request.POST.get("timing")
+        tests_offered = request.POST.get("tests_offered")
+        description = request.POST.get("description")
+        status = request.POST.get("status")
 
-    
+        MedicalCamp.objects.create(
+            title=title,
+            date=date,
+            location=location,
+            description=description,
+            tests_offered=tests_offered,
+            timing=timing,
+            image=image,
+            status=status
+        )
+
+        messages.success(request, "Medical camp created successfully.")
+        return redirect('medical_camps')
+
+    #  ALWAYS define these (GET & POST)
+    completed_camps = MedicalCamp.objects.filter(status='post').count()
+    ongoing_camps = MedicalCamp.objects.filter(status='draft').count()
+    cancelled_camps = MedicalCamp.objects.filter(status='cancelled').count()
+    draft_camps = MedicalCamp.objects.filter(status='hold').count()
+
+    status_choice = MedicalCamp.STATUS_CHOICES
+    medical_camps = MedicalCamp.objects.all().order_by('-date')
+
+    context = {
+        'Completed_camps': completed_camps,
+        'Ongoing_camps': ongoing_camps,
+        'Cancelled_camps': cancelled_camps,
+        'Draft_camps': draft_camps,
+        'medical_camps': medical_camps,
+        'status_choice': status_choice,
+    }
+
+    return render(request, 'medical_camp.html', context)
+
+
+@login_required
+def medical_camp_status_Update(request, medical_camp_id):
+    medical_camp = get_object_or_404(MedicalCamp, id=medical_camp_id)
+
+    if request.method == "POST":
+        post_flag = request.POST.get("post")  # hold | publish
+
+        if post_flag == "publish" and medical_camp.current_status != "completed":
+            # Unpublish other camps
+            MedicalCamp.objects.filter(post="publish").exclude(id=medical_camp.id).update(post="hold")
+            medical_camp.post = "publish"
+        else:
+            medical_camp.post = "hold"
+
+        medical_camp.save()
+        messages.success(request, "Medical camp updated successfully.")
+
+    return redirect("medical_camps")

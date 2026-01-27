@@ -1,19 +1,18 @@
  /* ------------------ COLOR PALETTE ------------------ */
       :root {
-        --primary-color: #004d66; /* Dark Teal - Trust */
-        --accent-color: #c62828; /* Maroon Red - Emergency/CTA */
-        --light-bg: #f8fbfd; /* Very Light Blue-White */
+        --primary-color: #004d66; 
+        --accent-color: #c62828; 
+        --light-bg: #f8fbfd; 
         --text-dark: #333;
       }
 
-      /* ------------------ GLOBAL & BASE STYLES ------------------ */
-      body {
+     body {
         font-family: "Poppins", Arial, sans-serif;
         background-color: var(--light-bg);
         color: var(--text-dark);
       }
 
-      /* NAVBAR */
+    
       .navbar-custom {
         background-color: var(--primary-color) !important;
         padding: 0.5rem 0;
@@ -274,3 +273,309 @@
         font-size: 13px;
         color: #777;
       }
+/* Medical Camp Cards Container */
+  #medicalCampsContainer {
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f1f1f1;
+  }
+
+  #medicalCampsContainer::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #medicalCampsContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  #medicalCampsContainer::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+
+  /* Modern Camp Card */
+  .modern-camp-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    padding: 20px;
+    width: 320px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .modern-camp-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .modern-camp-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4361ee, #3a0ca3);
+  }
+
+  /* Card Header */
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .header-left {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .camp-badge {
+    background: #4361ee;
+    color: white;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .free-badge {
+    background: #10b981;
+    color: white;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .live-badge {
+    background: #ef4444;
+    color: white;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  .card-close-btn {
+    background: #f3f4f6;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #6b7280;
+    transition: all 0.2s;
+  }
+
+  .card-close-btn:hover {
+    background: #ef4444;
+    color: white;
+    transform: rotate(90deg);
+  }
+
+  /* Camp Title */
+  .camp-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 10px 0;
+    line-height: 1.4;
+  }
+
+  /* Camp Description */
+  .camp-description {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
+  /* Camp Info Grid */
+  .camp-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #4b5563;
+  }
+
+  .info-item i {
+    color: #4361ee;
+    width: 16px;
+  }
+
+  /* Status Indicator */
+  .status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .status-upcoming {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fde68a;
+  }
+
+  .status-ongoing {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+  }
+
+  .status-completed {
+    background: #f0fdf4;
+    color: #059669;
+    border: 1px solid #bbf7d0;
+  }
+
+  /* Register Button */
+  .register-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+  }
+
+  .register-btn:hover {
+    background: linear-gradient(135deg, #3a0ca3, #4361ee);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+  }
+
+  /* Minimized Camp Card */
+  .minimized-camp-card {
+    background: #4361ee;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 15px;
+    width: 320px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .minimized-camp-card:hover {
+    background: #3a0ca3;
+    transform: translateX(-5px);
+  }
+
+  .minimized-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .minimized-content i {
+    font-size: 18px;
+  }
+
+  .minimized-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  /* No Camps Message */
+  .no-camps-message {
+    background: white;
+    border-radius: 16px;
+    padding: 30px 20px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #e5e7eb;
+  }
+
+  .no-camps-message i {
+    font-size: 48px;
+    color: #d1d5db;
+    margin-bottom: 15px;
+  }
+
+  .no-camps-message p {
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1400px) {
+    #medicalCampsContainer {
+      right: 10px;
+      width: 340px;
+    }
+    
+    .modern-camp-card,
+    .minimized-camp-card {
+      width: 300px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #medicalCampsContainer {
+      position: static;
+      width: 100%;
+      max-height: none;
+      padding: 20px;
+    }
+    
+    .modern-camp-card,
+    .minimized-camp-card {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    .minimized-camp-card {
+      width: 100%;
+    }
+  }

@@ -1,3 +1,4 @@
+
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -166,6 +167,17 @@
 
           <button
             class="action-btn fade-in"
+            data-bs-toggle="modal">
+            <i class="fas fa-plus-circle"></i>
+            <a href="{% url 'medical_camps' %}">ss</a>
+            <div class="action-btn-content">
+              <h4>Post Medical Camp</h4>
+              <p>Start a new article with media</p>
+            </div>
+          </button>
+
+          <button
+            class="action-btn fade-in"
             style="animation-delay: 0.1s"
             onclick="refreshDashboard()"
           >
@@ -188,7 +200,7 @@
             </div>
           </button>
 
-          <button
+          <!-- <button
             class="action-btn fade-in"
             style="animation-delay: 0.3s"
             onclick="showAllPosts()"
@@ -196,9 +208,10 @@
             <i class="fas fa-eye"></i>
             <div class="action-btn-content">
               <h4>View All Posts</h4>
+              
               <p>{{ posts|length }} total articles</p>
             </div>
-          </button>
+          </button> -->
         </div>
 
         <!-- Filter Bar -->

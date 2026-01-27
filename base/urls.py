@@ -35,8 +35,8 @@ urlpatterns = [
    path('hospital-info/', views.hospital_info, name='hospital_info'),
    path('contact/', views.contact, name='contact'),
    path('general_contact_manager/', views.general_contact_manager, name='general_contact_manager'),
-
-
+   path('medical-camps/', views.medical_camps, name='medical_camps'),
+   path('medical_camp_status_Update/<int:medical_camp_id>/',views.medical_camp_status_Update, name='medical_camp_status_Update'),
 
 
 
